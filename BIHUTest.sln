@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BiHuGadget.Models", "BiHuGa
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BiHuGadget.Helpers", "BiHuGadget.Helpers\BiHuGadget.Helpers.csproj", "{648514EF-C3F9-467D-8C92-34E90A921F45}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BiHuGadget.Dal", "BiHuGadget.Dal\BiHuGadget.Dal.csproj", "{87C0278B-6324-40DB-A5BA-4DB1A68886C5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{648514EF-C3F9-467D-8C92-34E90A921F45}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{648514EF-C3F9-467D-8C92-34E90A921F45}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{648514EF-C3F9-467D-8C92-34E90A921F45}.Release|Any CPU.Build.0 = Release|Any CPU
+		{87C0278B-6324-40DB-A5BA-4DB1A68886C5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{87C0278B-6324-40DB-A5BA-4DB1A68886C5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{87C0278B-6324-40DB-A5BA-4DB1A68886C5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{87C0278B-6324-40DB-A5BA-4DB1A68886C5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
