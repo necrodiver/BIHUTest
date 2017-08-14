@@ -30,10 +30,13 @@ namespace WebBiHuGadget.Models
             {
                 return false;
             }
-            int readMe = Convert.ToInt32(value);
-            if (readMe == 0 || readMe == 1)
+            int readMe = 0;
+            if (int.TryParse(Convert.ToString(value), out readMe))
             {
-                return true;
+                if (readMe == 0 || readMe == 1)
+                {
+                    return true;
+                }
             }
             return false;
         }
