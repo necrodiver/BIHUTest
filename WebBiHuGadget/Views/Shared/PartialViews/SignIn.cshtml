@@ -1,26 +1,27 @@
-﻿<div class="ui modal" blurring="true">
+﻿<div class="ui mini modal" blurring="true">
     <i class="close icon"></i>
     <div class="header">
-        Modal Title
+        登录
     </div>
-    <div class="image content">
-        <div class="image">
-            An image can appear on left or an icon
-        </div>
-        <div class="description">
-            A description can appear on the right
+    <div class="ui content">
+        <div class="ui one column stackable grid container">
+            <div class="column">
+                <div class="ui input">
+                    <input type="text" placeholder="请输入姓名">
+                </div>
+            </div>
+            <div class="column">
+                <div class="ui input">
+                    <input type="password" placeholder="请输入密码">
+                </div>
+            </div>
+            <div class="column">
+                <div class="ui segment">Content</div>
+            </div>
         </div>
     </div>
     <div class="actions">
-        <div class="ui button">Cancel</div>
-        <div class="ui button">OK</div>
+        <div class="ui button">取消</div>
+        <div class="ui button">登录</div>
     </div>
 </div>
-<script>
-
-    $('.ui.modal')
-        //.modal({
-        //    blurring: true
-        //})
-        .modal('show');
-</script>

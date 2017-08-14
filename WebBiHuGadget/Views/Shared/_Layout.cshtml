@@ -33,7 +33,7 @@
                 @*<div>Attendance management system</div>
                     <div>考勤管理系统</div>*@
             </div>
-            <div class="right menu">
+            <div class="right menu" id="menu">
                 <div class="item">
                     <div class="ui action left icon input">
                         <i class="search icon"></i>
@@ -41,12 +41,41 @@
                         <button class="ui button">提交</button>
                     </div>
                 </div>
-                <a class="item">登录</a>
+                <a class="item active" id="showLogin" v-on:click="showLogin">登录</a>
             </div>
         </div>
         @{Html.RenderPartial("PartialViews/SignIn");}
         @RenderBody()
     </div>
+    <script>
+        var vmLogin = new Vue({
+            el: '#menu',
+            data: function () {
+                return {
+                    User: {
+                        UserName: '',
+                        Pwd: '',
+                        ReadMe: false
+                    }
+                };
+            },
+            filter: {
+
+            },
+            methods: {
+                showLogin: function () {
+                    $('.ui.modal')
+                        .modal({
+                            blurring: true
+                        })
+                        .modal('show');
+                }
+            },
+            mounted: function () {
+
+            }
+        });
+    </script>
     @RenderSection("scripts", required: false)
 </body>
 </html>

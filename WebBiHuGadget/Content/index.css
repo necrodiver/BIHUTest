@@ -1,5 +1,6 @@
 ﻿body {
     padding: 1em 15%;
+    min-width:850px;
 }
 .container.body-content {
     min-width: 640px;
@@ -11,7 +12,7 @@
 .title-center{
     font-size:20px;
     font-weight:700;
-    width:35%;
+    width:32%;
     text-align:center;
     line-height:40px;
 }
