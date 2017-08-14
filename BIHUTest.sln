@@ -5,6 +5,10 @@ VisualStudioVersion = 15.0.26430.15
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebBiHuGadget", "WebBiHuGadget\WebBiHuGadget.csproj", "{42779306-80E5-4E0B-AF13-08D13E1287FB}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BiHuGadget.Models", "BiHuGadget.Models\BiHuGadget.Models.csproj", "{AE0AE2A1-F50B-4C47-AAA8-F2FDE59E22C3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BiHuGadget.Helpers", "BiHuGadget.Helpers\BiHuGadget.Helpers.csproj", "{648514EF-C3F9-467D-8C92-34E90A921F45}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +19,14 @@ Global
 		{42779306-80E5-4E0B-AF13-08D13E1287FB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{42779306-80E5-4E0B-AF13-08D13E1287FB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{42779306-80E5-4E0B-AF13-08D13E1287FB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AE0AE2A1-F50B-4C47-AAA8-F2FDE59E22C3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AE0AE2A1-F50B-4C47-AAA8-F2FDE59E22C3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AE0AE2A1-F50B-4C47-AAA8-F2FDE59E22C3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AE0AE2A1-F50B-4C47-AAA8-F2FDE59E22C3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{648514EF-C3F9-467D-8C92-34E90A921F45}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{648514EF-C3F9-467D-8C92-34E90A921F45}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{648514EF-C3F9-467D-8C92-34E90A921F45}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{648514EF-C3F9-467D-8C92-34E90A921F45}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

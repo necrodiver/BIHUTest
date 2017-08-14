@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using WebBiHuGadget.Models;
+using BiHuGadget.Models;
 
-namespace WebBiHuGadget.Helpers
+namespace BiHuGadget.Helpers
 {
     public static class SerializeAttendance
     {

@@ -2,7 +2,7 @@
 using System.IO;
 using System.Text;
 
-namespace WebBiHuGadget.Helpers
+namespace BiHuGadget.Helpers
 {
     public class LogCollectHelper
     {

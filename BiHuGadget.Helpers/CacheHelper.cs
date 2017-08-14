@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections;
+﻿using BiHuGadget.Models;
+using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Web;
 using System.Web.Caching;
-using WebBiHuGadget.Models;
 
-namespace WebBiHuGadget.Helpers
+namespace BiHuGadget.Helpers
 {
     public class CacheHelper
     {

@@ -1,11 +1,10 @@
-﻿using System;
+﻿using BiHuGadget.Models;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Web;
-using WebBiHuGadget.Models;
 
-namespace WebBiHuGadget.Helpers
+namespace BiHuGadget.Helpers
 {
     public static class AnalysisStatistics
     {
