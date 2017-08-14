@@ -59,5 +59,11 @@
     <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\BiHuGadget.Models\BiHuGadget.Models.csproj">
+      <Project>{ae0ae2a1-f50b-4c47-aaa8-f2fde59e22c3}</Project>
+      <Name>BiHuGadget.Models</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
