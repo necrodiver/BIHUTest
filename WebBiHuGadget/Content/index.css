@@ -1,0 +1,17 @@
+﻿body {
+    padding: 1em 15%;
+}
+.container.body-content {
+    min-width: 640px;
+}
+
+.bodyContent {
+    margin-top: 60px;
+}
+.title-center{
+    font-size:20px;
+    font-weight:700;
+    width:35%;
+    text-align:center;
+    line-height:40px;
+}

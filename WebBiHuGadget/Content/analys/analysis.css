@@ -1,0 +1,146 @@
+﻿.width14 {
+    width: 14%;
+}
+
+.length {
+    width: 13.5%;
+    height: 115px;
+    border: 1px solid gray;
+    margin: 2px;
+}
+
+.length-top {
+    width: 13.5%;
+    height: 25px;
+    border: 1px solid gray;
+    text-align: center;
+    margin: 2px;
+    border-radius:3px;
+}
+
+.left {
+    float: left;
+}
+
+
+.month-content {
+    margin-bottom: 50px;
+    width: 860px;
+}
+/*0：整天未在，1：有打卡记录，2：假期*/
+.color-0 {
+    border: 2px solid red;
+    padding: 2px;
+}
+
+.color-1 {
+    border: 1px solid black;
+    padding: 3px;
+}
+
+.color-2 {
+    padding: 2px;
+    border: 2px solid #4DAE51;
+}
+
+.color-0, .color-1, .color-2 {
+    border-radius: 5px 5px;
+}
+
+/*/// -3：迟到 /// -2：早退 /// -1：早下班 /// 0：未打卡 /// 1：正常 /// 2：加班*/
+/*    -1           */
+/*由于class没法表示负的，所以就在当前color上+2*/
+.child--3, .child--2 {
+    background-color: #ff6811;
+    color: #fff;
+}
+
+.child--1 {
+    /*border: 2px solid orange;*/
+    background-color: #ffe518;
+    color: #fff;
+}
+
+.child-0 {
+    /*border: 2px solid red;*/
+    background-color: red;
+    color: #fff;
+}
+
+.child-1 {
+    /*border: 2px solid black;*/
+    /*background-color: black;
+    color: #fff;*/
+}
+
+.child-2 {
+    background-color: blue;
+    color: #fff;
+}
+
+.child-3 {
+    background-color: blue;
+    color: #fff;
+}
+
+.child--3, .child--2, .child--1, .child-0, .child-1, .child-2, .child-3 {
+    border: 2px solid #fff;
+    border-radius: 5px 5px;
+}
+
+.content-color {
+    width: 850px;
+}
+
+.width13 {
+    width: 10%;
+    margin-left: 2px;
+    margin-right: 2px;
+    text-align: center;
+}
+
+.clear {
+    clear: both;
+}
+
+#vue1 {
+    margin-top: 20px;
+    margin-bottom: 40px;
+}
+
+#child-item {
+    margin-bottom: 2px;
+}
+
+.body-Day {
+    width: 100%;
+}
+
+.child-time {
+    float: right;
+}
+
+.right {
+    float: right;
+}
+
+.left {
+    float: left;
+}
+
+.clearBoth {
+    clear: both;
+}
+
+.text-right {
+    text-align: right;
+}
+
+.padding-center {
+    padding-left: 4px;
+    padding-right: 4px;
+}
+
+.left22 {
+    margin-left: 22px;
+}

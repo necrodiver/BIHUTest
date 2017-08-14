@@ -1,0 +1,52 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AMS - @ViewBag.Title</title>
+    @Styles.Render("~/Content/group")
+    @Scripts.Render("~/bundles/group")
+</head>
+<body>
+    <div class="ui container">
+        <div class="ui menu">
+            <a class="header item @ViewBag.Home" href="@Url.Action("Index","Home")">首页</a>
+            <a class="item @ViewBag.AnalysisExcel" href="@Url.Action("Index","AnalysisExcel")">考勤转换</a>
+            <a class="item @ViewBag.AnalysisStatistic" href="@Url.Action("Index","AnalysisStatistic")">考勤统计</a>
+            <div class="ui dropdown item">
+                其他
+                <i class="dropdown icon"></i>
+                <div class="menu">
+                    <div class="item">行为</div>
+                    <div class="item">另一个行为</div>
+                    <div class="item">其他东西</div>
+                    <div class="divider"></div>
+                    <div class="item">分割链接</div>
+                    <div class="divider"></div>
+                    <div class="item">另一个分割链接</div>
+                </div>
+            </div>
+            <div class="title-center">
+                AMS
+                @*<div style="text-align:center;"></div>*@
+                @*<div>Attendance management system</div>
+                    <div>考勤管理系统</div>*@
+            </div>
+            <div class="right menu">
+                <div class="item">
+                    <div class="ui action left icon input">
+                        <i class="search icon"></i>
+                        <input type="text" placeholder="搜索">
+                        <button class="ui button">提交</button>
+                    </div>
+                </div>
+                <a class="item">登录</a>
+            </div>
+        </div>
+        @{Html.RenderPartial("PartialViews/SignIn");}
+        @RenderBody()
+    </div>
+    @RenderSection("scripts", required: false)
+</body>
+</html>

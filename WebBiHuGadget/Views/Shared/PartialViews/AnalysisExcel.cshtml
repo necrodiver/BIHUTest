@@ -1,0 +1,112 @@
+﻿
+<div id="vue1">
+    @{ if (ViewBag.Show)
+        {
+            <div class="ui segment">
+                <a class="ui ribbon label">上传考勤文件</a><br />
+                <div class="left22">
+                    <div>文件命名：小写月份数字加汉字"月考勤"组成的xls文件，例如:7月考勤.xls</div>
+                    <input id="xlsSelect" type="file" accept="application/vnd.ms-excel" name="file" />
+                    <div class="ui vertical animated button small" tabindex="0" v-on:click="getData">
+                        <div class="hidden content">上传</div>
+                        <div class="visible content">
+                            <i class="cloud upload icon"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    }
+
+    <div class="ui segment">
+        <a class="ui ribbon label">展示说明</a>
+        <div class="content-color">
+            <div class="width13 left">外框：</div>
+            <div class="width13 color-0 left">未到</div>
+            <div class="width13 color-1 left">正常</div>
+            <div class="width13 color-2 left">节/假日</div>
+            <div class="clear" style="height:5px;"></div>
+            <div class="width13 left">内框：</div>
+            <div class="width13 child--3 left">迟到/早退</div>
+            <div class="width13 child--1 left">早回家</div>
+            <div class="width13 child-1 left">正常</div>
+            <div class="width13 child-2 left">加班</div>
+            <div class="clear" style="height:5px;"></div>
+            <div class="left22">每天正常情况会有2个时间，若少一个则为未打卡，"早"为上午，"晚"为下午或晚上</div>
+        </div>
+    </div>
+    <div class="ui segment">
+        <a class="ui ribbon label">查询</a>
+        <div class="left22">
+            <br />
+            <div>
+                <div class="ui selection dropdown medium Small">
+                    <input type="hidden" name="gender" id="selectMonth" />
+                    <i class="dropdown icon"></i>
+                    <div class="default text">考勤月份</div>
+                    <div class="menu">
+                        <div class="item" data-value="1">1月</div>
+                        <div class="item" data-value="2">2月</div>
+                        <div class="item" data-value="3">3月</div>
+                        <div class="item" data-value="4">4月</div>
+                        <div class="item" data-value="5">5月</div>
+                        <div class="item" data-value="6">6月</div>
+                        <div class="item" data-value="7">7月</div>
+                        <div class="item" data-value="8">8月</div>
+                        <div class="item" data-value="9">9月</div>
+                        <div class="item" data-value="10">10月</div>
+                        <div class="item" data-value="11">11月</div>
+                        <div class="item" data-value="12">12月</div>
+                    </div>
+                </div>
+                <div class="ui icon input">
+                    <input type="text" v-model="userName" placeholder="请输入查询的用户名" maxlength="6">
+                    <i class="search icon"></i>
+                </div>
+            </div>
+            <div class="month-content">
+                <div class="left length-top">周一</div>
+                <div class="left length-top">周二</div>
+                <div class="left length-top">周三</div>
+                <div class="left length-top">周四</div>
+                <div class="left length-top">周五</div>
+                <div class="left length-top">周六</div>
+                <div class="left length-top">周日</div>
+                <div class="body-Day">
+                    <div v-for="i in userMounthNullCount" class="left length">无</div>
+                    <div v-for="child in userMounths" class="left length" v-bind:class="'color-'+child.status">
+                        <div><strong>{{child.day}}</strong></div>
+                        <div v-if="child.UserLeft" class="padding-center">
+                            <div class="text-right" v-if="child.UserLeft.putCaredTime" v-bind:class="'child-'+child.UserLeft.status">早:{{child.UserLeft.putCaredTime}}</div>
+                        </div>
+                        <div v-if="child.UserRight" class="padding-center">
+                            <div class="text-right" v-if="child.UserRight.putCaredTime" v-bind:class="'child-'+child.UserRight.status">晚:{{child.UserRight.putCaredTime}}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="clear"></div>
+        </div>
+    </div>
+    <!--ui model-->
+    <div class="ui tiny test modal">
+        <div class="header">
+            Delete Your Account
+        </div>
+        <div class="content">
+            <p>Are you sure you want to delete your account</p>
+        </div>
+        <div class="actions">
+            <div class="ui negative button">
+                No
+            </div>
+            <div class="ui positive right labeled icon button">
+                Yes
+                <i class="checkmark icon"></i>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+

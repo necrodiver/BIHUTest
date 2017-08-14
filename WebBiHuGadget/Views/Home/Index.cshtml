@@ -1,0 +1,86 @@
+﻿@{
+    ViewBag.Title = "主页";
+    ViewBag.Home = "active";
+}
+<div id="vueTop">
+    <div class="ui container bodyContent">
+        <div class="ui four cards center">
+            <div class="ui card">
+                <div class="content">
+                    <div class="header">
+                        <i class="ui avatar right spaced iconfont icon-excel green">&nbsp;</i>
+                        考勤记录转换
+                    </div>
+                    <div class="description">
+                        <p>使用xls文件进行转换成日历方式进行查看上一个月的打卡记录</p>
+                    </div>
+                </div>
+                <div class="ui two bottom attached buttons">
+                    <a href="javascript:void(0);" class="ui button" v-on:click="getUrl('Xls')">使用</a>
+                </div>
+            </div>
+            <div class="ui card">
+                <div class="content">
+                    <div class="header">
+                        <i class="ui avatar right spaced iconfont icon-duotu"> &nbsp;</i>
+                        考勤统计
+                    </div>
+                    <div class="description">
+                        <p>对每个员工进行每个月、及当年的考勤统计</p>
+                    </div>
+                </div>
+                <div class="ui two bottom attached buttons">
+                    <a href="javascript:void(0);" class="ui button" v-on:click="getUrl('Analysis')">使用</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@*@Html.Partial("../AnalysisExcel/Index")*@
+<script>
+    var vmTop = new Vue({
+        el: '#vueTop',
+        data: function () {
+            return {
+                dataHtml: '',
+                userPunchCards: null,
+                userName: ""
+            };
+        },
+        filters: {},
+        methods: {
+            getUrl: function (urlName) {
+                var urlStr = null;
+                switch (urlName) {
+                    case "Xls":
+                        urlStr = "/AnalysisExcel/Index";
+                        break;
+                    case "Analysis":
+                        urlStr = "/AnalysisStatistic/Index";
+                        break;
+                    default:
+                        urlStr = "";
+                }
+                window.location.href = urlStr;
+                //this.getHtmlData(urlStr);
+            },
+            getHtmlData: function (urlStr) {
+                var _self = this;
+                if (urlStr == "" || urlStr == null) {
+                    return;
+                }
+                var req = $.ajax({
+                    url: urlStr,
+                    type: 'Get',
+                    dataType: "html"
+                });
+                req.done(function (rd) {
+                    _self.dataHtml = rd;
+                });
+                req.fail(function (jqXHR, textStatus, error) {
+                    console.error("getUrlError: " + error);
+                });
+            }
+        }
+    });
+</script>
