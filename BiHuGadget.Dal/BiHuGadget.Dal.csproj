@@ -54,12 +54,17 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UserContext.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\BiHuGadget.Helpers\BiHuGadget.Helpers.csproj">
+      <Project>{648514ef-c3f9-467d-8c92-34e90a921f45}</Project>
+      <Name>BiHuGadget.Helpers</Name>
+    </ProjectReference>
     <ProjectReference Include="..\BiHuGadget.Models\BiHuGadget.Models.csproj">
       <Project>{ae0ae2a1-f50b-4c47-aaa8-f2fde59e22c3}</Project>
       <Name>BiHuGadget.Models</Name>

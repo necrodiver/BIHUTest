@@ -36,7 +36,10 @@
         </div>
     </div>
 </div>
+@Html.AntiForgeryToken()
 <script>
+    var _token = $('input[name="__RequestVerificationToken"]').val();
+    //__RequestVerificationToken: _token
     var vmTop = new Vue({
         el: '#vueTop',
         data: function () {

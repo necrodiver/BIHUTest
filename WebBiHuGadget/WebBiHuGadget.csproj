@@ -381,6 +381,10 @@
     <Content Include="XLS\7月考勤.xls" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\BiHuGadget.Bll\BiHuGadget.Bll.csproj">
+      <Project>{e567a47f-af13-40d4-b1f1-1b1d2b534d1a}</Project>
+      <Name>BiHuGadget.Bll</Name>
+    </ProjectReference>
     <ProjectReference Include="..\BiHuGadget.Helpers\BiHuGadget.Helpers.csproj">
       <Project>{648514ef-c3f9-467d-8c92-34e90a921f45}</Project>
       <Name>BiHuGadget.Helpers</Name>
