@@ -260,3 +260,4 @@ paket-files/
 __pycache__/
 *.pyc
 /WebBiHuGadget/XLS
+/WebBiHuGadget/logs
