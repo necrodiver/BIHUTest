@@ -21,6 +21,10 @@ namespace BiHuGadget.Models
         /// </summary>
         public string Pwd { get; set; }
         /// <summary>
+        /// 邮箱地址
+        /// </summary>
+        public string EmailAddress { get; set; }
+        /// <summary>
         /// 创建日期
         /// </summary>
         public DateTime? CreateTime { get; set; }

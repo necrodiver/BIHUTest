@@ -146,7 +146,7 @@ namespace BiHuGadget.Helpers
             }
             catch (Exception ex)
             {
-                LogCollectHelper.ErrorLog("读取考勤数据：" + ex.ToString());
+                Log4NetHelper.Error("读取考勤数据:" + ex.ToString());
             }
             return null;
         }

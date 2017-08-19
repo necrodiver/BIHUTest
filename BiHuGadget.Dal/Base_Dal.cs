@@ -31,7 +31,7 @@ namespace BiHuGadget.Dal
             }
             catch (Exception ex)
             {
-                LogCollectHelper.ErrorLog("查询GetSingle：" + ex.ToString());
+                Log4NetHelper.Error("查询GetSingle：" + ex.ToString());
             }
             return null;
 

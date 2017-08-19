@@ -49,6 +49,11 @@ namespace BiHuGadget.Dal
                 sb.Append(" Pwd=@Pwd AND ");
                 args.Add("@Pwd", userModel.Pwd);
             }
+            if (!string.IsNullOrWhiteSpace(userModel.EmailAddress))
+            {
+                sb.Append(" EmailAddress=@EmailAddress AND ");
+                args.Add("@EmailAddress", userModel.EmailAddress);
+            }
             if (userModel.CreateTime != null)
             {
                 sb.Append(" CreateTime=@CreateTime AND ");

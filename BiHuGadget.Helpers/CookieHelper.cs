@@ -22,7 +22,7 @@ namespace BiHuGadget.Helpers
             }
             catch (Exception ex)
             {
-                LogCollectHelper.ErrorLog("写入Cookie:" + ex.ToString());
+                Log4NetHelper.Error("写入Cookie:" + ex.ToString());
             }
             return false;
         }
@@ -37,7 +37,7 @@ namespace BiHuGadget.Helpers
             }
             catch (Exception ex)
             {
-                LogCollectHelper.ErrorLog("读取Cookie存储值:" + ex.ToString());
+                Log4NetHelper.Error("读取Cookie存储值:" + ex.ToString());
             }
             return null;
         }
@@ -52,7 +52,7 @@ namespace BiHuGadget.Helpers
             }
             catch (Exception ex)
             {
-                LogCollectHelper.ErrorLog("读取Cookie过期时间:" + ex.ToString());
+                Log4NetHelper.Error("读取Cookie过期时间:" + ex.ToString());
             }
             return null;
         }

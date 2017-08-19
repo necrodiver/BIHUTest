@@ -34,7 +34,7 @@ namespace WebBiHuGadget.Controllers
             }
             catch (Exception ex)
             {
-                LogCollectHelper.ErrorLog("获取统计数据：" + ex.ToString());
+                Log4NetHelper.Error("获取统计数据:" + ex.ToString());
                 msgModel.MsgContent = "数据获取错误，请查看日志文件";
                 return Json(msgModel, JsonRequestBehavior.AllowGet);
             }

@@ -38,7 +38,7 @@ namespace WebBiHuGadget.Controllers
         [HttpPost]
         public JsonResult UploadXls(HttpPostedFileBase requestFile)
         {
-            LogCollectHelper.InfoLog("上传文件：FileName:" + requestFile.FileName);
+            Log4NetHelper.Info("上传文件：FileName:" + requestFile.FileName);
             MessageModel msgModel = new MessageModel();
             msgModel.MsgTitle = "上传文件";
             msgModel.MsgStatus = false;
@@ -84,7 +84,7 @@ namespace WebBiHuGadget.Controllers
                 }
                 catch (Exception ex)
                 {
-                    LogCollectHelper.ErrorLog("保存文件：" + ex.ToString());
+                    Log4NetHelper.Error("保存文件:" + ex.ToString());
                     msgModel.MsgContent = "文件保存失败,请查看日志";
                     return Json(msgModel, JsonRequestBehavior.AllowGet);
                 }
@@ -101,7 +101,7 @@ namespace WebBiHuGadget.Controllers
         [HttpGet]
         public JsonResult GetMonthData(int monthNum)
         {
-            LogCollectHelper.InfoLog("获取考勤数据：monthNum:" + monthNum);
+            Log4NetHelper.Info("获取考勤数据：monthNum:" + monthNum);
             MessageModel msgModel = new MessageModel();
             msgModel.MsgTitle = "读取考勤数据";
             msgModel.MsgStatus = false;
@@ -122,7 +122,7 @@ namespace WebBiHuGadget.Controllers
                 }
                 catch (Exception ex)
                 {
-                    LogCollectHelper.ErrorLog("从缓存中拿数据并进行转换:" + ex.ToString());
+                    Log4NetHelper.Error("从缓存中拿数据并进行转换:" + ex.ToString());
                     msgModel.MsgContent = "查询数据不存在(查询条件输入失败或请上传相关文件再查询)，或请检查日志";
                     return Json(msgModel, JsonRequestBehavior.AllowGet);
                 }

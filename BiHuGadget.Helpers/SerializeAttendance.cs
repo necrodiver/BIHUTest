@@ -34,7 +34,7 @@ namespace BiHuGadget.Helpers
             }
             catch (Exception ex)
             {
-                LogCollectHelper.ErrorLog("考勤数据转换错误：" + ex.ToString());
+                Log4NetHelper.Error("考勤数据转换错误:" + ex.ToString());
             }
             return null;
 

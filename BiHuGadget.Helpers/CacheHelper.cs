@@ -43,7 +43,7 @@ namespace BiHuGadget.Helpers
             }
             catch (Exception ex)
             {
-                LogCollectHelper.ErrorLog("读取缓存数据:" + ex.ToString());
+                Log4NetHelper.Fatal("读取缓存数据:" + ex.ToString());
             }
             return null;
         }
@@ -60,7 +60,7 @@ namespace BiHuGadget.Helpers
             }
             catch (Exception ex)
             {
-                LogCollectHelper.ErrorLog("写入缓存数据0:" + ex.ToString());
+                Log4NetHelper.Fatal("写入缓存数据0:" + ex.ToString());
             }
             return false;
         }
@@ -77,7 +77,7 @@ namespace BiHuGadget.Helpers
             }
             catch (Exception ex)
             {
-                LogCollectHelper.ErrorLog("写入缓存数据1:" + ex.ToString());
+                Log4NetHelper.Fatal("写入缓存数据1:" + ex.ToString());
             }
             return false;
 
@@ -95,7 +95,7 @@ namespace BiHuGadget.Helpers
             }
             catch (Exception ex)
             {
-                LogCollectHelper.ErrorLog("写入缓存数据2:" + ex.ToString());
+                Log4NetHelper.Fatal("写入缓存数据2:" + ex.ToString());
             }
             return false;
         }
@@ -112,7 +112,7 @@ namespace BiHuGadget.Helpers
             }
             catch (Exception ex)
             {
-                LogCollectHelper.ErrorLog("移除指定数据缓存:" + ex.ToString());
+                Log4NetHelper.Fatal("移除指定数据缓存:" + ex.ToString());
             }
             return false;
         }
@@ -133,7 +133,7 @@ namespace BiHuGadget.Helpers
             }
             catch (Exception ex)
             {
-                LogCollectHelper.ErrorLog("移除全部缓存:" + ex.ToString());
+                Log4NetHelper.Fatal("移除全部缓存:" + ex.ToString());
             }
             return false;
 
