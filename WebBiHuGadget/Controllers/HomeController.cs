@@ -13,7 +13,7 @@ namespace WebBiHuGadget.Controllers
 {
     public class HomeController : Controller
     {
-        Users_Bll usersBll = new Users_Bll();
+        User_Bll userBll = new User_Bll();
         public ActionResult Index()
         {
             return View();
@@ -24,15 +24,14 @@ namespace WebBiHuGadget.Controllers
         [ValidateAntiForgeryToken]
         public JsonResult LoginIn(View_Login request)
         {
-            UserModel userModel = new UserModel();
-            userModel.UserName = request.UserName;
-            userModel.Pwd = request.Pwd;
-            usersBll.SetUser(userModel);
             return Json("1", JsonRequestBehavior.AllowGet);
         }
-        public JsonResult GetUsers()
+
+        [HttpGet]
+        public JsonResult GetSingleUser(int userId)
         {
-            return Json(usersBll.GetUsers(), JsonRequestBehavior.AllowGet);
+            var userModel = userBll.GetSingleUser(new UserModel { UserId = userId });
+            return Json(userModel, JsonRequestBehavior.AllowGet);
         }
     }
 }

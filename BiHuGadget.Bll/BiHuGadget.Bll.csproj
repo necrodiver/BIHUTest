@@ -41,7 +41,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Users_Bll.cs" />
+    <Compile Include="User_Bll.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\BiHuGadget.Dal\BiHuGadget.Dal.csproj">

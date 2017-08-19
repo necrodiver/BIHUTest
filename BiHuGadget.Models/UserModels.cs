@@ -11,7 +11,7 @@ namespace BiHuGadget.Models
         /// <summary>
         /// 用户Id
         /// </summary>
-        public int UserId { get; set; }
+        public int? UserId { get; set; }
         /// <summary>
         /// 用户姓名
         /// </summary>
@@ -23,10 +23,10 @@ namespace BiHuGadget.Models
         /// <summary>
         /// 创建日期
         /// </summary>
-        public DateTime CreateTime { get; set; }
+        public DateTime? CreateTime { get; set; }
         /// <summary>
         /// 扮演角色(权限)
         /// </summary>
-        public int RoleId { get; set; }
+        public int? RoleId { get; set; }
     }
 }
