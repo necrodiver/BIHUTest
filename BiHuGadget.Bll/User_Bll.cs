@@ -16,7 +16,7 @@ namespace BiHuGadget.Bll
         {
             if (userModel == null)
                 return null;
-            if (string.IsNullOrWhiteSpace(userModel.Pwd))
+            if (!string.IsNullOrWhiteSpace(userModel.Pwd))
                 userModel.Pwd = AESHelper.AESEncrypt(userModel.Pwd);
             return userDal.GetSingleUser(userModel);
         }

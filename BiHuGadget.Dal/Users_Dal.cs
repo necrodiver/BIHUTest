@@ -11,8 +11,6 @@ namespace BiHuGadget.Dal
     {
         public UserModel GetSingleUser(UserModel userModel)
         {
-            SQLiteConnectionStringBuilder sb = new SQLiteConnectionStringBuilder();
-            sb.DataSource = Settings.SqliteConnection;
             string _where = string.Empty;
             if (_where == null)
                 return null;
@@ -36,27 +34,27 @@ namespace BiHuGadget.Dal
                 return null;
             }
             StringBuilder sb = new StringBuilder();
-            if (userModel.UserId == null)
+            if (userModel.UserId != null)
             {
                 sb.Append(" UserId=@UserId AND ");
                 args.Add("@UserId", userModel.UserId);
             }
-            if (string.IsNullOrWhiteSpace(userModel.UserName))
+            if (!string.IsNullOrWhiteSpace(userModel.UserName))
             {
                 sb.Append(" UserName=@UserName AND ");
                 args.Add("@UserName", userModel.UserName);
             }
-            if (string.IsNullOrWhiteSpace(userModel.Pwd))
+            if (!string.IsNullOrWhiteSpace(userModel.Pwd))
             {
                 sb.Append(" Pwd=@Pwd AND ");
                 args.Add("@Pwd", userModel.Pwd);
             }
-            if (userModel.CreateTime == null)
+            if (userModel.CreateTime != null)
             {
                 sb.Append(" CreateTime=@CreateTime AND ");
                 args.Add("@CreateTime", userModel.CreateTime);
             }
-            if (userModel.RoleId == null)
+            if (userModel.RoleId != null)
             {
                 sb.Append(" RoleId=@RoleId AND ");
                 args.Add("@RoleId", userModel.RoleId);

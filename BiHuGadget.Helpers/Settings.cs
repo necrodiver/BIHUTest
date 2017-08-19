@@ -1,4 +1,5 @@
-﻿using static System.Configuration.ConfigurationManager;
+﻿using System;
+using static System.Configuration.ConfigurationManager;
 
 namespace BiHuGadget.Helpers
 {
@@ -22,7 +23,7 @@ namespace BiHuGadget.Helpers
         {
             get
             {
-                string isSqliteStr = AppSettings["IsSQLite"].ToString();
+                string isSqliteStr = Convert.ToString(AppSettings["IsSQLite"]);
                 if (string.IsNullOrWhiteSpace(isSqliteStr))
                     return false;
                 if (isSqliteStr.Equals("1"))
