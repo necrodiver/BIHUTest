@@ -20,5 +20,23 @@ namespace BiHuGadget.Bll
                 userModel.Pwd = AESHelper.AESEncrypt(userModel.Pwd);
             return userDal.GetSingleUser(userModel);
         }
+        public List<UserModel> GetListUser(UserModel userModel)
+        {
+            if (userModel == null)
+                return null;
+            if (!string.IsNullOrWhiteSpace(userModel.Pwd))
+                userModel.Pwd = AESHelper.AESEncrypt(userModel.Pwd);
+            return userDal.GetListUser(userModel);
+        }
+
+        public bool ExistUser(UserModel userModel)
+        {
+            if (userModel == null)
+                return false;
+            var backUser = userDal.GetSingleUser(userModel);
+            if (backUser == null || string.IsNullOrWhiteSpace(backUser.Email))
+                return false;
+            return true;
+        }
     }
 }

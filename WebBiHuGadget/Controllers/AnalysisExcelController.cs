@@ -9,7 +9,7 @@ using BiHuGadget.Models;
 
 namespace WebBiHuGadget.Controllers
 {
-    public class AnalysisExcelController : Controller
+    public class AnalysisExcelController : BaseController
     {
         string BasePath = AppDomain.CurrentDomain.BaseDirectory + "XLS\\";
         string fileType = ".xls";

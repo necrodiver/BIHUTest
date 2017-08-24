@@ -41,41 +41,11 @@
                         <button class="ui button">提交</button>
                     </div>
                 </div>
-                <a class="item active" id="showLogin" v-on:click="showLogin">登录</a>
+                <a class="item active" id="showLogin" v-on:click="showLogin"></a>
             </div>
         </div>
-        @{Html.RenderPartial("PartialViews/SignIn");}
         @RenderBody()
     </div>
-    <script>
-        var vmLogin = new Vue({
-            el: '#menu',
-            data: function () {
-                return {
-                    User: {
-                        UserName: '',
-                        Pwd: '',
-                        ReadMe: false
-                    }
-                };
-            },
-            filter: {
-
-            },
-            methods: {
-                showLogin: function () {
-                    $('.ui.modal')
-                        .modal({
-                            blurring: true
-                        })
-                        .modal('show');
-                }
-            },
-            mounted: function () {
-
-            }
-        });
-    </script>
     @RenderSection("scripts", required: false)
 </body>
 </html>

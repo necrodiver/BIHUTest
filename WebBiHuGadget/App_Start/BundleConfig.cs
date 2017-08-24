@@ -13,7 +13,8 @@ namespace WebBiHuGadget
                     "~/Content/iconfont/iconfont.css",
                     "~/Content/index.css"));
             bundles.Add(new ScriptBundle("~/bundles/group").Include(
-                    "~/Scripts/jquery-{version}.js",
+                    "~/Scripts/jquery/jquery-{version}.js",
+                    "~/Scripts/ctrl/helper.js",
                     "~/Scripts/vue.js",
                     "~/Scripts/semantic.js",
                     "~/Scripts/iconfont.js",

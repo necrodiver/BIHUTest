@@ -4,6 +4,8 @@ using Dapper;
 using System.Data;
 using System.Data.SQLite;
 using System.Text;
+using System;
+using System.Collections.Generic;
 
 namespace BiHuGadget.Dal
 {
@@ -49,10 +51,10 @@ namespace BiHuGadget.Dal
                 sb.Append(" Pwd=@Pwd AND ");
                 args.Add("@Pwd", userModel.Pwd);
             }
-            if (!string.IsNullOrWhiteSpace(userModel.EmailAddress))
+            if (!string.IsNullOrWhiteSpace(userModel.Email))
             {
-                sb.Append(" EmailAddress=@EmailAddress AND ");
-                args.Add("@EmailAddress", userModel.EmailAddress);
+                sb.Append(" Email=@Email AND ");
+                args.Add("@Email", userModel.Email);
             }
             if (userModel.CreateTime != null)
             {
@@ -67,6 +69,11 @@ namespace BiHuGadget.Dal
             sb.Append(" 1=1");
             where = sb.ToString();
             return args;
+        }
+
+        public List<UserModel> GetListUser(UserModel userModel)
+        {
+            throw new NotImplementedException();
         }
     }
     public static class User_QueryString

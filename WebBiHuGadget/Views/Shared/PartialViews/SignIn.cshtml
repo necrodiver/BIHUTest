@@ -1,27 +1,114 @@
-﻿<div class="ui mini modal" blurring="true">
-    <i class="close icon"></i>
-    <div class="header">
-        登录
-    </div>
-    <div class="ui content">
-        <div class="ui one column stackable grid container">
-            <div class="column">
-                <div class="ui input">
-                    <input type="text" placeholder="请输入姓名">
+﻿<div class="ui mini modal">
+    <div class="header">登录</div>
+    <div class="content">
+        <div class="ui form field">
+            <div class="field">
+                <div class="ui fluid icon input">
+                    <input id="loginEmail" type="email" v-model="User.Email" placeholder="请输入BiHu邮箱名">
+                    <i class="mail icon"></i>
                 </div>
             </div>
-            <div class="column">
-                <div class="ui input">
-                    <input type="password" placeholder="请输入密码">
+            <div class="field">
+                <div class="ui fluid icon input">
+                    <input id="loginPwd" type="password" v-model="User.Pwd" placeholder="请输入密码">
+                    <i class="lock icon"></i>
                 </div>
-            </div>
-            <div class="column">
-                <div class="ui segment">Content</div>
             </div>
         </div>
     </div>
     <div class="actions">
-        <div class="ui button">取消</div>
-        <div class="ui button">登录</div>
+        <div class="ui positive right labeled icon button" v-on:click="loginIn()">登录 <i class="chevron right icon"></i> </div>
     </div>
 </div>
+<script>
+    var _token = $('input[name="__RequestVerificationToken"]').val();
+    var vmLogin = new Vue({
+        el: '#menu',
+        data: function () {
+            return {
+                User: {
+                    Email: '',
+                    Pwd: '',
+                    ReadMe: 0,
+                    __RequestVerificationToken: _token
+                },
+                isLogin:@ViewBag.IsLogin,
+                loginName: @ViewBag.IsLogin ? '个人中心' : '登录'
+            };
+        },
+        filter: {
+
+        },
+        methods: {
+            showLogin: function () {
+                if (this.isLogin)
+                   return  window.location.href = '@Url.Action("Index","MyCenter")';
+                var _self = this;
+                $('.ui.modal')
+                    .modal({
+                        blurring: true,
+                        onApprove: function () {
+                            _self.loginIn();
+                        }
+                    })
+                    .modal('show');
+            },
+            loginIn: function () {
+                var _self = this;
+                if (!helper.bihuEmail(this.User.Email))
+                    return false;
+                if (!helper.pwd(this.User.Pwd))
+                    return false;
+                var req = $.ajax({
+                    type: 'POST',
+                    url: '@Url.Action("LoginIn","Home")',
+                    data: this.User,
+                    dataType: "JSON",
+                    cache: false,
+                    beforeSend: function () {
+
+                    }
+                });
+                req.done(function (res) {
+                    if (res == null || res == "") {
+                        return alert("登录失败");
+                    }
+                    if (res.status != undefined && res.status == -1) {
+                        return alert(res.msg);
+                    }
+                    if (!res.MsgStatus) {
+                        return alert(res.MsgContent);
+                    }
+                    if (res.MsgStatus) {
+                        alert(res.MsgContent);
+                        window.location.reload();
+                    }
+
+                });
+                req.fail(function (jqXHR, textStatus, error) {
+                    if (error) {
+                        if (textStatus == "timeout") {
+                            return alert("请求超时！");
+                        }
+                        else if (textStatus == "error") {
+                            return alert("网络连接超时！");
+                        }
+                    }
+                });
+                req.always(function () {
+                    //所有的走完之后调用的数据
+                });
+            }
+        },
+        mounted: function () {
+            var _self = this;
+            $('#loginEmail').change(function () {
+                _self.User.Email = $(this).val();
+            });
+            $('#loginPwd').change(function () {
+                _self.User.Pwd = $(this).val();
+            });
+            $('#showLogin').text(_self.loginName);
+        }
+    });
+</script>

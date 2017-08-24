@@ -9,6 +9,10 @@ namespace BiHuGadget.Models
     public class UserModel
     {
         /// <summary>
+        /// 邮箱地址
+        /// </summary>
+        public string Email { get; set; }
+        /// <summary>
         /// 用户Id
         /// </summary>
         public int? UserId { get; set; }
@@ -20,10 +24,6 @@ namespace BiHuGadget.Models
         /// 密码
         /// </summary>
         public string Pwd { get; set; }
-        /// <summary>
-        /// 邮箱地址
-        /// </summary>
-        public string EmailAddress { get; set; }
         /// <summary>
         /// 创建日期
         /// </summary>
