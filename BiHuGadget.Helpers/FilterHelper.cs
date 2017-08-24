@@ -44,14 +44,13 @@ namespace BiHuGadget.Helpers
         {
             string controllerName = filterContext.RouteData.Values["controller"].ToString().ToLower();
             string actionName = filterContext.RouteData.Values["action"].ToString().ToLower();
-            var account = SessionHelper.GetSession<AccountUser>("Account");
+            var account = SessionHelper.GetSession<AccountUser>(Settings.AccountSessionKey);
             MessageModel msgModel = new MessageModel();
             msgModel.MsgTitle = "权限问题";
             msgModel.MsgStatus = false;
             if (account != null && account.AuthorityList != null && account.AuthorityList.Count > 0)
             {
                 var thisAuthorize = account.AuthorityList.Find(a => a.ActionName.ToLower() == actionName && a.ControllerName.ToLower() == controllerName);
-                //var thisAuthorize = account.AuthorityList.SingleOrDefault(a => a.ActionName == actionName && a.ControllerName == controllerName);
                 if (thisAuthorize != null)
                     return;
                 msgModel.MsgContent = "权限不足";
@@ -61,25 +60,9 @@ namespace BiHuGadget.Helpers
                 msgModel.MsgContent = "请先登录再进行操作";
             }
             filterContext.Result = new EmptyResult();
-            filterContext.HttpContext.Response.Write(ObjectToJSON(msgModel));
-            //HttpContext.Current.Response.Write("请先进行登录!");
+            filterContext.HttpContext.Response.StatusCode = 403;
+            filterContext.HttpContext.Response.Write(msgModel.ObjectToJSON());
             base.OnAuthorization(filterContext);
-        }
-        public static string ObjectToJSON<T>(T obj)
-        {
-            DataContractJsonSerializer serializer = new DataContractJsonSerializer(typeof(T));
-            string result = string.Empty;
-            using (MemoryStream ms = new MemoryStream())
-            {
-                serializer.WriteObject(ms, obj);
-                ms.Position = 0;
-
-                using (StreamReader read = new StreamReader(ms))
-                {
-                    result = read.ReadToEnd();
-                }
-            }
-            return result;
         }
     }
 

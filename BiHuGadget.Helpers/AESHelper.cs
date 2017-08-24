@@ -66,7 +66,7 @@ namespace BiHuGadget.Helpers
         /// </summary>
         /// <param name="encryptStr">密文字符串</param>
         /// <returns>明文</returns>
-        public static string AESDecrypt(string encryptStr)
+        public static string AESDecrypt(this string encryptStr)
         {
             byte[] bKey = Encoding.UTF8.GetBytes(Key);
             byte[] bIV = Encoding.UTF8.GetBytes(IV);

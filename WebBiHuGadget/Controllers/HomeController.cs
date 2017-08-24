@@ -63,7 +63,7 @@ namespace WebBiHuGadget.Controllers
                 account.RoleId = roleModel.RoleId;
                 account.RoleName = roleModel.RoleName;
                 account.AuthorityList = authorityList;
-                SessionHelper.SaveSession(account, "Account");
+                SessionHelper.SaveSession(account, Settings.AccountSessionKey);
                 msgModel.MsgStatus = true;
                 msgModel.MsgContent = "登录成功";
                 return Json(msgModel, JsonRequestBehavior.AllowGet);

@@ -31,5 +31,6 @@ namespace BiHuGadget.Helpers
                 return false;
             }
         }
+        public static readonly string AccountSessionKey = "Account";
     }
 }

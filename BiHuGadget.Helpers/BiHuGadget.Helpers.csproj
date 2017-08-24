@@ -69,6 +69,7 @@
     <Compile Include="FilterHelper.cs" />
     <Compile Include="Log4NetHelper.cs" />
     <Compile Include="LogCollectHelper.cs" />
+    <Compile Include="ObjJsonHelper.cs" />
     <Compile Include="OperateExcelWps.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SerializeAttendance.cs" />

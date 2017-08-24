@@ -14,11 +14,11 @@ namespace WebBiHuGadget.Controllers
         {
             get
             {
-                return Session != null ? SessionHelper.GetSession<AccountUser>("Account") : (AccountUser)System.Web.HttpContext.Current.Session["Account"];
+                return Session != null ? SessionHelper.GetSession<AccountUser>(Settings.AccountSessionKey) : (AccountUser)System.Web.HttpContext.Current.Session[Settings.AccountSessionKey];
             }
             set
             {
-                SessionHelper.SaveSession(value, "Account");
+                SessionHelper.SaveSession(value, Settings.AccountSessionKey);
             }
         }
     }
