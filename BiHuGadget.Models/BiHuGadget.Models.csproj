@@ -41,7 +41,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AttendanceModel.cs" />
     <Compile Include="AuthorityModel.cs" />
+    <Compile Include="ClockMark.cs" />
     <Compile Include="CookieModel.cs" />
     <Compile Include="Models.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
