@@ -49,6 +49,14 @@ namespace BiHuGadget.Helpers
             HttpContext.Current.Session.Remove(sessionKey);
             return true;
         }
+        /// <summary>
+        /// 删除所有当前会话的Session
+        /// </summary>
+        /// <returns></returns>
+        public static void RemoveAllSession()
+        {
+            HttpContext.Current.Session.Abandon();
+        }
     }
 
 }

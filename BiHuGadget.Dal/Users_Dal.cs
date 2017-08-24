@@ -17,7 +17,7 @@ namespace BiHuGadget.Dal
             if (_where == null)
                 return null;
             var _args = DisposeUserModel(userModel, out _where);
-            string _sql = string.Format(User_QueryString.Select_UserSingle, _where);
+            string _sql = string.Format(User_QueryString.Select_User, _where);
             return GetSingle<UserModel>(_sql, _args);
         }
 
@@ -81,6 +81,6 @@ namespace BiHuGadget.Dal
         /// <summary>
         /// 查询Users数据库
         /// </summary>
-        public static string Select_UserSingle = "SELECT * FROM Users WHERE {0}";
+        public static string Select_User = "SELECT * FROM Users WHERE {0}";
     }
 }

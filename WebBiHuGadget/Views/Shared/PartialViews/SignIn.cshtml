@@ -1,4 +1,5 @@
-﻿<div class="ui mini modal">
+﻿@Html.AntiForgeryToken()
+<div class="ui mini modal">
     <div class="header">登录</div>
     <div class="content">
         <div class="ui form field">
@@ -17,7 +18,7 @@
         </div>
     </div>
     <div class="actions">
-        <div class="ui positive right labeled icon button" v-on:click="loginIn()">登录 <i class="chevron right icon"></i> </div>
+        <div class="ui positive right labeled icon button">登录 <i class="chevron right icon"></i> </div>
     </div>
 </div>
 <script>

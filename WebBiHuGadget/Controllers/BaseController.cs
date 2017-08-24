@@ -10,15 +10,15 @@ namespace WebBiHuGadget.Controllers
 {
     public class BaseController : Controller
     {
-        protected UserModel Account
+        protected AccountUser Account
         {
             get
             {
-                return Session != null ? SessionHelper.GetSession<UserModel>("UserInfo") : (UserModel)System.Web.HttpContext.Current.Session["UserInfo"];
+                return Session != null ? SessionHelper.GetSession<AccountUser>("Account") : (AccountUser)System.Web.HttpContext.Current.Session["Account"];
             }
             set
             {
-                SessionHelper.SaveSession(value, "UserInfo");
+                SessionHelper.SaveSession(value, "Account");
             }
         }
     }

@@ -16,9 +16,5 @@ namespace BiHuGadget.Models
         /// 角色名称
         /// </summary>
         public string RoleName { get; set; }
-        /// <summary>
-        /// 权限Id
-        /// </summary>
-        public int AuthorityId { get; set; }
     }
 }
