@@ -10,6 +10,10 @@
         border: 1px solid #ccc;
         float:right;
     }
+    .kong{
+        width:100px;
+        height:42px;
+    }
 </style>
 <div id="vue1">
     @{ if (ViewBag.Show)
@@ -88,9 +92,11 @@
                     <div v-for="i in userMounthNullCount" class="left length">无</div>
                     <div v-for="child in userMounths" class="left length clockBtn" v-bind:class="'color-'+child.status" v-on:click="editMask(child)">
                         <div><strong>{{child.day}}</strong></div>
+                        <div v-if="!child.UserLeft&&child.status!=2&&child.status!=0" class="padding-center child-0">早:未打卡</div>
                         <div v-if="child.UserLeft" class="padding-center">
                             <div class="text-right" v-if="child.UserLeft.putCaredTime" v-bind:class="'child-'+child.UserLeft.status">早:{{child.UserLeft.putCaredTime}}</div>
                         </div>
+                        <div v-if="!child.UserRight&&child.status!=2&&child.status!=0" class="padding-center child-0">晚:未打卡</div>
                         <div v-if="child.UserRight" class="padding-center">
                             <div class="text-right" v-if="child.UserRight.putCaredTime" v-bind:class="'child-'+child.UserRight.status">晚:{{child.UserRight.putCaredTime}}</div>
                         </div>
