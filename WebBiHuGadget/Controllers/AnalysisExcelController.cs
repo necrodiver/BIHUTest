@@ -20,10 +20,16 @@ namespace WebBiHuGadget.Controllers
                 Directory.CreateDirectory(BasePath);
             }
         }
-        public ActionResult Index(string type)
+        public ActionResult Index()
         {
+            ViewBag.IsLogin = 0;
+            if (this.Account != null)
+            {
+                ViewBag.IsLogin = 1;
+            }
+
             ViewBag.Show = false;
-            if (type == "admin")
+            if (Account!=null&&Account.RoleId==1)
             {
                 ViewBag.Show = true;
             }

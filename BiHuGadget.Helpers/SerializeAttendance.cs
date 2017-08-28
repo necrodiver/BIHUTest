@@ -210,7 +210,7 @@ namespace BiHuGadget.Helpers
                 {
                     userModel.status = -3;
                 }
-                if ((hour >= 7 && hour < 9) || (hour >= 9 && minute <= 30))
+                if ((hour >= 7 && hour < 9) || (hour == 9 && minute <= 30))
                 {
                     userModel.status = 1;
                 }

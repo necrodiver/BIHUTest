@@ -5,7 +5,15 @@
         userName: "",
         userMounthNullCount: 0,
         userMounths: [],
-        selectMonth: "-1"
+        selectMonth: "-1",
+        addMask: {
+            year: '',
+            month: '',
+            day: '',
+            selectSort: '',
+            selectTime: '',
+            markReason: ''
+        }
     },
     components: {//组件
 
@@ -22,6 +30,9 @@
         }
     },
     mounted: function () {
+        $("#selectMonth").bind('change', function () {
+            vm.selectMonth = $(this).val();
+        });
         $("#selectMonth").bind('change', function () {
             vm.selectMonth = $(this).val();
         });
@@ -113,6 +124,34 @@
             req.always(function () {
                 //所有的走完之后调用的数据
             });
+        },
+        editMask: function (val) {
+            var _self = this;
+            var asas = val;
+            $('#editMark')
+                .modal({
+                    blurring: true,
+                    onApprove: function () {
+                        _self.saveMask();
+                    }
+                })
+                .modal('show');
+        },
+        saveMask: function () {
+            //addMask: {
+            //    year: '',
+            //        month: '',
+            //            day: '',
+            //                selectSort: '',
+            //                    selectTime: '',
+            //                        markReason: ''
+            //}
+        },
+        initClockPopup: function () {
+            $('.clockBtn').popup({
+                popup: '#clockPopup'
+            });
         }
+
     }
 });

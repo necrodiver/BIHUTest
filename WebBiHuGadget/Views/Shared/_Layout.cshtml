@@ -45,6 +45,9 @@
             </div>
         </div>
         @RenderBody()
+        <div class="modal-page pushable dimmable dimmed">
+            @{Html.RenderPartial("PartialViews/SignIn");}
+        </div>
     </div>
     @RenderSection("scripts", required: false)
 </body>

@@ -1,4 +1,16 @@
-﻿
+﻿<style type="text/css">
+    .month-content-clock {
+        position:fixed;
+        right:100px;
+        top:100px;
+        width: 210px;
+        height: 500px;
+        border-radius:5px;
+        background-color:#fff;
+        border: 1px solid #ccc;
+        float:right;
+    }
+</style>
 <div id="vue1">
     @{ if (ViewBag.Show)
         {
@@ -74,7 +86,7 @@
                 <div class="left length-top">周日</div>
                 <div class="body-Day">
                     <div v-for="i in userMounthNullCount" class="left length">无</div>
-                    <div v-for="child in userMounths" class="left length" v-bind:class="'color-'+child.status">
+                    <div v-for="child in userMounths" class="left length clockBtn" v-bind:class="'color-'+child.status" v-on:click="editMask(child)">
                         <div><strong>{{child.day}}</strong></div>
                         <div v-if="child.UserLeft" class="padding-center">
                             <div class="text-right" v-if="child.UserLeft.putCaredTime" v-bind:class="'child-'+child.UserLeft.status">早:{{child.UserLeft.putCaredTime}}</div>
@@ -85,28 +97,54 @@
                     </div>
                 </div>
             </div>
+            <div class="month-content-clock">
+                121212
+            </div>
             <div class="clear"></div>
         </div>
     </div>
     <!--ui model-->
-    <div class="ui tiny test modal">
+    <div class="ui small modal" id="editMark">
         <div class="header">
-            Delete Your Account
+            备注说明
         </div>
-        <div class="content">
-            <p>Are you sure you want to delete your account</p>
+        <div class="content ui form">
+            <div class="field">
+                <div class="ui selection dropdown medium Small">
+                    <input type="hidden" name="gender" id="selectTime" />
+                    <i class="dropdown icon"></i>
+                    <div class="default text">记录时间</div>
+                    <div class="menu">
+                        <div class="item" data-value="0">整天</div>
+                        <div class="item" data-value="1">上午</div>
+                        <div class="item" data-value="2">下午</div>
+                    </div>
+                </div>
+            </div>
+            <div class="field">
+                <div class="ui selection dropdown medium Small">
+                    <input type="hidden" name="gender" id="selectSort" />
+                    <i class="dropdown icon"></i>
+                    <div class="default text">记录类别</div>
+                    <div class="menu">
+                        <div class="item" data-value="1">迟到</div>
+                        <div class="item" data-value="2">早退</div>
+                        <div class="item" data-value="3">早回家</div>
+                        <div class="item" data-value="4">正常</div>
+                        <div class="item" data-value="5">加班</div>
+                    </div>
+                </div>
+            </div>
+            <div class="field">
+                <label>备注说明</label>
+                <textarea rows="2" maxlength="200" placeholder="长度不大于200个字符" id="markReason" v-model="addMask.markReason"></textarea>
+            </div>
         </div>
         <div class="actions">
-            <div class="ui negative button">
-                No
-            </div>
-            <div class="ui positive right labeled icon button">
-                Yes
-                <i class="checkmark icon"></i>
-            </div>
+            <div class="ui cancel button">取消 </div>
+            <div class="ui positive right labeled icon button">保存 <i class="checkmark icon"></i> </div>
         </div>
     </div>
-
 </div>
 
 
