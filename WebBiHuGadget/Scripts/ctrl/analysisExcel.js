@@ -7,12 +7,6 @@
         userMounths: [],
         selectMonth: "-1",
         addMask: {
-            year: '',
-            month: '',
-            day: '',
-            selectSort: '',
-            selectTime: '',
-            markReason: ''
         }
     },
     components: {//组件
@@ -151,6 +145,9 @@
             $('.clockBtn').popup({
                 popup: '#clockPopup'
             });
+        },
+        selectMask: function (val) {
+            this.addMask = val;
         }
 
     }

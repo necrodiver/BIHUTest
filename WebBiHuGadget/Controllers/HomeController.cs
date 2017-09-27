@@ -30,13 +30,18 @@ namespace WebBiHuGadget.Controllers
         [ValidateAntiForgeryToken]
         public JsonResult LoginIn(View_Login request)
         {
-            MessageModel msgModel = new MessageModel();
-            msgModel.MsgTitle = "登录";
-            msgModel.MsgStatus = false;
+            MessageModel msgModel = new MessageModel
+            {
+                MsgTitle = "登录",
+                MsgStatus = false
+            };
 
-            UserModel userModel = new UserModel();
-            userModel.Email = request.Email;
-            userModel.Pwd = request.Pwd;
+
+            UserModel userModel = new UserModel
+            {
+                Email = request.Email,
+                Pwd = request.Pwd
+            };
 
             var backUser = userBll.GetSingleUser(userModel);
             if (backUser == null || string.IsNullOrWhiteSpace(backUser.Email) || backUser.CreateTime == null || backUser.UserId == null)
@@ -54,15 +59,17 @@ namespace WebBiHuGadget.Controllers
                     return Json(msgModel, JsonRequestBehavior.AllowGet);
                 }
                 List<AuthorityModel> authorityList = raBll.GetAuthorityList(Convert.ToInt32(roleModel.RoleId));
-                AccountUser account = new AccountUser();
-                account.UserId = Convert.ToInt32(backUser.UserId);
-                account.UserName = backUser.UserName;
-                account.Email = backUser.Email;
-                account.Pwd = backUser.Pwd;
-                account.CreateTime = Convert.ToDateTime(backUser.CreateTime);
-                account.RoleId = roleModel.RoleId;
-                account.RoleName = roleModel.RoleName;
-                account.AuthorityList = authorityList;
+                AccountUser account = new AccountUser
+                {
+                    UserId = Convert.ToInt32(backUser.UserId),
+                    UserName = backUser.UserName,
+                    Email = backUser.Email,
+                    Pwd = backUser.Pwd,
+                    CreateTime = Convert.ToDateTime(backUser.CreateTime),
+                    RoleId = roleModel.RoleId,
+                    RoleName = roleModel.RoleName,
+                    AuthorityList = authorityList
+                };
                 SessionHelper.SaveSession(account, Settings.AccountSessionKey);
                 msgModel.MsgStatus = true;
                 msgModel.MsgContent = "登录成功";

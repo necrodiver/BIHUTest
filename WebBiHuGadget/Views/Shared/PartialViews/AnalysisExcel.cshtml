@@ -1,18 +1,50 @@
 ﻿<style type="text/css">
     .month-content-clock {
-        position:fixed;
-        right:100px;
-        top:100px;
-        width: 210px;
+        position: fixed;
+        right: 100px;
+        top: 100px;
+        width: 300px;
         height: 500px;
-        border-radius:5px;
-        background-color:#fff;
+        border-radius: 5px;
+        background-color: #fff;
         border: 1px solid #ccc;
-        float:right;
+        float: right;
     }
-    .kong{
-        width:100px;
-        height:42px;
+
+    .kong {
+        width: 100px;
+        height: 42px;
+    }
+
+    .clock-title {
+        margin-top: 10px;
+        text-align: center;
+        font-size: 16px;
+        padding-bottom: 5px;
+        border-bottom: 1px solid #ccc;
+    }
+
+    .clock-content {
+        margin-left: 10px;
+        margin-right: 10px;
+    }
+
+    .clock-row {
+        margin-top: 5px;
+    }
+
+    .clock-mark {
+        word-wrap: break-word;
+    }
+
+    .clock-top {
+        width: 300px;
+        height: 400px;
+    }
+
+    .clock-bottom {
+        width: 300px;
+        height: 500px;
     }
 </style>
 <div id="vue1">
@@ -90,7 +122,7 @@
                 <div class="left length-top">周日</div>
                 <div class="body-Day">
                     <div v-for="i in userMounthNullCount" class="left length">无</div>
-                    <div v-for="child in userMounths" class="left length clockBtn" v-bind:class="'color-'+child.status" v-on:click="editMask(child)">
+                    <div v-for="child in userMounths" class="left length clockBtn" v-bind:class="'color-'+child.status" v-on:click="selectMask(child)">
                         <div><strong>{{child.day}}</strong></div>
                         <div v-if="!child.UserLeft&&child.status!=2&&child.status!=0" class="padding-center child-0">早:未打卡</div>
                         <div v-if="child.UserLeft" class="padding-center">
@@ -104,7 +136,37 @@
                 </div>
             </div>
             <div class="month-content-clock">
-                121212
+                <div class="clock-top">
+                    <div class="clock-title">备注说明</div>
+                    <div class="clock-content" v-if="addMask">
+                        <div class="field" v-if="addMask.UserLeft">
+                            <div class="column clock-row">早-时间：<div v-if="addMask.UserLeft.putCaredTime">{{addMask.UserLeft.putCaredTime}}</div></div>
+                            <div class="column  clock-row">
+                                <div v-if="addMask.UserLeft.status">打卡状态：{{addMask.UserLeft.status}}</div>
+                                <div v-if="!addMask.UserLeft.status">打卡状态：早:未打卡</div>
+                            </div>
+                            <div class="column  clock-row clock-mark">说明：xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</div>
+                            <hr />
+                        </div>
+
+                        <div class="field" v-if="addMask.UserRight">
+                            <div class="column clock-row">晚-时间：<div v-if="addMask.UserRight.putCaredTime">{{addMask.UserRight.putCaredTime}}</div></div>
+                            <div class="column clock-row">
+                                <div v-if="addMask.UserRight.status">打卡状态：{{addMask.UserRight.status}}</div>
+                                <div v-if="!addMask.UserRight.status">打卡状态：晚:未打卡</div>
+                            </div>
+                            <div class="column  clock-row clock-mark">说明：xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</div>
+                            <div></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="clock-bottom">
+                    <button class="filtered ui button">新增</button>
+                </div>
+                <div></div>
+                <div class="field">
+                    <div class="column"></div>
+                </div>
             </div>
             <div class="clear"></div>
         </div>

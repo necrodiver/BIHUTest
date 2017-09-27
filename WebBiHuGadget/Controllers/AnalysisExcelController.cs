@@ -29,7 +29,7 @@ namespace WebBiHuGadget.Controllers
             }
 
             ViewBag.Show = false;
-            if (Account!=null&&Account.RoleId==1)
+            if (Account != null && Account.RoleId == 1)
             {
                 ViewBag.Show = true;
             }
@@ -45,9 +45,12 @@ namespace WebBiHuGadget.Controllers
         public JsonResult UploadXls(HttpPostedFileBase requestFile)
         {
             Log4NetHelper.Info("上传文件：FileName:" + requestFile.FileName);
-            MessageModel msgModel = new MessageModel();
-            msgModel.MsgTitle = "上传文件";
-            msgModel.MsgStatus = false;
+            MessageModel msgModel = new MessageModel
+            {
+                MsgTitle = "上传文件",
+                MsgStatus = false
+            };
+
             if (requestFile == null || requestFile.FileName == null)
             {
                 msgModel.MsgContent = "上传的文件不存在";
@@ -108,9 +111,12 @@ namespace WebBiHuGadget.Controllers
         public JsonResult GetMonthData(int monthNum)
         {
             Log4NetHelper.Info("获取考勤数据：monthNum:" + monthNum);
-            MessageModel msgModel = new MessageModel();
-            msgModel.MsgTitle = "读取考勤数据";
-            msgModel.MsgStatus = false;
+            MessageModel msgModel = new MessageModel
+            {
+                MsgTitle = "读取考勤数据",
+                MsgStatus = false
+            };
+
             if (monthNum == 0 || monthNum > 12)
             {
                 msgModel.MsgContent = "查询数据错误，请勿直接调用";

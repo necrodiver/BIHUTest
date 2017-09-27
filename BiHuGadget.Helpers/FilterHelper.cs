@@ -45,9 +45,11 @@ namespace BiHuGadget.Helpers
             string controllerName = filterContext.RouteData.Values["controller"].ToString().ToLower();
             string actionName = filterContext.RouteData.Values["action"].ToString().ToLower();
             var account = SessionHelper.GetSession<AccountUser>(Settings.AccountSessionKey);
-            MessageModel msgModel = new MessageModel();
-            msgModel.MsgTitle = "权限问题";
-            msgModel.MsgStatus = false;
+            MessageModel msgModel = new MessageModel
+            {
+                MsgTitle = "权限问题",
+                MsgStatus = false
+            };
             if (account != null && account.AuthorityList != null && account.AuthorityList.Count > 0)
             {
                 var thisAuthorize = account.AuthorityList.Find(a => a.ActionName.ToLower() == actionName && a.ControllerName.ToLower() == controllerName);
