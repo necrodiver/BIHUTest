@@ -11,6 +11,7 @@ namespace WebBiHuGadget
             bundles.Add(new StyleBundle("~/Content/group").Include(
                     "~/Content/semantic.css",
                     "~/Content/iconfont/iconfont.css",
+                    "~/Content/calendars/calendar.css",
                     "~/Content/index.css"));
             bundles.Add(new ScriptBundle("~/bundles/group").Include(
                     "~/Scripts/jquery/jquery-{version}.js",
@@ -18,6 +19,7 @@ namespace WebBiHuGadget
                     "~/Scripts/vue.js",
                     "~/Scripts/semantic.js",
                     "~/Scripts/iconfont.js",
+                    "~/Scripts/calendars/calendar.js",
                     "~/Scripts/ctrl/home.js"));
 
             bundles.Add(new StyleBundle("~/Content/analysis").Include(

@@ -138,22 +138,22 @@
             <div class="month-content-clock">
                 <div class="clock-top">
                     <div class="clock-title">备注说明</div>
-                    <div class="clock-content" v-if="addMask">
-                        <div class="field" v-if="addMask.UserLeft">
-                            <div class="column clock-row">早-时间：<div v-if="addMask.UserLeft.putCaredTime">{{addMask.UserLeft.putCaredTime}}</div></div>
+                    <div class="clock-content" v-if="addMark">
+                        <div class="field" v-if="addMark.UserLeft">
+                            <div class="column clock-row">早-时间：<div v-if="addMark.UserLeft.putCaredTime">{{addMark.UserLeft.putCaredTime}}</div></div>
                             <div class="column  clock-row">
-                                <div v-if="addMask.UserLeft.status">打卡状态：{{addMask.UserLeft.status}}</div>
-                                <div v-if="!addMask.UserLeft.status">打卡状态：早:未打卡</div>
+                                <div v-if="addMark.UserLeft.status">打卡状态：{{addMark.UserLeft.status}}</div>
+                                <div v-if="!addMark.UserLeft.status">打卡状态：早:未打卡</div>
                             </div>
                             <div class="column  clock-row clock-mark">说明：xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</div>
                             <hr />
                         </div>
 
-                        <div class="field" v-if="addMask.UserRight">
-                            <div class="column clock-row">晚-时间：<div v-if="addMask.UserRight.putCaredTime">{{addMask.UserRight.putCaredTime}}</div></div>
+                        <div class="field" v-if="addMark.UserRight">
+                            <div class="column clock-row">晚-时间：<div v-if="addMark.UserRight.putCaredTime">{{addMark.UserRight.putCaredTime}}</div></div>
                             <div class="column clock-row">
-                                <div v-if="addMask.UserRight.status">打卡状态：{{addMask.UserRight.status}}</div>
-                                <div v-if="!addMask.UserRight.status">打卡状态：晚:未打卡</div>
+                                <div v-if="addMark.UserRight.status">打卡状态：{{addMark.UserRight.status}}</div>
+                                <div v-if="!addMark.UserRight.status">打卡状态：晚:未打卡</div>
                             </div>
                             <div class="column  clock-row clock-mark">说明：xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</div>
                             <div></div>
@@ -161,7 +161,7 @@
                     </div>
                 </div>
                 <div class="clock-bottom">
-                    <button class="filtered ui button">新增</button>
+                    <button class="filtered ui button" v-on:click="editMark">新增</button>
                 </div>
                 <div></div>
                 <div class="field">
@@ -200,18 +200,22 @@
                         <div class="item" data-value="3">早回家</div>
                         <div class="item" data-value="4">正常</div>
                         <div class="item" data-value="5">加班</div>
+                        <div class="item" data-value="6">请假</div>
                     </div>
                 </div>
             </div>
             <div class="field">
                 <label>备注说明</label>
-                <textarea rows="2" maxlength="200" placeholder="长度不大于200个字符" id="markReason" v-model="addMask.markReason"></textarea>
+                <textarea rows="2" maxlength="200" placeholder="长度不大于200个字符" id="markReason" v-model="addMark.markReason"></textarea>
             </div>
         </div>
         <div class="actions">
             <div class="ui cancel button">取消 </div>
             <div class="ui positive right labeled icon button">保存 <i class="checkmark icon"></i> </div>
         </div>
+    </div>
+    <div class="ui small modal" id="addMarkBox">
+        <div class="header">添加备注/修改备注</div>
     </div>
 </div>
 

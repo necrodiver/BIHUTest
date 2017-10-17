@@ -313,6 +313,10 @@
     <Content Include="Content\components\visibility.min.js" />
     <Content Include="Content\components\visit.js" />
     <Content Include="Content\components\visit.min.js" />
+    <Content Include="Content\calendars\calendar.css" />
+    <Content Include="Scripts\calendars\calendar.js" />
+    <Content Include="Content\calendars\calendar.min.css" />
+    <Content Include="Scripts\calendars\calendar.min.js" />
     <Content Include="Scripts\components\accordion.js" />
     <Content Include="Scripts\components\accordion.min.js" />
     <Content Include="Scripts\components\api.js" />

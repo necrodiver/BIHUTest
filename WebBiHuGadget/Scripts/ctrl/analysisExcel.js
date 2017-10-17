@@ -6,7 +6,11 @@
         userMounthNullCount: 0,
         userMounths: [],
         selectMonth: "-1",
-        addMask: {
+        addMark: {
+            selectTime: "",//选择已有时间
+            newTime: "",//自定义时间
+            markExplain:"",//说明
+            markState:""//打卡状态
         }
     },
     components: {//组件
@@ -119,20 +123,20 @@
                 //所有的走完之后调用的数据
             });
         },
-        editMask: function (val) {
+        editMark: function (val) {
             var _self = this;
             var asas = val;
             $('#editMark')
                 .modal({
                     blurring: true,
                     onApprove: function () {
-                        _self.saveMask();
+                        _self.saveMark();
                     }
                 })
                 .modal('show');
         },
-        saveMask: function () {
-            //addMask: {
+        saveMark: function () {
+            //addMark: {
             //    year: '',
             //        month: '',
             //            day: '',
@@ -147,7 +151,10 @@
             });
         },
         selectMask: function (val) {
-            this.addMask = val;
+            this.addMark = val;
+        },
+        showAddMarkBox: function (val) {
+             
         }
 
     }
