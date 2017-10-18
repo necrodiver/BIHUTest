@@ -6,6 +6,7 @@ using System.Web;
 using System.Web.Mvc;
 using BiHuGadget.Helpers;
 using BiHuGadget.Models;
+using WebBiHuGadget.Models;
 
 namespace WebBiHuGadget.Controllers
 {
@@ -161,6 +162,39 @@ namespace WebBiHuGadget.Controllers
             msgModel.MsgTitle = monthNum.ToString();
             msgModel.MsgContent = Json(userList).Data;
             return Json(msgModel, JsonRequestBehavior.AllowGet);
+        }
+        [HttpPost]
+        [ModelValidationMVCFilter]
+        [UserAuthorize]
+        public JsonResult EditMarkStatus(View_EditMark request)
+        {
+            MessageModel msg = new MessageModel
+            {
+                MsgTitle = "操作打卡备注说明",
+                MsgStatus = true
+            };
+            try
+            {
+
+            }
+            catch (Exception ex)
+            {
+                Log4NetHelper.Error("操作打卡备注说明："+ex.ToString());
+                throw;
+            }
+            switch (request.MarkIUD)
+            {
+                case MarkIUD.Delete:
+                    break;
+                case MarkIUD.Insert:
+                    InsertMarkContent();
+                    break;
+                case MarkIUD.Update:
+                    break;
+                default:
+                    break;
+            }
+            return null;
         }
     }
 }

@@ -168,6 +168,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\View_EditMark.cs" />
     <Compile Include="Models\View_UserModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -410,6 +411,10 @@
     <Content Include="Scripts\jquery\jquery-3.1.1.min.js" />
     <Content Include="Scripts\jquery\jquery-3.1.1.slim.js" />
     <Content Include="Scripts\jquery\jquery-3.1.1.slim.min.js" />
+    <Content Include="Scripts\moment\moment-with-locales.js" />
+    <Content Include="Scripts\moment\moment-with-locales.min.js" />
+    <Content Include="Scripts\moment\moment.js" />
+    <Content Include="Scripts\moment\moment.min.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\semantic.js" />

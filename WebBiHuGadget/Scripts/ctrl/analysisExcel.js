@@ -1,4 +1,28 @@
-﻿var vm = new Vue({
+﻿function init() {
+    $('#editMark')
+        .modal({
+            blurring: true,
+            onApprove: function () {
+                _self.saveMark();
+            }
+        })
+        .modal('hide');
+    $("#modelBox")
+        .modal({
+            blurring: false,
+            onApprove: function () {
+                _self.saveMark();
+            }
+        }).modal("hide");
+    $("#selectMonth").bind('change', function () {
+        vm.selectMonth = $(this).val();
+    });
+    $("#selectMonth").bind('change', function () {
+        vm.selectMonth = $(this).val();
+    });
+}
+
+var vm = new Vue({
     el: '#vue1',
     data: {
         userPunchCards: [],
@@ -9,8 +33,9 @@
         addMark: {
             selectTime: "",//选择已有时间
             newTime: "",//自定义时间
-            markExplain:"",//说明
-            markState:""//打卡状态
+            markExplain: "",//说明
+            markState: "",//打卡状态
+            dayTime: ""
         }
     },
     components: {//组件
@@ -28,12 +53,7 @@
         }
     },
     mounted: function () {
-        $("#selectMonth").bind('change', function () {
-            vm.selectMonth = $(this).val();
-        });
-        $("#selectMonth").bind('change', function () {
-            vm.selectMonth = $(this).val();
-        });
+        init();
     },
     methods: {
         getData: function () {
@@ -126,14 +146,12 @@
         editMark: function (val) {
             var _self = this;
             var asas = val;
-            $('#editMark')
-                .modal({
-                    blurring: true,
-                    onApprove: function () {
-                        _self.saveMark();
-                    }
-                })
-                .modal('show');
+            if (!this.addMark.UserLeft || !this.addMark.UserLeft.putCaredTime || this.addMark.UserLeft.putCaredTime.length < 8) {
+                return;
+            }
+            this.addMark.dayTime = moment(this.addMark.UserLeft.putCaredTime).format('YYYY-MM-DD');
+            $('#addMark-dayTime').text(this.addMark.dayTime);
+            $('#editMark').modal('show');
         },
         saveMark: function () {
             //addMark: {
@@ -153,8 +171,19 @@
         selectMask: function (val) {
             this.addMark = val;
         },
-        showAddMarkBox: function (val) {
-             
+        editMarkContent: function (val, typeId) {
+            switch (typeId) {
+                case 0:
+                    break;
+                case 1:
+                    break;
+                case 2:
+                    break;
+                default:
+
+                    return;
+            }
+            $("#modelBox").modal("show");
         }
 
     }

@@ -38,7 +38,7 @@ namespace BiHuGadget.Helpers
     /// <summary>
     /// 权限过滤器
     /// </summary>
-    public class UserAuthorize : AuthorizeAttribute
+    public class UserAuthorizeAttribute : AuthorizeAttribute
     {
         public override void OnAuthorization(AuthorizationContext filterContext)
         {

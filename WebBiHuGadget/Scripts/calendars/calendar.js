@@ -1023,24 +1023,24 @@
       hideOnScroll: false
     },
 
-    //text: {
-    //  days: ['S', 'M', 'T', 'W', 'T', 'F', 'S'],
-    //  months: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
-    //  monthsShort: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-    //  today: 'Today',
-    //  now: 'Now',
-    //  am: 'AM',
-    //  pm: 'PM'
-    //},
     text: {
-        days: ['日', '一', '二', '三', '四', '五', '六'],
-        months: ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月'],
-        monthsShort: ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月'],
-        today: '今天',
-        now: '当前',
-        am: '上午',
-        pm: '下午'
+      days: ['S', 'M', 'T', 'W', 'T', 'F', 'S'],
+      months: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+      monthsShort: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+      today: 'Today',
+      now: 'Now',
+      am: 'AM',
+      pm: 'PM'
     },
+    //text: {
+    //    days: ['日', '一', '二', '三', '四', '五', '六'],
+    //    months: ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月'],
+    //    monthsShort: ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月'],
+    //    today: '今天',
+    //    now: '当前',
+    //    am: '上午',
+    //    pm: '下午'
+    //},
 
     formatter: {
       header: function (date, mode, settings) {

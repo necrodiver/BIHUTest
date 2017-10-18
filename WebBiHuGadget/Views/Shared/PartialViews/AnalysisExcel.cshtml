@@ -47,7 +47,7 @@
         height: 500px;
     }
 </style>
-<div id="vue1">
+<div id="vue1" v-cloak>
     @{ if (ViewBag.Show)
         {
             <div class="ui segment">
@@ -88,6 +88,9 @@
         <div class="left22">
             <br />
             <div>
+                <div class="field">
+                    <div></div>
+                </div>
                 <div class="ui selection dropdown medium Small">
                     <input type="hidden" name="gender" id="selectMonth" />
                     <i class="dropdown icon"></i>
@@ -140,7 +143,20 @@
                     <div class="clock-title">备注说明</div>
                     <div class="clock-content" v-if="addMark">
                         <div class="field" v-if="addMark.UserLeft">
-                            <div class="column clock-row">早-时间：<div v-if="addMark.UserLeft.putCaredTime">{{addMark.UserLeft.putCaredTime}}</div></div>
+                            <div class="column clock-row">
+                                <div class="left floated">
+                                    早-时间：
+                                </div>
+                                <div class="right floated">
+                                    <button class="ui icon button mini" id="mark-m-edit" v-on:click="editMarkContent(addMark,1)">
+                                        <i class="edit icon"></i>
+                                    </button>
+                                    <button class="ui icon button mini" id="mark-m-delete" v-on:click="editMarkContent(addMark,0)">
+                                        <i class="remove icon"></i>
+                                    </button>
+                                </div>
+                                <div v-if="addMark.UserLeft.putCaredTime">{{addMark.UserLeft.putCaredTime}}</div>
+                            </div>
                             <div class="column  clock-row">
                                 <div v-if="addMark.UserLeft.status">打卡状态：{{addMark.UserLeft.status}}</div>
                                 <div v-if="!addMark.UserLeft.status">打卡状态：早:未打卡</div>
@@ -150,7 +166,20 @@
                         </div>
 
                         <div class="field" v-if="addMark.UserRight">
-                            <div class="column clock-row">晚-时间：<div v-if="addMark.UserRight.putCaredTime">{{addMark.UserRight.putCaredTime}}</div></div>
+                            <div class="column clock-row">
+                                <div class="left floated">
+                                    晚-时间：
+                                </div>
+                                <div class="right floated">
+                                    <button class="ui icon button mini" id="mark-a-edit" v-on:click="editMarkContent(addMark,1)">
+                                        <i class="edit icon"></i>
+                                    </button>
+                                    <button class="ui icon button mini" id="mark-a-delete" v-on:click="editMarkContent(addMark,0)">
+                                        <i class="remove icon"></i>
+                                    </button>
+                                </div>
+                                <div v-if="addMark.UserRight.putCaredTime">{{addMark.UserRight.putCaredTime}}</div>
+                            </div>
                             <div class="column clock-row">
                                 <div v-if="addMark.UserRight.status">打卡状态：{{addMark.UserRight.status}}</div>
                                 <div v-if="!addMark.UserRight.status">打卡状态：晚:未打卡</div>
@@ -177,6 +206,7 @@
             备注说明
         </div>
         <div class="content ui form">
+            <div class="field"><p id="addMark-dayTime"></p></div>
             <div class="field">
                 <div class="ui selection dropdown medium Small">
                     <input type="hidden" name="gender" id="selectTime" />
@@ -214,8 +244,11 @@
             <div class="ui positive right labeled icon button">保存 <i class="checkmark icon"></i> </div>
         </div>
     </div>
-    <div class="ui small modal" id="addMarkBox">
-        <div class="header">添加备注/修改备注</div>
+    <div class="ui mini modal" id="modelBox">
+        <div class="header">XXXXXXXX</div>
+        <div class="ui content">
+            XXXXXXXXXXXXXXXXXX
+        </div>
     </div>
 </div>
 

@@ -20,6 +20,7 @@ namespace WebBiHuGadget
                     "~/Scripts/semantic.js",
                     "~/Scripts/iconfont.js",
                     "~/Scripts/calendars/calendar.js",
+                    "~/Scripts/moment/moment.js",
                     "~/Scripts/ctrl/home.js"));
 
             bundles.Add(new StyleBundle("~/Content/analysis").Include(
