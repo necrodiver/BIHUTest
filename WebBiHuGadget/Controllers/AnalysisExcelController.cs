@@ -179,8 +179,8 @@ namespace WebBiHuGadget.Controllers
             {
                 AttendanceId = request.MarkId,
                 ClockYear = request.DayTime.Year,
-                ClockTime = request.DayTime,
-                UDayStateId = (int)request.MarkState,
+                ClockTime = request.DayTime.ToString("yyyy-MM-dd"),
+                UDayStateId = request.MarkState,
                 TimeSlot = request.TimeSlot,
                 ClockContent = request.MarkReason,
                 UserId = request.UserId
@@ -309,6 +309,7 @@ namespace WebBiHuGadget.Controllers
                 MsgTitle = "获取打卡备注",
                 MsgStatus = false
             };
+
             try
             {
                 AttendanceSearchModel asModel = new AttendanceSearchModel
@@ -328,7 +329,6 @@ namespace WebBiHuGadget.Controllers
                     msg.MsgStatus = true;
                     msg.MsgContent = adList;
                 }
-
             }
             catch (Exception ex)
             {

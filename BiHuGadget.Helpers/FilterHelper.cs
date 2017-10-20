@@ -45,6 +45,8 @@ namespace BiHuGadget.Helpers
             string controllerName = filterContext.RouteData.Values["controller"].ToString().ToLower();
             string actionName = filterContext.RouteData.Values["action"].ToString().ToLower();
             var account = SessionHelper.GetSession<AccountUser>(Settings.AccountSessionKey);
+            if (!string.IsNullOrWhiteSpace(controllerName) && controllerName.Equals("home"))
+                return;
             MessageModel msgModel = new MessageModel
             {
                 MsgTitle = "权限问题",

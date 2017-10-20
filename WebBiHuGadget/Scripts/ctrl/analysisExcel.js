@@ -27,6 +27,9 @@ function init(_self) {
     $("#selectMarkState").bind('change', function () {
         _self.addMarkData.markState = $(this).val();
     });
+    _self.markStateList.forEach(function (item, i) {
+        $("#markStatusMenu").append("<div class='item' data-value=" + i + ">" + item + "</div>");
+    });
 }
 
 var vm = new Vue({
@@ -60,6 +63,8 @@ var vm = new Vue({
             //userId: -1,
             userName: ''
         },
+        showSingleDayRemark: [],//展示单天的打卡记录
+        markStateList: ["母鸡呀", "迟到", "早退", "早回家", "正常", "加班", "请假", "忘打卡"],
         markDatas: []
     },
     components: {//组件
@@ -114,9 +119,9 @@ var vm = new Vue({
             if (temporary != undefined && temporary != null && temporary['day_1'].day == 1) {
                 this.userMounthNullCount = temporary['day_1'].dayOfWeek - 1;
                 this.userMounths = temporary;
+                this.selectMarkData.userName = this.userName;
+                this.getUserMarkData();
             }
-            this.selectMarkData.userName = this.userName;
-            this.getUserMarkData();
         },
         selectMonthData: function () {
             var thisMonthNum = parseInt(this.selectMonth);
@@ -201,20 +206,30 @@ var vm = new Vue({
                 }
                 return alert(res.MsgContent);
             });
+            req.always(function () {
+                getUserMarkData();
+            });
         },
         selectMask: function (val) {
             this.addMarkData = $.extend({}, this.addMarkInit);
+            var dayTimeTP = "";
             if (val.day && val.day > 0 && val.day < 32) {
                 if (this.markDatas && this.markDatas.length > 0) {
-                    var nowMarkData = this.markDatas.filters(function (item) {
+                    var nowMarkData = this.markDatas.filter(function (item) {
                         return item.day == val.day;
                     });
                     if (nowMarkData.length == 1 && nowMarkData[0].day)
                         this.addMarkData = nowMarkData[0];
                     else
-                        this.addMarkData.dayTime = moment(this.selectMarkData.year + '-' + this.selectMonth + '-' + val.day).format('YYYY-MM-DD');
+                        dayTimeTP = moment(this.selectMarkData.year + '-' + this.selectMonth + '-' + val.day).format('YYYY-MM-DD');
                 } else {
-                    this.addMarkData.dayTime = moment(this.selectMarkData.year + '-' + this.selectMonth + '-' + val.day).format('YYYY-MM-DD');
+                    dayTimeTP = moment(this.selectMarkData.year + '-' + this.selectMonth + '-' + val.day).format('YYYY-MM-DD');
+                }
+                this.addMarkData.dayTime = dayTimeTP;
+                if (this.markDatas != [] && this.markDatas.length > 0) {
+                    this.showSingleDayRemark = this.markDatas.filter(function (item) {
+                        return item.ClockTime == dayTimeTP;
+                    });
                 }
             }
         },

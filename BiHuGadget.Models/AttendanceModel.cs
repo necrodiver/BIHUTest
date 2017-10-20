@@ -20,7 +20,7 @@ namespace BiHuGadget.Models
         /// <summary>
         /// 打卡时间
         /// </summary>
-        public DateTime ClockTime { get; set; }
+        public string ClockTime { get; set; }
         /// <summary>
         /// 时间段
         /// 0：整天,1：上午,2：下午

@@ -142,12 +142,15 @@
                     </div>
                 </div>
             </div>
-            <div class="month-content-clock">
+            <div class="month-content-clock" v-if="showSingleDayRemark">
                 <div class="clock-top">
                     <div class="clock-title">备注说明</div>
                     <div class="field column padding-center" v-if="addMarkData.dayTime"><strong>定位日期：{{addMarkData.dayTime}}</strong></div>
                     <div class="clock-content" v-if="addMarkData">
                         <div class="field">
+                            <div v-for="item in showSingleDayRemark">
+                                <div></div>
+                            </div>
                             @*<div class="column clock-row">
                                 <div class="left floated">
                                     早-时间：
@@ -228,14 +231,7 @@
                     <input type="hidden" name="gender" id="selectMarkState" />
                     <i class="dropdown icon"></i>
                     <div class="default text">记录类别</div>
-                    <div class="menu">
-                        <div class="item" data-value="1">迟到</div>
-                        <div class="item" data-value="2">早退</div>
-                        <div class="item" data-value="3">早回家</div>
-                        <div class="item" data-value="4">正常</div>
-                        <div class="item" data-value="5">加班</div>
-                        <div class="item" data-value="6">请假</div>
-                        <div class="item" data-value="7">忘打卡</div>
+                    <div class="menu" id="markStatusMenu">
                     </div>
                 </div>
             </div>

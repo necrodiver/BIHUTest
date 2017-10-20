@@ -81,7 +81,6 @@ namespace WebBiHuGadget.Controllers
         }
 
         [HttpGet]
-        [UserAuthorize]
         public JsonResult GetSingleUser(int userId)
         {
             var userModel = userBll.GetSingleUser(new UserModel { UserId = userId });
