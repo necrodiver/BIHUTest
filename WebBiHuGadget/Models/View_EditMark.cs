@@ -1,39 +1,48 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using BiHuGadget.Helpers;
+using System;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Web;
 
 namespace WebBiHuGadget.Models
 {
     public class View_EditMark
     {
         /// <summary>
+        /// 打卡备注Id
+        /// </summary>
+        [DisplayName("打卡备注Id")]
+        [NotMinus(ErrorMessage = "{0}数据无效")]
+        public int? MarkId { get; set; }
+        /// <summary>
         /// 操作类型:增,改,删
         /// </summary>
         [DisplayName("操作类型")]
         [Required(ErrorMessage = "参数{0}无效")]
-        public MarkIUD MarkIUD { get; set; }
+        public MarkIUD? MarkIUD { get; set; }
+
         [DisplayName("用户Id")]
-        [Required(ErrorMessage = "{0}数据不规范")]
-        public string UserId { get; set; }
+        [NotMinus(ErrorMessage = "{0}数据无效")]
+        public int? UserId { get; set; }
+
         /// <summary>
         /// 日期
         /// </summary>
         [DisplayName("记录日期")]
         [Required(AllowEmptyStrings = false, ErrorMessage = "{0}不能为空")]
-        public string DayTime { get; set; }
+        public DateTime DayTime { get; set; }
         /// <summary>
         /// 时间段
         /// </summary>
-        [Required(ErrorMessage = "时间段不能为空")]
+        [DisplayName("时间段")]
+        [Required(ErrorMessage = "{0}不能为空")]
+        [NotMinus(ErrorMessage = "{0}数据无效")]
         public int TimeSlot { get; set; }
         /// <summary>
         /// 打卡状态
         /// </summary>
         [DisplayName("打卡状态")]
         [Required(ErrorMessage = "{0}不能为空")]
+        [NotMinus(ErrorMessage = "{0}数据无效")]
         public int MarkState { get; set; }
         /// <summary>
         /// 备注说明
@@ -52,4 +61,5 @@ namespace WebBiHuGadget.Models
         Insert = 1,
         Update = 2
     }
+    
 }

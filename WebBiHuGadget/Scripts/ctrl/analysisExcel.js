@@ -1,4 +1,5 @@
-﻿function init() {
+﻿var __RequestVerificationToken = $('input[name="__RequestVerificationToken"]').val();
+function init(_self) {
     $('#editMark')
         .modal({
             blurring: true,
@@ -15,10 +16,16 @@
             }
         }).modal("hide");
     $("#selectMonth").bind('change', function () {
-        vm.selectMonth = $(this).val();
+        _self.selectMonth = $(this).val();
     });
     $("#selectMonth").bind('change', function () {
-        vm.selectMonth = $(this).val();
+        _self.selectMonth = $(this).val();
+    });
+    $("#selectTimeSlot").bind('change', function () {
+        _self.addMarkData.timeSlot = $(this).val();
+    });
+    $("#selectMarkState").bind('change', function () {
+        _self.addMarkData.markState = $(this).val();
     });
 }
 
@@ -30,13 +37,30 @@ var vm = new Vue({
         userMounthNullCount: 0,
         userMounths: [],
         selectMonth: "-1",
-        addMark: {
-            selectTime: "",//选择已有时间
-            newTime: "",//自定义时间
-            markExplain: "",//说明
-            markState: "",//打卡状态
-            dayTime: ""
-        }
+        addMarkData: {
+            markId: -1,//打卡备注Id
+            markIUD: -1,//操作类型:增,改,删
+            userId: -1,//用户Id
+            dayTime: '', //记录日期
+            timeSlot: -1,//时间段:全天,上午,下午
+            markState: -1,//打卡状态
+            markReason: ''//备注说明
+        },
+        addMarkInit: {
+            markId: -1,//打卡备注Id
+            markIUD: -1,//操作类型:增,改,删
+            userId: -1,//用户Id
+            dayTime: '', //记录日期
+            timeSlot: -1,//时间段:全天,上午,下午
+            markState: -1,//打卡状态
+            markReason: ''//备注说明
+        },
+        selectMarkData: {
+            year: 2017,
+            //userId: -1,
+            userName: ''
+        },
+        markDatas: []
     },
     components: {//组件
 
@@ -53,7 +77,7 @@ var vm = new Vue({
         }
     },
     mounted: function () {
-        init();
+        init(this);
     },
     methods: {
         getData: function () {
@@ -63,7 +87,7 @@ var vm = new Vue({
             var fd = new FormData();
             fd.append("requestFile", $("#xlsSelect")[0].files[0]);
             $.ajax({
-                url: "/AnalysisExcel/UploadXls",
+                url: bhConfig.UploadXls,
                 type: "POST",
                 processData: false,
                 contentType: false,
@@ -91,6 +115,8 @@ var vm = new Vue({
                 this.userMounthNullCount = temporary['day_1'].dayOfWeek - 1;
                 this.userMounths = temporary;
             }
+            this.selectMarkData.userName = this.userName;
+            this.getUserMarkData();
         },
         selectMonthData: function () {
             var thisMonthNum = parseInt(this.selectMonth);
@@ -110,7 +136,7 @@ var vm = new Vue({
             }
             var req = $.ajax({
                 type: 'GET',
-                url: '/AnalysisExcel/GetMonthData',
+                url: bhConfig.GetMonthData,
                 data: { monthNum: thisMonthNum },
                 dataType: "JSON",
                 cache: false,
@@ -130,14 +156,14 @@ var vm = new Vue({
                 _self.selectUserName();
             });
             req.fail(function (jqXHR, textStatus, error) {
-                if (loadingName) {
-                    if (textStatus == "timeout") {
-                        return alert("请求超时！");
-                    }
-                    else if (textStatus == "error") {
-                        return alert("网络连接超时！");
-                    }
-                }
+                //if (loadingName) {
+                //    if (textStatus == "timeout") {
+                //        return alert("请求超时！");
+                //    }
+                //    else if (textStatus == "error") {
+                //        return alert("网络连接超时！");
+                //    }
+                //}
             });
             req.always(function () {
                 //所有的走完之后调用的数据
@@ -145,46 +171,71 @@ var vm = new Vue({
         },
         editMark: function (val) {
             var _self = this;
-            var asas = val;
-            if (!this.addMark.UserLeft || !this.addMark.UserLeft.putCaredTime || this.addMark.UserLeft.putCaredTime.length < 8) {
+            if (val)
+                _self.addMarkData.markIUD = val;
+            if (!this.addMarkData.dayTime) {
                 return;
             }
-            this.addMark.dayTime = moment(this.addMark.UserLeft.putCaredTime).format('YYYY-MM-DD');
-            $('#addMark-dayTime').text(this.addMark.dayTime);
+            $('#addMark-dayTime').text(this.addMarkData.dayTime);
             $('#editMark').modal('show');
         },
         saveMark: function () {
-            //addMark: {
-            //    year: '',
-            //        month: '',
-            //            day: '',
-            //                selectSort: '',
-            //                    selectTime: '',
-            //                        markReason: ''
-            //}
-        },
-        initClockPopup: function () {
-            $('.clockBtn').popup({
-                popup: '#clockPopup'
+            var dt = $.extend({}, this.addMarkData);
+            dt.__RequestVerificationToken = __RequestVerificationToken;
+            if (dt.markId == -1 || dt.markIUD == -1 || dt.timeSlot == -1 || dt.markState == -1) {
+                dt.markId = null;
+            }
+            if (dt.userId == -1) {
+                dt.userId = null;
+            }
+            var req = $.ajax({
+                type: 'POST',
+                url: bhConfig.EditMarkStatus,
+                data: dt,
+                dataType: "JSON",
+                cache: false
+            });
+            req.done(function (res) {
+                if (res == null || res == "") {
+                    return alert("操作失败");
+                }
+                return alert(res.MsgContent);
             });
         },
         selectMask: function (val) {
-            this.addMark = val;
-        },
-        editMarkContent: function (val, typeId) {
-            switch (typeId) {
-                case 0:
-                    break;
-                case 1:
-                    break;
-                case 2:
-                    break;
-                default:
-
-                    return;
+            this.addMarkData = $.extend({}, this.addMarkInit);
+            if (val.day && val.day > 0 && val.day < 32) {
+                if (this.markDatas && this.markDatas.length > 0) {
+                    var nowMarkData = this.markDatas.filters(function (item) {
+                        return item.day == val.day;
+                    });
+                    if (nowMarkData.length == 1 && nowMarkData[0].day)
+                        this.addMarkData = nowMarkData[0];
+                    else
+                        this.addMarkData.dayTime = moment(this.selectMarkData.year + '-' + this.selectMonth + '-' + val.day).format('YYYY-MM-DD');
+                } else {
+                    this.addMarkData.dayTime = moment(this.selectMarkData.year + '-' + this.selectMonth + '-' + val.day).format('YYYY-MM-DD');
+                }
             }
-            $("#modelBox").modal("show");
+        },
+        getUserMarkData: function () {
+            var _self = this;
+            var req = $.ajax({
+                type: 'POST',
+                url: bhConfig.GetUserMarkData,
+                data: this.selectMarkData,
+                dataType: 'JSON',
+                cache: false
+            });
+            req.done(function (res) {
+                if (res == null || res == "") {
+                    return alert("获取用户列表失败");
+                }
+                if (res.MsgStatus)
+                    _self.markDatas = res.MsgContent;
+                else
+                    alert(res.MsgContent);
+            });
         }
-
     }
 });

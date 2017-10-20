@@ -15,6 +15,7 @@ namespace WebBiHuGadget
                     "~/Content/index.css"));
             bundles.Add(new ScriptBundle("~/bundles/group").Include(
                     "~/Scripts/jquery/jquery-{version}.js",
+                    "~/Scripts/ctrl/bhConfig.js",
                     "~/Scripts/ctrl/helper.js",
                     "~/Scripts/vue.js",
                     "~/Scripts/semantic.js",

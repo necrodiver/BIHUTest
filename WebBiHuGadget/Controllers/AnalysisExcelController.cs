@@ -7,11 +7,13 @@ using System.Web.Mvc;
 using BiHuGadget.Helpers;
 using BiHuGadget.Models;
 using WebBiHuGadget.Models;
+using BiHuGadget.Bll;
 
 namespace WebBiHuGadget.Controllers
 {
     public class AnalysisExcelController : BaseController
     {
+        private Attendance_Bll attendanceBll = new Attendance_Bll();
         string BasePath = AppDomain.CurrentDomain.BaseDirectory + "XLS\\";
         string fileType = ".xls";
         public AnalysisExcelController()
@@ -163,38 +165,178 @@ namespace WebBiHuGadget.Controllers
             msgModel.MsgContent = Json(userList).Data;
             return Json(msgModel, JsonRequestBehavior.AllowGet);
         }
+        #region 增删改打卡记录
         [HttpPost]
         [ModelValidationMVCFilter]
-        [UserAuthorize]
         public JsonResult EditMarkStatus(View_EditMark request)
         {
             MessageModel msg = new MessageModel
             {
                 MsgTitle = "操作打卡备注说明",
-                MsgStatus = true
+                MsgStatus = false
+            };
+            AttendanceModel attendanceModel = new AttendanceModel
+            {
+                AttendanceId = request.MarkId,
+                ClockYear = request.DayTime.Year,
+                ClockTime = request.DayTime,
+                UDayStateId = (int)request.MarkState,
+                TimeSlot = request.TimeSlot,
+                ClockContent = request.MarkReason,
+                UserId = request.UserId
+            };
+            switch (request.MarkIUD)
+            {
+                case MarkIUD.Delete:
+                    if (request.UserId <= 0 || request.UserId != this.Account.UserId)
+                    {
+                        msg.MsgContent = "当前操作的用户打卡备注与登录用户不同，请使用正确的账号登录";
+                        return Json(msg, JsonRequestBehavior.AllowGet);
+                    }
+                    if (attendanceModel.AttendanceId <= 0)
+                    {
+                        msg.MsgContent = "当前打卡备注为空！";
+                        msg.MsgStatus = false;
+                        return Json(msg, JsonRequestBehavior.AllowGet);
+                    }
+                    return DeleteMarkContent(attendanceModel.AttendanceId, msg);
+                case MarkIUD.Insert:
+                    attendanceModel.UserId = this.Account.UserId;
+                    return AddMarkContent(attendanceModel, msg);
+                case MarkIUD.Update:
+                    if (request.UserId <= 0 || request.UserId != this.Account.UserId)
+                    {
+                        msg.MsgContent = "当前操作的用户打卡备注与登录用户不同，请使用正确的账号登录";
+                        return Json(msg, JsonRequestBehavior.AllowGet);
+                    }
+                    return EditMarkContent(attendanceModel, msg);
+            }
+            msg.MsgContent = "未知错误!请检查错误日志";
+            msg.MsgStatus = false;
+            return Json(msg, JsonRequestBehavior.AllowGet);
+        }
+        //添加打卡记录
+        private JsonResult AddMarkContent(AttendanceModel aModel, MessageModel msg)
+        {
+            try
+            {
+                if (attendanceBll.AddAttendance(aModel))
+                {
+                    msg.MsgContent = "插入打卡备注说明成功";
+                    msg.MsgStatus = true;
+                }
+                else
+                {
+                    msg.MsgContent = "插入打卡备注说明失败，你可以重新插入，或请检查日志";
+                    msg.MsgStatus = false;
+                }
+                return Json(msg, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                Log4NetHelper.Error("插入打卡备注说明：" + ex.ToString());
+                msg.MsgContent = "插入失败，你可以重新插入，或请检查日志";
+                return Json(msg, JsonRequestBehavior.AllowGet);
+            }
+        }
+        //修改打卡记录
+        private JsonResult EditMarkContent(AttendanceModel aModel, MessageModel msg)
+        {
+            try
+            {
+                if (attendanceBll.EditAttendance(aModel))
+                {
+                    msg.MsgContent = "修改打卡备注说明成功";
+                    msg.MsgStatus = true;
+                }
+                else
+                {
+                    msg.MsgContent = "修改打卡备注说明失败，你可以重新提交，或请检查日志";
+                    msg.MsgStatus = false;
+                }
+                return Json(msg, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                Log4NetHelper.Error("修改打卡备注说明：" + ex.ToString());
+                msg.MsgContent = "插入失败，你可以重新插入，或请检查日志";
+                return Json(msg, JsonRequestBehavior.AllowGet);
+            }
+        }
+        //删除打卡记录
+        private JsonResult DeleteMarkContent(int? attendanceId, MessageModel msg)
+        {
+            if (attendanceId == null)
+            {
+                Log4NetHelper.Info("EditMarkContent操作获取的attendanceId值为空");
+                msg.MsgContent = "要删除的条件不存在，请重新提交或检查日志";
+                msg.MsgStatus = false;
+                return Json(msg, JsonRequestBehavior.AllowGet);
+            }
+            try
+            {
+                if (attendanceBll.DeleteAttendance(Convert.ToInt32(attendanceId)))
+                {
+                    msg.MsgContent = "删除打卡备注说明成功";
+                    msg.MsgStatus = true;
+                }
+                else
+                {
+                    msg.MsgContent = "删除打卡备注说明失败，你可以重新提交，或请检查日志";
+                    msg.MsgStatus = false;
+                }
+                return Json(msg, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                Log4NetHelper.Error("删除打卡备注说明：" + ex.ToString());
+                msg.MsgContent = "删除失败，你可以重新删除，或请检查日志";
+                return Json(msg, JsonRequestBehavior.AllowGet);
+            }
+        }
+        #endregion
+        /// <summary>
+        /// 获取单个用户的打卡备注说明
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [ModelValidationMVCFilter]
+        public JsonResult GetUserMarkData(View_MonthInUserMark request)
+        {
+            MessageModel msg = new MessageModel
+            {
+                MsgTitle = "获取打卡备注",
+                MsgStatus = false
             };
             try
             {
+                AttendanceSearchModel asModel = new AttendanceSearchModel
+                {
+                    UserId = request.UserId,
+                    UserName = request.UserName,
+                    ClockYear = request.Year
+                };
+                List<AttendanceModel> adList = attendanceBll.GetUserMarks(asModel);
+                if (adList == null || adList.Count == 0)
+                {
+                    msg.MsgStatus = false;
+                    msg.MsgContent = "查询无记录";
+                }
+                else
+                {
+                    msg.MsgStatus = true;
+                    msg.MsgContent = adList;
+                }
 
             }
             catch (Exception ex)
             {
-                Log4NetHelper.Error("操作打卡备注说明："+ex.ToString());
-                throw;
+                Log4NetHelper.Error("获取用户打卡备注：" + ex.ToString());
+                msg.MsgStatus = false;
+                msg.MsgContent = "获取用户打卡备注集合失败，请重新尝试或者查看日志记录";
             }
-            switch (request.MarkIUD)
-            {
-                case MarkIUD.Delete:
-                    break;
-                case MarkIUD.Insert:
-                    InsertMarkContent();
-                    break;
-                case MarkIUD.Update:
-                    break;
-                default:
-                    break;
-            }
-            return null;
+            return Json(msg, JsonRequestBehavior.AllowGet);
         }
     }
 }

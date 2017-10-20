@@ -27,7 +27,7 @@ namespace BiHuGadget.Helpers
                     .First();
                 filterContext.Result = new JsonResult()
                 {
-                    Data = new { status = -1, msg = errorMessage }
+                    Data = new { MsgStatus = false, MsgContent = errorMessage }
                 };
                 return;
             }

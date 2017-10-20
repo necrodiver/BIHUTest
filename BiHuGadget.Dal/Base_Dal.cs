@@ -14,7 +14,7 @@ namespace BiHuGadget.Dal
     public class Base_Dal
     {
         /// <summary>
-        /// 操作数据，增删改，适用于自定义操作
+        /// 查询单条数据，如果有
         /// </summary>
         /// <param name="sql">操作语句</param>
         /// <param name="param">附加操作的内容</param>
@@ -44,13 +44,46 @@ namespace BiHuGadget.Dal
         /// <param name="param">附带条件内容</param>
         protected List<T> GetList<T>(string sql, DynamicParameters param) where T : class, new()
         {
-            List<T> list = new List<T>();
-            using (IDbConnection conn = GetOpenConnection())
+            try
             {
-                IEnumerable<T> models = conn.Query<T>(sql, param);
-                list = models as List<T>;
+                List<T> list = new List<T>();
+                using (IDbConnection conn = GetOpenConnection())
+                {
+                    IEnumerable<T> models = conn.Query<T>(sql, param);
+                    list = models as List<T>;
+                }
+                return list;
             }
-            return list;
+            catch (Exception ex)
+            {
+                Log4NetHelper.Error("查询GetList：" + ex.ToString());
+            }
+            return null;
+
+        }
+
+        /// <summary>
+        /// 增删改
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="sql"></param>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        protected bool Operate<T>(string sql, T ob)
+        {
+            try
+            {
+                using (IDbConnection conn = GetOpenConnection())
+                {
+                    return conn.Execute(sql, ob) >= 0;
+                }
+            }
+            catch (Exception ex)
+            {
+                Log4NetHelper.Error("查询Operate：" + ex.ToString());
+            }
+            return false;
+
         }
 
         /// <summary>

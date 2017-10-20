@@ -169,6 +169,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\View_EditMark.cs" />
+    <Compile Include="Models\View_MonthInUserMark.cs" />
     <Compile Include="Models\View_UserModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -384,6 +385,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Scripts\ctrl\analysisExcel.js" />
+    <Content Include="Scripts\ctrl\bhConfig.js" />
     <Content Include="Scripts\ctrl\helper.js" />
     <Content Include="Scripts\ctrl\home.js" />
     <Content Include="Scripts\ECharts\chart\bar.js" />

@@ -21,21 +21,20 @@ namespace WebBiHuGadget.Models
         [ReadMe(ErrorMessage = "请不要手动修改'记住我'")]
         public int ReadMe { get; set; }
     }
+    /// <summary>
+    /// 是否记住我(单独用于登录,所以不用抽出来)
+    /// </summary>
     public class ReadMeAttribute : ValidationAttribute
     {
         public override bool IsValid(object value)
         {
             if (value == null)
-            {
                 return false;
-            }
             int readMe = 0;
             if (int.TryParse(Convert.ToString(value), out readMe))
             {
                 if (readMe == 0 || readMe == 1)
-                {
                     return true;
-                }
             }
             return false;
         }

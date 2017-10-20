@@ -46,7 +46,11 @@
         width: 300px;
         height: 500px;
     }
+    .clockBtn:hover{
+        border:2px solid #de8b08;
+    }
 </style>
+@Html.AntiForgeryToken()
 <div id="vue1" v-cloak>
     @{ if (ViewBag.Show)
         {
@@ -141,56 +145,56 @@
             <div class="month-content-clock">
                 <div class="clock-top">
                     <div class="clock-title">备注说明</div>
-                    <div class="clock-content" v-if="addMark">
-                        <div class="field" v-if="addMark.UserLeft">
-                            <div class="column clock-row">
+                    <div class="field column padding-center" v-if="addMarkData.dayTime"><strong>定位日期：{{addMarkData.dayTime}}</strong></div>
+                    <div class="clock-content" v-if="addMarkData">
+                        <div class="field">
+                            @*<div class="column clock-row">
                                 <div class="left floated">
                                     早-时间：
                                 </div>
                                 <div class="right floated">
-                                    <button class="ui icon button mini" id="mark-m-edit" v-on:click="editMarkContent(addMark,1)">
+                                    <button class="ui icon button mini" id="mark-m-edit" v-on:click="editMarkContent(addMarkData,1)">
                                         <i class="edit icon"></i>
                                     </button>
-                                    <button class="ui icon button mini" id="mark-m-delete" v-on:click="editMarkContent(addMark,0)">
+                                    <button class="ui icon button mini" id="mark-m-delete" v-on:click="editMarkContent(addMarkData,0)">
                                         <i class="remove icon"></i>
                                     </button>
                                 </div>
-                                <div v-if="addMark.UserLeft.putCaredTime">{{addMark.UserLeft.putCaredTime}}</div>
+                                <div v-if="addMarkData.UserLeft.putCaredTime">{{addMarkData.UserLeft.putCaredTime}}</div>
                             </div>
                             <div class="column  clock-row">
-                                <div v-if="addMark.UserLeft.status">打卡状态：{{addMark.UserLeft.status}}</div>
-                                <div v-if="!addMark.UserLeft.status">打卡状态：早:未打卡</div>
+                                <div v-if="addMarkData.UserLeft.status">打卡状态：{{addMarkData.UserLeft.status}}</div>
+                                <div v-if="!addMarkData.UserLeft.status">打卡状态：早:未打卡</div>
                             </div>
                             <div class="column  clock-row clock-mark">说明：xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</div>
-                            <hr />
+                            <hr />*@
                         </div>
 
-                        <div class="field" v-if="addMark.UserRight">
+                        @*<div class="field" v-if="addMarkData.UserRight">
                             <div class="column clock-row">
                                 <div class="left floated">
                                     晚-时间：
                                 </div>
                                 <div class="right floated">
-                                    <button class="ui icon button mini" id="mark-a-edit" v-on:click="editMarkContent(addMark,1)">
+                                    <button class="ui icon button mini" id="mark-a-edit" v-on:click="editMarkContent(addMarkData,1)">
                                         <i class="edit icon"></i>
                                     </button>
-                                    <button class="ui icon button mini" id="mark-a-delete" v-on:click="editMarkContent(addMark,0)">
+                                    <button class="ui icon button mini" id="mark-a-delete" v-on:click="editMarkContent(addMarkData,0)">
                                         <i class="remove icon"></i>
                                     </button>
                                 </div>
-                                <div v-if="addMark.UserRight.putCaredTime">{{addMark.UserRight.putCaredTime}}</div>
+                                <div v-if="addMarkData.UserRight.putCaredTime">{{addMarkData.UserRight.putCaredTime}}</div>
                             </div>
                             <div class="column clock-row">
-                                <div v-if="addMark.UserRight.status">打卡状态：{{addMark.UserRight.status}}</div>
-                                <div v-if="!addMark.UserRight.status">打卡状态：晚:未打卡</div>
+                                <div v-if="addMarkData.UserRight.status">打卡状态：{{addMarkData.UserRight.status}}</div>
+                                <div v-if="!addMarkData.UserRight.status">打卡状态：晚:未打卡</div>
                             </div>
                             <div class="column  clock-row clock-mark">说明：xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</div>
-                            <div></div>
-                        </div>
+                        </div>*@
                     </div>
                 </div>
                 <div class="clock-bottom">
-                    <button class="filtered ui button" v-on:click="editMark">新增</button>
+                    <button class="filtered ui button" v-on:click="editMark(1)">新增</button>
                 </div>
                 <div></div>
                 <div class="field">
@@ -209,7 +213,7 @@
             <div class="field"><p id="addMark-dayTime"></p></div>
             <div class="field">
                 <div class="ui selection dropdown medium Small">
-                    <input type="hidden" name="gender" id="selectTime" />
+                    <input type="hidden" name="gender" id="selectTimeSlot" />
                     <i class="dropdown icon"></i>
                     <div class="default text">记录时间</div>
                     <div class="menu">
@@ -221,7 +225,7 @@
             </div>
             <div class="field">
                 <div class="ui selection dropdown medium Small">
-                    <input type="hidden" name="gender" id="selectSort" />
+                    <input type="hidden" name="gender" id="selectMarkState" />
                     <i class="dropdown icon"></i>
                     <div class="default text">记录类别</div>
                     <div class="menu">
@@ -231,12 +235,13 @@
                         <div class="item" data-value="4">正常</div>
                         <div class="item" data-value="5">加班</div>
                         <div class="item" data-value="6">请假</div>
+                        <div class="item" data-value="7">忘打卡</div>
                     </div>
                 </div>
             </div>
             <div class="field">
                 <label>备注说明</label>
-                <textarea rows="2" maxlength="200" placeholder="长度不大于200个字符" id="markReason" v-model="addMark.markReason"></textarea>
+                <textarea rows="2" maxlength="200" placeholder="长度不大于200个字符" id="markReason" v-model="addMarkData.markReason"></textarea>
             </div>
         </div>
         <div class="actions">

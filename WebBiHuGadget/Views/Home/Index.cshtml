@@ -54,10 +54,10 @@
                 var urlStr = null;
                 switch (urlName) {
                     case "Xls":
-                        urlStr = "/AnalysisExcel/Index";
+                        urlStr = "@Url.Action("Index", "AnalysisExcel")";
                         break;
                     case "Analysis":
-                        urlStr = "/AnalysisStatistic/Index";
+                        urlStr = "@Url.Action("Index", "AnalysisStatistic")";
                         break;
                     default:
                         urlStr = "";
