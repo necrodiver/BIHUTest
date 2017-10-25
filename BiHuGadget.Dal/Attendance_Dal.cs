@@ -162,7 +162,7 @@ namespace BiHuGadget.Dal
             /// <summary>
             /// 删除Attendance相关条件的数据
             /// </summary>
-            public static string delete_Attendance = "DELETE Attendance WHERE {0}";
+            public static string delete_Attendance = "DELETE FROM Attendance WHERE {0}";
         }
     }
 }

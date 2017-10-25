@@ -288,6 +288,12 @@ var vm = new Vue({
             });
         },
         isMarkData: function (val, solt) {
+            var item = this.isMarkData2(val, solt);
+            if (item == 0)
+                return false;
+            return true;
+        },
+        isMarkData2: function (val, solt) {
             if (val.day && val.day > 0 && val.day < 32) {
                 if (this.markDatas && this.markDatas.length > 0) {
                     var dayTimeTP = moment(this.selectMarkData.year + '-' + this.selectMonth + '-' + val.day).format('YYYY-MM-DD');
@@ -299,21 +305,29 @@ var vm = new Vue({
                             return item.TimeSlot == solt;
                         });
                         if (nowMarkData2 && nowMarkData2.length > 0)
-                            return true;
+                            return nowMarkData2;
                     }
                 }
             }
-            return false;
+            return 0;
         },
         deleteMarkData: function (val, solt) {
+            var _self = this;
             dialog({
                 title: '删除提示',
                 content: '你确定要删除此条备注?',
                 ok: function () {
-
+                    var item = _self.isMarkData2(val, solt);
+                    if (item == 0)
+                        return;//数据错误！！
+                    if (item && item.length > 0) {
+                        _self.addMarkData = item[0];
+                        _self.addMarkData.markIUD = 0;
+                        _self.saveMark();
+                    }
+                    //这里直接提示数据错误！
                 },
                 cancel: function () {
-                    alert('取消');
                 }
             }).show();
         }
