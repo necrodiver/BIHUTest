@@ -12,7 +12,7 @@ namespace WebBiHuGadget.Models
         /// </summary>
         [DisplayName("打卡备注Id")]
         [NotMinus(ErrorMessage = "{0}数据无效")]
-        public int? MarkId { get; set; }
+        public int? AttendanceId { get; set; }
         /// <summary>
         /// 操作类型:增,改,删
         /// </summary>
@@ -29,7 +29,7 @@ namespace WebBiHuGadget.Models
         /// </summary>
         [DisplayName("记录日期")]
         [Required(AllowEmptyStrings = false, ErrorMessage = "{0}不能为空")]
-        public DateTime DayTime { get; set; }
+        public DateTime ClockTime { get; set; }
         /// <summary>
         /// 时间段
         /// </summary>
@@ -43,13 +43,13 @@ namespace WebBiHuGadget.Models
         [DisplayName("打卡状态")]
         [Required(ErrorMessage = "{0}不能为空")]
         [NotMinus(ErrorMessage = "{0}数据无效")]
-        public int MarkState { get; set; }
+        public int UDayStateId { get; set; }
         /// <summary>
         /// 备注说明
         /// </summary>
         [DisplayName("备注说明")]
         [MaxLength(100, ErrorMessage = "{0}请务必简要描述")]
-        public string MarkReason { get; set; }
+        public string ClockContent { get; set; }
 
     }
     /// <summary>

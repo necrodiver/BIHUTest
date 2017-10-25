@@ -52,11 +52,19 @@ namespace BiHuGadget.Helpers
                 MsgTitle = "权限问题",
                 MsgStatus = false
             };
-            if (account != null && account.AuthorityList != null && account.AuthorityList.Count > 0)
+            if (account == null)
             {
-                var thisAuthorize = account.AuthorityList.Find(a => a.ActionName.ToLower() == actionName && a.ControllerName.ToLower() == controllerName);
-                if (thisAuthorize != null)
-                    return;
+                filterContext.Result = new RedirectToRouteResult(new System.Web.Routing.RouteValueDictionary(new { controller = "Home", action = "Index" }));
+                return;
+            }
+            if (account != null)
+            {
+                if (account.AuthorityList != null && account.AuthorityList.Count > 0)
+                {
+                    var thisAuthorize = account.AuthorityList.Find(a => a.ActionName.ToLower() == actionName && a.ControllerName.ToLower() == controllerName);
+                    if (thisAuthorize != null)
+                        return;
+                }
                 msgModel.MsgContent = "权限不足";
             }
             else

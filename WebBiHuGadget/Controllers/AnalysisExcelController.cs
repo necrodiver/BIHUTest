@@ -177,12 +177,12 @@ namespace WebBiHuGadget.Controllers
             };
             AttendanceModel attendanceModel = new AttendanceModel
             {
-                AttendanceId = request.MarkId,
-                ClockYear = request.DayTime.Year,
-                ClockTime = request.DayTime.ToString("yyyy-MM-dd"),
-                UDayStateId = request.MarkState,
+                AttendanceId = request.AttendanceId,
+                ClockYear = request.ClockTime.Year,
+                ClockTime = request.ClockTime.ToString("yyyy-MM-dd"),
+                UDayStateId = request.UDayStateId,
                 TimeSlot = request.TimeSlot,
-                ClockContent = request.MarkReason,
+                ClockContent = request.ClockContent,
                 UserId = request.UserId
             };
             switch (request.MarkIUD)

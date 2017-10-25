@@ -1,5 +1,12 @@
 ﻿var __RequestVerificationToken = $('input[name="__RequestVerificationToken"]').val();
 function init(_self) {
+    $("#selectMonth").bind('change', function () {
+        _self.selectMonth = $(this).val();
+    });
+
+    _self.markStateList.forEach(function (item, i) {
+        $("#markStatusMenu").append("<div class='item' data-value=" + i + ">" + item + "</div>");
+    });
     $('#editMark')
         .modal({
             blurring: true,
@@ -8,29 +15,35 @@ function init(_self) {
             }
         })
         .modal('hide');
-    $("#modelBox")
-        .modal({
-            blurring: false,
-            onApprove: function () {
-                _self.saveMark();
-            }
-        }).modal("hide");
-    $("#selectMonth").bind('change', function () {
-        _self.selectMonth = $(this).val();
+    initBind(_self);
+    $('#btnCancle').click(function () {
+        alert('cancle');
+        $('#editMark').modal('hide');
     });
-    $("#selectMonth").bind('change', function () {
-        _self.selectMonth = $(this).val();
+    $('#btnDelete').click(function () {
+        alert('delete');
+        $('#editMark').modal('hide');
     });
-    $("#selectTimeSlot").bind('change', function () {
-        _self.addMarkData.timeSlot = $(this).val();
-    });
-    $("#selectMarkState").bind('change', function () {
-        _self.addMarkData.markState = $(this).val();
-    });
-    _self.markStateList.forEach(function (item, i) {
-        $("#markStatusMenu").append("<div class='item' data-value=" + i + ">" + item + "</div>");
+    $('#btnEdit').click(function () {
+        alert('edit');
+        $('#editMark').modal('hide');
     });
 }
+function initBind(_self) {
+    $('#selectTimeSlot').dropdown('set value', _self.addMarkData.TimeSlot);
+    $('#selectMarkState').dropdown('set value', _self.addMarkData.UDayStateId);
+    $("#selectTimeSlot").dropdown({
+        onChange: function (val) {
+            _self.addMarkData.TimeSlot = parseInt(val);
+        }
+    });
+    $("#selectMarkState").dropdown({
+        onChange: function (val) {
+            _self.addMarkData.UDayStateId = parseInt(val);
+        }
+    });
+   
+};
 
 var vm = new Vue({
     el: '#vue1',
@@ -41,22 +54,22 @@ var vm = new Vue({
         userMounths: [],
         selectMonth: "-1",
         addMarkData: {
-            markId: -1,//打卡备注Id
+            AttendanceId: -1,//打卡备注Id
             markIUD: -1,//操作类型:增,改,删
-            userId: -1,//用户Id
-            dayTime: '', //记录日期
-            timeSlot: -1,//时间段:全天,上午,下午
-            markState: -1,//打卡状态
-            markReason: ''//备注说明
+            UserId: -1,//用户Id
+            ClockTime: '', //记录日期
+            TimeSlot: -1,//时间段:全天,上午,下午
+            UDayStateId: 0,//打卡状态
+            ClockContent: ''//备注说明
         },
         addMarkInit: {
-            markId: -1,//打卡备注Id
+            AttendanceId: -1,//打卡备注Id
             markIUD: -1,//操作类型:增,改,删
-            userId: -1,//用户Id
-            dayTime: '', //记录日期
-            timeSlot: -1,//时间段:全天,上午,下午
-            markState: -1,//打卡状态
-            markReason: ''//备注说明
+            UserId: -1,//用户Id
+            ClockTime: '', //记录日期
+            TimeSlot: -1,//时间段:全天,上午,下午
+            UDayStateId: 0,//打卡状态
+            ClockContent: ''//备注说明
         },
         selectMarkData: {
             year: 2017,
@@ -105,6 +118,12 @@ var vm = new Vue({
                     }
                 }
             });
+        },
+        momentTime: function (val) {
+            if (val != null && val != undefined && val != '') {
+                return moment(val).format('HH:mm:ss');
+            }
+            return val;
         },
         calendarAssembly: function () {
             var jsonData = $.extend({}, this.userPunchCards);
@@ -160,38 +179,16 @@ var vm = new Vue({
                 _self.userPunchCards = res.MsgContent;
                 _self.selectUserName();
             });
-            req.fail(function (jqXHR, textStatus, error) {
-                //if (loadingName) {
-                //    if (textStatus == "timeout") {
-                //        return alert("请求超时！");
-                //    }
-                //    else if (textStatus == "error") {
-                //        return alert("网络连接超时！");
-                //    }
-                //}
-            });
-            req.always(function () {
-                //所有的走完之后调用的数据
-            });
-        },
-        editMark: function (val) {
-            var _self = this;
-            if (val)
-                _self.addMarkData.markIUD = val;
-            if (!this.addMarkData.dayTime) {
-                return;
-            }
-            $('#addMark-dayTime').text(this.addMarkData.dayTime);
-            $('#editMark').modal('show');
         },
         saveMark: function () {
+            var _self = this;
             var dt = $.extend({}, this.addMarkData);
             dt.__RequestVerificationToken = __RequestVerificationToken;
-            if (dt.markId == -1 || dt.markIUD == -1 || dt.timeSlot == -1 || dt.markState == -1) {
-                dt.markId = null;
+            if (dt.AttendanceId == -1 || dt.markIUD == -1 || dt.TimeSlot == -1 || dt.UDayStateId == -1) {
+                dt.AttendanceId = null;
             }
-            if (dt.userId == -1) {
-                dt.userId = null;
+            if (dt.UserId == -1) {
+                dt.UserId = null;
             }
             var req = $.ajax({
                 type: 'POST',
@@ -207,10 +204,10 @@ var vm = new Vue({
                 return alert(res.MsgContent);
             });
             req.always(function () {
-                getUserMarkData();
+                _self.getUserMarkData();
             });
         },
-        selectMask: function (val) {
+        selectMark: function (val, index) {
             this.addMarkData = $.extend({}, this.addMarkInit);
             var dayTimeTP = "";
             if (val.day && val.day > 0 && val.day < 32) {
@@ -225,13 +222,65 @@ var vm = new Vue({
                 } else {
                     dayTimeTP = moment(this.selectMarkData.year + '-' + this.selectMonth + '-' + val.day).format('YYYY-MM-DD');
                 }
-                this.addMarkData.dayTime = dayTimeTP;
+                this.addMarkData.ClockTime = dayTimeTP;
+                this.showSingleDayRemark = [];
                 if (this.markDatas != [] && this.markDatas.length > 0) {
                     this.showSingleDayRemark = this.markDatas.filter(function (item) {
                         return item.ClockTime == dayTimeTP;
                     });
                 }
+
+                if (!this.addMarkData.ClockTime) {
+                    return;
+                }
+
+                if (index == 0) {
+                    if (val.status && val.status == 2)
+                        return;
+                    return this.editMark(true);
+                }
+
+                if (index == 1) {
+                    var mList = this.showSingleDayRemark.filter(function (item) {
+                        return item.TimeSlot == 1;
+                    });
+                    //if (val.UserLeft == undefined || val.UserLeft == null)
+                    //    return this.editMark(true);
+                    //if (val.UserLeft.status == 1 || val.UserLeft.status == 2)
+                    //    return;
+                    this.addMarkData.UDayStateId = 1;
+                    if (mList != null && mList != undefined && mList.length == 1)
+                        return this.editMark(false, mList[0])
+                    return this.editMark(true);
+                }
+                if (index == 2) {
+                    var aList = this.showSingleDayRemark.filter(function (item) {
+                        return item.TimeSlot == 2;
+                    });
+                    //if (val.UserRight == undefined || val.UserRight == null)
+                    //    return this.editMark(true);
+                    //if (val.UserRight.status == 1 || val.UserRight.status == 2)
+                    //    return;
+                    if (aList != null && aList != undefined && aList.length == 1)
+                        return this.editMark(false, aList[0]);
+                    return this.editMark(true);
+                }
             }
+        },
+        editMark: function (isAdd, data) {
+            if (isAdd) {
+                $('#editMark-header').text('新增--备注说明');
+                this.addMarkData.markIUD = 1;
+            } else {
+                $('#editMark-header').text('修改/删--备注说明');
+                $.extend(this.addMarkData, data);
+                this.addMarkData.markIUD = 2;
+            }
+            $('#addMark-dayTime').text(this.addMarkData.ClockTime);
+            //this.btnEditIDUS();
+            $('#editMark').modal('show');
+
+            initBind(this);
         },
         getUserMarkData: function () {
             var _self = this;
@@ -251,6 +300,31 @@ var vm = new Vue({
                 else
                     alert(res.MsgContent);
             });
+        },
+        btnEditIDUS: function () {
+            var _self = this;
+            var headerTitle = "备注说明";
+            var editMarkBox = dialog({
+                width: 380,
+                height: 100,
+                title: headerTitle,
+                content: $("#editMarkBox").html(),
+                reset: false,
+                init: function () {
+                },
+                button: [{
+                    value: "取消",
+                    callback: function ($btn) {
+                        $btn.button("reset");
+                        editMarkBox.close();
+                    }
+                }, {
+                    value: "确认",
+                    callback: function ($btn) {
+
+                    }
+                }]
+            }).show();
         }
     }
 });

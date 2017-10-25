@@ -24,6 +24,16 @@
 </div>
 <script>
     var _token = $('input[name="__RequestVerificationToken"]').val();
+
+    function toolTipBox(msg) {
+        var d = dialog({
+            content: msg
+        });
+        d.show();
+        setTimeout(function () {
+            d.close().remove();
+        }, 2000);
+    }
     var vmLogin = new Vue({
         el: '#menu',
         data: function () {
@@ -35,7 +45,7 @@
                     __RequestVerificationToken: _token
                 },
                 isLogin:@ViewBag.IsLogin,
-                loginName: @ViewBag.IsLogin ? '个人中心' : '登录'
+                loginName: @ViewBag.IsLogin ? '退出' : '登录'
             };
         },
         filter: {
@@ -44,7 +54,8 @@
         methods: {
             showLogin: function () {
                 if (this.isLogin)
-                    return window.open('@Url.Action("Index","MyCenter")');
+                    return location.href='@Url.Action("SingleOut","Home")';
+                    //return window.open('@Url.Action("Index","MyCenter")');
                 var _self = this;
                 $('#signIn')
                     .modal({
@@ -73,16 +84,16 @@
                 });
                 req.done(function (res) {
                     if (res == null || res == "") {
-                        return alert("登录失败");
+                        return toolTipBox("登录失败");
                     }
                     if (res.status != undefined && res.status == -1) {
-                        return alert(res.msg);
+                        return toolTipBox(res.msg);
                     }
                     if (!res.MsgStatus) {
-                        return alert(res.MsgContent);
+                        return toolTipBox(res.MsgContent);
                     }
                     if (res.MsgStatus) {
-                        alert(res.MsgContent);
+                        toolTipBox(res.MsgContent);
                         window.location.reload();
                     }
 
@@ -90,10 +101,10 @@
                 req.fail(function (jqXHR, textStatus, error) {
                     if (error) {
                         if (textStatus == "timeout") {
-                            return alert("请求超时！");
+                            return toolTipBox("请求超时！");
                         }
                         else if (textStatus == "error") {
-                            return alert("网络连接超时！");
+                            return toolTipBox("网络连接超时！");
                         }
                     }
                 });

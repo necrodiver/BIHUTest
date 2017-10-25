@@ -316,6 +316,9 @@
     <Content Include="Content\components\visit.js" />
     <Content Include="Content\components\visit.min.js" />
     <Content Include="Content\calendars\calendar.css" />
+    <Content Include="Content\dialog.css" />
+    <Content Include="Scripts\artDialog\dialog-plus.js" />
+    <Content Include="Scripts\artDialog\dialog.js" />
     <Content Include="Scripts\calendars\calendar.js" />
     <Content Include="Content\calendars\calendar.min.css" />
     <Content Include="Scripts\calendars\calendar.min.js" />

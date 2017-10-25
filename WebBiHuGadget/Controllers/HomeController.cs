@@ -87,10 +87,11 @@ namespace WebBiHuGadget.Controllers
             return Json(userModel, JsonRequestBehavior.AllowGet);
         }
         [HttpGet]
-        public JsonResult SingleOut()
+        public ActionResult SingleOut()
         {
             SessionHelper.RemoveAllSession();
-            return Json(null, JsonRequestBehavior.AllowGet);
+            return RedirectToAction("Index","Home");
+            //return Json(null, JsonRequestBehavior.AllowGet);
         }
     }
 }
