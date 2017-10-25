@@ -46,7 +46,7 @@ namespace WebBiHuGadget.Controllers
             var backUser = userBll.GetSingleUser(userModel);
             if (backUser == null || string.IsNullOrWhiteSpace(backUser.Email) || backUser.CreateTime == null || backUser.UserId == null)
             {
-                msgModel.MsgContent = "登录失败，当前账号不存在";
+                msgModel.MsgContent = "登录失败，当前账号用户名或密码错误";
                 return Json(msgModel, JsonRequestBehavior.AllowGet);
             }
             if (backUser.RoleId != null && backUser.RoleId > -1)

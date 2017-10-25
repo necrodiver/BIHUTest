@@ -10,24 +10,15 @@ function init(_self) {
     $('#editMark')
         .modal({
             blurring: true,
+            onDeny: function () {
+                alert('onDeny');
+            },
             onApprove: function () {
                 _self.saveMark();
             }
         })
         .modal('hide');
     initBind(_self);
-    $('#btnCancle').click(function () {
-        alert('cancle');
-        $('#editMark').modal('hide');
-    });
-    $('#btnDelete').click(function () {
-        alert('delete');
-        $('#editMark').modal('hide');
-    });
-    $('#btnEdit').click(function () {
-        alert('edit');
-        $('#editMark').modal('hide');
-    });
 }
 function initBind(_self) {
     $('#selectTimeSlot').dropdown('set value', _self.addMarkData.TimeSlot);
@@ -42,7 +33,7 @@ function initBind(_self) {
             _self.addMarkData.UDayStateId = parseInt(val);
         }
     });
-   
+
 };
 
 var vm = new Vue({
@@ -209,19 +200,15 @@ var vm = new Vue({
         },
         selectMark: function (val, index) {
             this.addMarkData = $.extend({}, this.addMarkInit);
-            var dayTimeTP = "";
             if (val.day && val.day > 0 && val.day < 32) {
-                if (this.markDatas && this.markDatas.length > 0) {
-                    var nowMarkData = this.markDatas.filter(function (item) {
-                        return item.day == val.day;
-                    });
-                    if (nowMarkData.length == 1 && nowMarkData[0].day)
-                        this.addMarkData = nowMarkData[0];
-                    else
-                        dayTimeTP = moment(this.selectMarkData.year + '-' + this.selectMonth + '-' + val.day).format('YYYY-MM-DD');
-                } else {
-                    dayTimeTP = moment(this.selectMarkData.year + '-' + this.selectMonth + '-' + val.day).format('YYYY-MM-DD');
-                }
+                var dayTimeTP = moment(this.selectMarkData.year + '-' + this.selectMonth + '-' + val.day).format('YYYY-MM-DD');
+                //if (this.markDatas && this.markDatas.length > 0) {
+                //    var nowMarkData = this.markDatas.filter(function (item) {
+                //        return item.ClockTime == dayTimeTP;
+                //    });
+                //    if (nowMarkData.length == 1 && nowMarkData[0].day)
+                //        this.addMarkData = nowMarkData[0];                        
+                //}
                 this.addMarkData.ClockTime = dayTimeTP;
                 this.showSingleDayRemark = [];
                 if (this.markDatas != [] && this.markDatas.length > 0) {
@@ -272,12 +259,11 @@ var vm = new Vue({
                 $('#editMark-header').text('新增--备注说明');
                 this.addMarkData.markIUD = 1;
             } else {
-                $('#editMark-header').text('修改/删--备注说明');
+                $('#editMark-header').text('修改--备注说明');
                 $.extend(this.addMarkData, data);
                 this.addMarkData.markIUD = 2;
             }
             $('#addMark-dayTime').text(this.addMarkData.ClockTime);
-            //this.btnEditIDUS();
             $('#editMark').modal('show');
 
             initBind(this);
@@ -301,29 +287,34 @@ var vm = new Vue({
                     alert(res.MsgContent);
             });
         },
-        btnEditIDUS: function () {
-            var _self = this;
-            var headerTitle = "备注说明";
-            var editMarkBox = dialog({
-                width: 380,
-                height: 100,
-                title: headerTitle,
-                content: $("#editMarkBox").html(),
-                reset: false,
-                init: function () {
-                },
-                button: [{
-                    value: "取消",
-                    callback: function ($btn) {
-                        $btn.button("reset");
-                        editMarkBox.close();
+        isMarkData: function (val, solt) {
+            if (val.day && val.day > 0 && val.day < 32) {
+                if (this.markDatas && this.markDatas.length > 0) {
+                    var dayTimeTP = moment(this.selectMarkData.year + '-' + this.selectMonth + '-' + val.day).format('YYYY-MM-DD');
+                    var nowMarkData = this.markDatas.filter(function (item) {
+                        return item.ClockTime == dayTimeTP;
+                    });
+                    if (nowMarkData && nowMarkData.length > 0) {
+                        var nowMarkData2 = nowMarkData.filter(function (item) {
+                            return item.TimeSlot == solt;
+                        });
+                        if (nowMarkData2 && nowMarkData2.length > 0)
+                            return true;
                     }
-                }, {
-                    value: "确认",
-                    callback: function ($btn) {
+                }
+            }
+            return false;
+        },
+        deleteMarkData: function (val, solt) {
+            dialog({
+                title: '删除提示',
+                content: '你确定要删除此条备注?',
+                ok: function () {
 
-                    }
-                }]
+                },
+                cancel: function () {
+                    alert('取消');
+                }
             }).show();
         }
     }

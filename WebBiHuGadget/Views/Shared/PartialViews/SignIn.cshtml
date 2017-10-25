@@ -24,16 +24,6 @@
 </div>
 <script>
     var _token = $('input[name="__RequestVerificationToken"]').val();
-
-    function toolTipBox(msg) {
-        var d = dialog({
-            content: msg
-        });
-        d.show();
-        setTimeout(function () {
-            d.close().remove();
-        }, 2000);
-    }
     var vmLogin = new Vue({
         el: '#menu',
         data: function () {
@@ -55,7 +45,6 @@
             showLogin: function () {
                 if (this.isLogin)
                     return location.href='@Url.Action("SingleOut","Home")';
-                    //return window.open('@Url.Action("Index","MyCenter")');
                 var _self = this;
                 $('#signIn')
                     .modal({
@@ -84,16 +73,16 @@
                 });
                 req.done(function (res) {
                     if (res == null || res == "") {
-                        return toolTipBox("登录失败");
+                        return helper.toolTipBox("登录失败");
                     }
                     if (res.status != undefined && res.status == -1) {
-                        return toolTipBox(res.msg);
+                        return helper.toolTipBox(res.msg);
                     }
                     if (!res.MsgStatus) {
-                        return toolTipBox(res.MsgContent);
+                        return helper.toolTipBox(res.MsgContent);
                     }
                     if (res.MsgStatus) {
-                        toolTipBox(res.MsgContent);
+                        helper.toolTipBox(res.MsgContent);
                         window.location.reload();
                     }
 
@@ -101,10 +90,10 @@
                 req.fail(function (jqXHR, textStatus, error) {
                     if (error) {
                         if (textStatus == "timeout") {
-                            return toolTipBox("请求超时！");
+                            return helper.toolTipBox("请求超时！");
                         }
                         else if (textStatus == "error") {
-                            return toolTipBox("网络连接超时！");
+                            return helper.toolTipBox("网络连接超时！");
                         }
                     }
                 });
