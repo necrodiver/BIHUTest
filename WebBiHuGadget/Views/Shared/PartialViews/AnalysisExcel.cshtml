@@ -59,7 +59,7 @@
     .day-delete {
         background-color: #000;
         color: #fff;
-        border-radius: 2px;
+        border-radius: 20%;
         cursor: pointer;
         width: 16px;
         line-height: 16px;
@@ -77,6 +77,32 @@
             -ms-transform: scale(1.5);
             transform: scale(1.5);
         }
+    .day-ismark { /*有备注*/
+        background-color: #0d9b25;
+    }
+
+    .day-late { /*迟到*/
+        background-color: #ff6811;
+    }
+
+    .day-early { /*早退*/
+        background-color: #ffe518;
+    }
+
+    .day-noclock { /*未打卡*/
+        background-color: red;
+    }
+
+    .day-ismark, .day-late, .day-early, .day-noclock {
+        width: 20px;
+        height: 100%;
+        border-radius: 50%;
+        color: #fff;
+        font-size: 10px;
+        font-weight: 700;
+        padding-left: 4px;
+        padding-right: 4px;
+    }
 </style>
 
 @Html.AntiForgeryToken()
@@ -119,12 +145,14 @@
     <div class="ui segment">
         <a class="ui ribbon label">查询</a>
         <div class="left22">
-            <br />
-            <div>
-                <div class="field">
-                    <div></div>
-                </div>
-                <div class="ui selection dropdown medium Small">
+            <div class="seven column ui grid container stackable">
+                <div class="column">迟到：<strong>5/60</strong></div>
+                <div class="column">早退：<strong>8/60</strong></div>
+                <div class="column">未打卡：<strong>3/60</strong></div>
+                <div class="column">加班：<strong>2/60</strong></div>
+            </div>
+            <div class="ui stackable">
+                <div class="ui selection dropdown medium small">
                     <input type="hidden" name="gender" id="selectMonth" />
                     <i class="dropdown icon"></i>
                     <div class="default text">考勤月份</div>
@@ -158,24 +186,49 @@
                 <div class="left length-top">周日</div>
                 <div class="body-Day">
                     <div v-for="i in userMounthNullCount" class="left length">无</div>
-                    <div v-for="child in userMounths" class="left length" v-bind:class="'color-'+child.status">
-                        <div class="select-day" v-on:click="selectMark(child,0)">
+                    <div v-for="child in userMounths" class="left length titlec" v-bind:class="'color-'+child.status" v-bind:title="getMarkTitle(child,0)">
+                        <div class="" v-bind:class="{'select-day':child.status!=1&&child.status!=2}" v-on:click="selectMark(child,0)">
                             <strong v-if="child.status!=2">{{child.day}}</strong>
                             <div v-if="child.status==2" style="color:#ccc;">{{child.day}} 休</div>
+                            <div v-if="isMarkData(child,-1)" class="pull-right day-ismark">注</div>
                         </div>
-                        <div v-if="!child.UserLeft&&child.status!=2&&child.status!=0" class="padding-center child-0" v-on:click="selectMark(child,1)">
+                        <div class="padding-center child-0 titlec"
+                             v-if="!child.UserLeft&&child.status!=2&&child.status!=0"
+                             v-on:click="selectMark(child,1)" v-bind:title="getMarkTitle(child,1)">
                             早:未打卡
                             <div v-if="isMarkData(child,1)" class="pull-right day-delete" v-on:click.stop="deleteMarkData(child,1)"><i class="icon ban"></i></div>
                         </div>
                         <div v-if="child.UserLeft" class="padding-center">
-                            <div v-if="child.UserLeft.putCaredTime" v-bind:class="'child-'+child.UserLeft.status" v-on:click="selectMark(child,1)">早:{{momentTime(child.UserLeft.putCaredTime)}}</div>
+                            <div class="titlec" v-if="child.UserLeft.putCaredTime"
+                                 v-bind:class="'child-'+child.UserLeft.status"
+                                 v-on:click.stop="selectMark(child,1)"
+                                 v-bind:title="getMarkTitle(child,1)">
+                                早:{{momentTime(child.UserLeft.putCaredTime)}}
+                                <div class="pull-right day-delete"
+                                     v-if="isMarkData(child,1)"
+                                     v-on:click.stop="deleteMarkData(child,1)"><i class="icon ban"></i></div>
+                            </div>
                         </div>
-                        <div v-if="!child.UserRight&&child.status!=2&&child.status!=0" class="padding-center child-0" v-on:click="selectMark(child,2)">
+                        <div class="padding-center child-0 titlec"
+                             v-if="!child.UserRight&&child.status!=2&&child.status!=0"
+                             v-on:click="selectMark(child,2)"
+                             v-bind:title="getMarkTitle(child,2)">
                             晚:未打卡
-                            <div v-if="isMarkData(child,2)" class="pull-right day-delete" v-on:click.stop="deleteMarkData(child,2)"><i class="icon ban"></i></div>
+                            <div v-if="isMarkData(child,2)"
+                                 class="pull-right day-delete"
+                                 v-on:click.stop="deleteMarkData(child,2)"><i class="icon ban"></i></div>
                         </div>
                         <div v-if="child.UserRight" class="padding-center">
-                            <div v-if="child.UserRight.putCaredTime" v-bind:class="'child-'+child.UserRight.status" v-on:click="selectMark(child,2)">晚:{{momentTime(child.UserRight.putCaredTime)}}</div>
+                            <div class="titlec" v-if="child.UserRight.putCaredTime"
+                                 v-bind:class="'child-'+child.UserRight.status"
+                                 v-on:click.stop="selectMark(child,2)"
+                                 v-bind:title="getMarkTitle(child,2)">
+                                晚:{{momentTime(child.UserRight.putCaredTime)}}
+                                <div class="pull-right day-delete"
+                                     v-if="isMarkData(child,2)"
+                                     v-on:click.stop="deleteMarkData(child,2)"><i class="icon ban"></i></div>
+                                @*<div class="pull-right" v-if="isMarkData(child,2)" v-bind:class="dayMark(child.UserRight.status)">记</div>*@
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -189,19 +242,12 @@
             备注说明
         </div>
         <div class="content ui form">
-            <div class="field"><p id="addMark-dayTime"></p></div>
+            <div class="field">日期：<strong>{{addMarkData.ClockTime}}</strong></div>
             <div class="field">
-                <div class="ui selection dropdown medium Small" id="selectTimeSlot">
-                    <input type="hidden" name="gender" />
-                    <i class="dropdown icon"></i>
-                    <div class="default text">记录时间</div>
-                    <div class="menu">
-                        <div class="item" data-value="-1">母鸡呀</div>
-                        <div class="item" data-value="0">整天</div>
-                        <div class="item" data-value="1">上午</div>
-                        <div class="item" data-value="2">下午</div>
-                    </div>
-                </div>
+                <strong>时间范围：</strong>
+                <strong v-if="addMarkData.TimeSlot==0">整天</strong>
+                <strong v-if="addMarkData.TimeSlot==1">上午</strong>
+                <strong v-if="addMarkData.TimeSlot==2">下午</strong>
             </div>
             <div class="field">
                 <div class="ui selection dropdown medium Small" id="selectMarkState">
@@ -223,38 +269,5 @@
         </div>
     </div>
 </div>
-
-
-@*<div class="" id="editMarkBox" style="display:none;">
-        <div class="ui content">
-            <div class="field"><p id="addMark-dayTime"></p></div>
-            <div class="field">
-                <div class="ui selection dropdown medium Small" id="selectTimeSlot">
-                    <input type="hidden" name="gender" />
-                    <i class="dropdown icon"></i>
-                    <div class="default text">记录时间</div>
-                    <div class="menu">
-                        <div class="item" data-value="-1">母鸡呀</div>
-                        <div class="item" data-value="0">整天</div>
-                        <div class="item" data-value="1">上午</div>
-                        <div class="item" data-value="2">下午</div>
-                    </div>
-                </div>
-            </div>
-            <div class="field">
-                <div class="ui selection dropdown medium Small" id="selectMarkState">
-                    <input type="hidden" name="gender" />
-                    <i class="dropdown icon"></i>
-                    <div class="default text">记录类别</div>
-                    <div class="menu" id="markStatusMenu">
-                    </div>
-                </div>
-            </div>
-            <div class="field">
-                <label>备注说明</label>
-                <textarea rows="2" maxlength="200" placeholder="长度不大于200个字符" id="markReason" v-model="addMarkData.ClockContent"></textarea>
-            </div>
-        </div>
-    </div>*@
 
 

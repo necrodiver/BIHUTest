@@ -11,7 +11,7 @@ function init(_self) {
         .modal({
             blurring: true,
             onDeny: function () {
-                alert('onDeny');
+                //这里调用取消
             },
             onApprove: function () {
                 _self.saveMark();
@@ -21,13 +21,7 @@ function init(_self) {
     initBind(_self);
 }
 function initBind(_self) {
-    $('#selectTimeSlot').dropdown('set value', _self.addMarkData.TimeSlot);
     $('#selectMarkState').dropdown('set value', _self.addMarkData.UDayStateId);
-    $("#selectTimeSlot").dropdown({
-        onChange: function (val) {
-            _self.addMarkData.TimeSlot = parseInt(val);
-        }
-    });
     $("#selectMarkState").dropdown({
         onChange: function (val) {
             _self.addMarkData.UDayStateId = parseInt(val);
@@ -68,7 +62,8 @@ var vm = new Vue({
             userName: ''
         },
         showSingleDayRemark: [],//展示单天的打卡记录
-        markStateList: ["母鸡呀", "迟到", "早退", "早回家", "正常", "加班", "请假", "忘打卡"],
+        markStateList: ["请选择备注类别", "迟到", "早退", "早回家", "正常", "加班", "请假", "忘打卡"],
+        cssMarkList: ['day-ismark', 'day-late', 'day-early', 'day-noclock'],
         markDatas: []
     },
     components: {//组件
@@ -130,7 +125,7 @@ var vm = new Vue({
                 this.userMounthNullCount = temporary['day_1'].dayOfWeek - 1;
                 this.userMounths = temporary;
                 this.selectMarkData.userName = this.userName;
-                this.getUserMarkData();
+                this.getUserMarkData();//获取打卡备注
             }
         },
         selectMonthData: function () {
@@ -202,13 +197,6 @@ var vm = new Vue({
             this.addMarkData = $.extend({}, this.addMarkInit);
             if (val.day && val.day > 0 && val.day < 32) {
                 var dayTimeTP = moment(this.selectMarkData.year + '-' + this.selectMonth + '-' + val.day).format('YYYY-MM-DD');
-                //if (this.markDatas && this.markDatas.length > 0) {
-                //    var nowMarkData = this.markDatas.filter(function (item) {
-                //        return item.ClockTime == dayTimeTP;
-                //    });
-                //    if (nowMarkData.length == 1 && nowMarkData[0].day)
-                //        this.addMarkData = nowMarkData[0];                        
-                //}
                 this.addMarkData.ClockTime = dayTimeTP;
                 this.showSingleDayRemark = [];
                 if (this.markDatas != [] && this.markDatas.length > 0) {
@@ -220,21 +208,18 @@ var vm = new Vue({
                 if (!this.addMarkData.ClockTime) {
                     return;
                 }
-
+                this.addMarkData.TimeSlot = index;
                 if (index == 0) {
-                    if (val.status && val.status == 2)
+                    if (val.status && (val.status == 1 || val.status == 2))
                         return;
                     return this.editMark(true);
                 }
-
                 if (index == 1) {
                     var mList = this.showSingleDayRemark.filter(function (item) {
                         return item.TimeSlot == 1;
                     });
-                    //if (val.UserLeft == undefined || val.UserLeft == null)
-                    //    return this.editMark(true);
-                    //if (val.UserLeft.status == 1 || val.UserLeft.status == 2)
-                    //    return;
+                    if (val.UserLeft && (val.UserLeft.status == 1 || val.UserLeft.status == 2))
+                        return;
                     this.addMarkData.UDayStateId = 1;
                     if (mList != null && mList != undefined && mList.length == 1)
                         return this.editMark(false, mList[0])
@@ -244,10 +229,8 @@ var vm = new Vue({
                     var aList = this.showSingleDayRemark.filter(function (item) {
                         return item.TimeSlot == 2;
                     });
-                    //if (val.UserRight == undefined || val.UserRight == null)
-                    //    return this.editMark(true);
-                    //if (val.UserRight.status == 1 || val.UserRight.status == 2)
-                    //    return;
+                    if (val.UserRight && (val.UserRight.status == 1 || val.UserRight.status == 2))
+                        return;
                     if (aList != null && aList != undefined && aList.length == 1)
                         return this.editMark(false, aList[0]);
                     return this.editMark(true);
@@ -263,7 +246,6 @@ var vm = new Vue({
                 $.extend(this.addMarkData, data);
                 this.addMarkData.markIUD = 2;
             }
-            $('#addMark-dayTime').text(this.addMarkData.ClockTime);
             $('#editMark').modal('show');
 
             initBind(this);
@@ -286,6 +268,12 @@ var vm = new Vue({
                 else
                     alert(res.MsgContent);
             });
+            req.always(function () {
+                $('.body-Day .titlec')
+                    .popup({
+                        inline: false
+                    });
+            });
         },
         isMarkData: function (val, solt) {
             var item = this.isMarkData2(val, solt);
@@ -301,6 +289,9 @@ var vm = new Vue({
                         return item.ClockTime == dayTimeTP;
                     });
                     if (nowMarkData && nowMarkData.length > 0) {
+                        if (solt == -1) {
+                            return nowMarkData;
+                        }
                         var nowMarkData2 = nowMarkData.filter(function (item) {
                             return item.TimeSlot == solt;
                         });
@@ -330,6 +321,24 @@ var vm = new Vue({
                 cancel: function () {
                 }
             }).show();
+        },
+        getMarkTitle: function (val, solt) {
+            var item = this.isMarkData2(val, solt);
+            if (item)
+                return this.markStateList[item[0].UDayStateId] +
+                    '：' + item[0].ClockContent;
+            return '';
+        },
+        dayMark: function (item) {
+            if (item == -3) {
+                return this.cssMarkList[1];
+            } else if (item == -2) {
+                return this.cssMarkList[2];
+            } else if (item == -1) {
+                return this.cssMarkList[2];
+            } else if (item == 0) {
+                return this.cssMarkList[3];
+            }
         }
     }
 });

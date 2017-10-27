@@ -25,7 +25,7 @@
 }
 /*0：整天未在，1：有打卡记录，2：假期*/
 .color-0 {
-    border: 2px solid red;
+    border: 1px solid red;
     padding: 2px;
 }
 
