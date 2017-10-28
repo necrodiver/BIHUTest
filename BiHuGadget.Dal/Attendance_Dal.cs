@@ -68,14 +68,15 @@ namespace BiHuGadget.Dal
 
         public bool UpdateAttendance(AttendanceModel adModel)
         {
-            string _where = string.Empty;
-            var _args = DisposeAttendanceModel(adModel, true, out _where);
-            if (_where == null)
+            string _content = string.Empty;
+            var _args = DisposeAttendanceModel(adModel, false, out _content);
+            if (_content == null)
             {
                 Log4NetHelper.Info("查询UpdateAttendance-where条件为空");
                 return false;
             }
-            string _sql = string.Format(AD_QueryString.Select_Attendance, _where);
+            string _where = " AttendanceId=@AttendanceId";
+            string _sql = string.Format(AD_QueryString.update_Attendance, _content, _where);
             return Operate(_sql, _args);
         }
 
@@ -98,7 +99,8 @@ namespace BiHuGadget.Dal
             if (adModel.AttendanceId != null)
             {
                 sbSelect.Append(" AttendanceId=@AttendanceId AND");
-                sbUpdate.Append(" AttendanceId=@AttendanceId,");
+                if (isSelect)
+                    sbUpdate.Append(" AttendanceId=@AttendanceId,");
                 args.Add("@AttendanceId", adModel.AttendanceId);
             }
             if (!string.IsNullOrWhiteSpace(adModel.ClockContent))
@@ -115,6 +117,7 @@ namespace BiHuGadget.Dal
             }
             sbSelect.Append(" ClockYear=@ClockYear AND");
             sbUpdate.Append(" ClockYear=@ClockYear,");
+            args.Add("@ClockYear", adModel.ClockYear);
 
             sbSelect.Append(" TimeSlot=@TimeSlot AND");
             sbUpdate.Append(" TimeSlot=@TimeSlot,");
@@ -158,7 +161,7 @@ namespace BiHuGadget.Dal
             /// <summary>
             /// 更新Attendance单条数据
             /// </summary>
-            public static string update_Attendance = "UPDATE Attendance SET {0}";
+            public static string update_Attendance = "UPDATE Attendance SET {0} WHERE {1}";
             /// <summary>
             /// 删除Attendance相关条件的数据
             /// </summary>

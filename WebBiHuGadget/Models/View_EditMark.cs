@@ -54,7 +54,6 @@ namespace WebBiHuGadget.Models
         [Required(ErrorMessage = "{0}是必须的")]
         [StringLength(5, MinimumLength = 2, ErrorMessage = "{0}长度错误")]
         public string UserName { get; set; }
-
     }
     /// <summary>
     /// 操作类型

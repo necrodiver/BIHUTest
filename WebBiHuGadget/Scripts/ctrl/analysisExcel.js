@@ -227,9 +227,15 @@ var vm = new Vue({
                 }
                 this.addMarkData.TimeSlot = index;
                 if (index == 0) {
-                    if (val.status && (val.status == 1 || val.status == 2))
-                        return;
-                    return this.editMark(true);
+                    if (this.showSingleDayRemark == undefined || this.showSingleDayRemark == [] || this.showSingleDayRemark == null) {
+                        return this.editMark(true);
+                    }
+                    var mList = this.showSingleDayRemark.filter(function (item) {
+                        return item.TimeSlot == 0;
+                    });
+                    if (mList != null && mList != undefined && mList.length == 1) {
+                        return this.editMark(false, mList[0]);
+                    }
                 }
                 if (index == 1) {
                     var mList = this.showSingleDayRemark.filter(function (item) {
@@ -237,7 +243,7 @@ var vm = new Vue({
                     });
                     if (val.UserLeft && (val.UserLeft.status == 1 || val.UserLeft.status == 2))
                         return;
-                    this.addMarkData.UDayStateId = 1;
+                    //this.addMarkData.UDayStateId = 1;
                     if (mList != null && mList != undefined && mList.length == 1)
                         return this.editMark(false, mList[0])
                     return this.editMark(true);
