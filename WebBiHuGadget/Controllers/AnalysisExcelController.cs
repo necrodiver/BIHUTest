@@ -217,11 +217,6 @@ namespace WebBiHuGadget.Controllers
             switch (request.MarkIUD)
             {
                 case MarkIUD.Delete:
-                    if (request.UserId <= 0 || request.UserId != Account.UserId)
-                    {
-                        msg.MsgContent = "当前操作的用户打卡备注与登录用户不同，请使用正确的账号登录";
-                        return Json(msg, JsonRequestBehavior.AllowGet);
-                    }
                     if (attendanceModel.AttendanceId <= 0)
                     {
                         msg.MsgContent = "当前打卡备注为空！";
@@ -230,15 +225,8 @@ namespace WebBiHuGadget.Controllers
                     }
                     return DeleteMarkContent(attendanceModel.AttendanceId, msg);
                 case MarkIUD.Insert:
-                    if (this.Account.UserName.Equals(attendanceModel))
-                        attendanceModel.UserId = this.Account.UserId;
                     return AddMarkContent(attendanceModel, msg);
                 case MarkIUD.Update:
-                    if (request.UserId <= 0 || request.UserId != this.Account.UserId)
-                    {
-                        msg.MsgContent = "当前操作的用户打卡备注与登录用户不同，请使用正确的账号登录";
-                        return Json(msg, JsonRequestBehavior.AllowGet);
-                    }
                     return EditMarkContent(attendanceModel, msg);
             }
             msg.MsgContent = "未知错误!请检查错误日志";
