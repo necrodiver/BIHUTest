@@ -109,9 +109,9 @@ var vm = new Vue({
                 data: fd,
                 success: function (d) {
                     if (d.MsgStatus) {
-                        alert(d.MsgContent);
+                        helper.toolTipBox(d.MsgContent);
                     } else {
-                        alert(d.MsgContent);
+                        helper.toolTipBox(d.MsgContent);
                     }
                 }
             });
@@ -143,7 +143,7 @@ var vm = new Vue({
         selectMonthData: function () {
             var thisMonthNum = parseInt(this.selectMonth);
             if (thisMonthNum <= 0 || thisMonthNum > 12) {
-                return alert("请正确选择月份");
+                return helper.toolTipBox("请正确选择月份");
             }
             //这里进行数据获取
             this.userMounths = [];
@@ -168,10 +168,10 @@ var vm = new Vue({
             });
             req.done(function (res) {
                 if (res == null || res == "") {
-                    return alert("操作失败");
+                    return helper.toolTipBox("操作失败");
                 }
                 if (!res.MsgStatus) {
-                    return alert(res.MsgContent);
+                    return helper.toolTipBox(res.MsgContent);
                 }
                 localStorage.setItem(_self.selectMonth, JSON.stringify(res.MsgContent));
                 _self.userPunchCards = res.MsgContent;
@@ -184,7 +184,7 @@ var vm = new Vue({
             dt.UserName = this.userName;
             var temporary = this.userPunchCards[this.userName];
             if (temporary == undefined || temporary == null || temporary['day_1'].day != 1) {
-                return alert("错误用户名！");
+                return helper.toolTipBox("错误用户名！");
             }
             dt.__RequestVerificationToken = __RequestVerificationToken;
             if (dt.AttendanceId == -1 || dt.markIUD == -1 || dt.TimeSlot == -1 || dt.UDayStateId == -1) {
@@ -202,9 +202,9 @@ var vm = new Vue({
             });
             req.done(function (res) {
                 if (res == null || res == "") {
-                    return alert("操作失败");
+                    return helper.toolTipBox("操作失败");
                 }
-                return alert(res.MsgContent);
+                return helper.toolTipBox(res.MsgContent);
             });
             req.always(function () {
                 _self.getUserMarkData();
@@ -332,13 +332,13 @@ var vm = new Vue({
                 ok: function () {
                     var item = _self.isMarkData2(val, solt);
                     if (item == 0)
-                        return;//数据错误！！
+                        return helper.toolTipBox("数据错误");
                     if (item && item.length > 0) {
                         _self.addMarkData = item[0];
                         _self.addMarkData.markIUD = 0;
                         _self.saveMark();
                     }
-                    //这里直接提示数据错误！
+                    return helper.toolTipBox("数据错误");
                 },
                 cancel: function () {
                 }
