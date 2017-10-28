@@ -77,6 +77,7 @@
             -ms-transform: scale(1.5);
             transform: scale(1.5);
         }
+
     .day-ismark { /*有备注*/
         background-color: #0d9b25;
     }
@@ -102,6 +103,17 @@
         font-weight: 700;
         padding-left: 4px;
         padding-right: 4px;
+    }
+
+    .group1 {
+        margin-top: 0 !important;
+        margin-bottom: 0 !important;
+    }
+
+    .daycount {
+        font-size: 22px;
+        font-weight: 700;
+        border-bottom: 1px dashed red;
     }
 </style>
 
@@ -145,11 +157,13 @@
     <div class="ui segment">
         <a class="ui ribbon label">查询</a>
         <div class="left22">
-            <div class="seven column ui grid container stackable">
-                <div class="column">迟到：<strong>5/60</strong></div>
-                <div class="column">早退：<strong>8/60</strong></div>
-                <div class="column">未打卡：<strong>3/60</strong></div>
-                <div class="column">加班：<strong>2/60</strong></div>
+            <div class="six column ui grid stackable group1" v-if="dk">
+                <div class="column">迟到：<label v-bind:class="{'daycount':dk.chidao>0}">{{dk.chidao}}</label>/{{dk.oneMonthCount}}</div>
+                <div class="column">早退：<label v-bind:class="{'daycount':dk.zaotui>0}">{{ dk.zaotui}}</label>/{{dk.oneMonthCount}}</div>
+                <div class="column">早回家：<label v-bind:class="{'daycount':dk.zaoxiaban>0}">{{ dk.zaoxiaban}}</label>/{{dk.oneMonthCount}}</div>
+                <div class="column">未打卡：<label v-bind:class="{'daycount':dk.weidaka>0}">{{dk.weidaka}}</label>/{{dk.oneMonthCount}}</div>
+                <div class="column">整天未到：<label v-bind:class="{'daycount':dk.zhengtianweidaka>0}">{{dk.zhengtianweidaka}}</label>/{{dk.oneMonthCount}}</div>
+                <div class="column">加班：<label v-bind:class="{'daycount':dk.jiaban>0}">{{dk.jiaban}}</label>/{{dk.oneMonthCount}}</div>
             </div>
             <div class="ui stackable">
                 <div class="ui selection dropdown medium small">

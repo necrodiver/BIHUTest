@@ -14,6 +14,7 @@ namespace WebBiHuGadget.Controllers
     public class AnalysisExcelController : BaseController
     {
         private Attendance_Bll attendanceBll = new Attendance_Bll();
+        private User_Bll userBll = new User_Bll();
         string BasePath = AppDomain.CurrentDomain.BaseDirectory + "XLS\\";
         string fileType = ".xls";
         public AnalysisExcelController()
@@ -185,10 +186,38 @@ namespace WebBiHuGadget.Controllers
                 ClockContent = request.ClockContent,
                 UserId = request.UserId
             };
+
+            #region 查询当前用户信息
+            if (!request.UserName.Equals(Account.UserName) && Account.RoleId > 1)
+            {
+                msg.MsgContent = "你的权限不足以操作别人的打卡备注！";
+                return Json(msg, JsonRequestBehavior.AllowGet);
+            }
+            try
+            {
+                var userModel = userBll.GetSingleUser(new UserModel
+                {
+                    UserName = request.UserName
+                });
+                if (userModel == null)
+                {
+                    msg.MsgContent = "当前操作打卡备注的用户不存在！";
+                    return Json(msg, JsonRequestBehavior.AllowGet);
+                }
+                attendanceModel.UserId = userModel.UserId;
+            }
+            catch (Exception ex)
+            {
+                Log4NetHelper.Error("查询打卡备注用户信息出错：" + request.UserName + "  错误信息：" + ex.ToString());
+                msg.MsgContent = "查询打卡备注用户出错！请查看日志";
+                return Json(msg, JsonRequestBehavior.AllowGet);
+            }
+            #endregion
+
             switch (request.MarkIUD)
             {
                 case MarkIUD.Delete:
-                    if (request.UserId <= 0 || request.UserId != this.Account.UserId)
+                    if (request.UserId <= 0 || request.UserId != Account.UserId)
                     {
                         msg.MsgContent = "当前操作的用户打卡备注与登录用户不同，请使用正确的账号登录";
                         return Json(msg, JsonRequestBehavior.AllowGet);
@@ -201,7 +230,8 @@ namespace WebBiHuGadget.Controllers
                     }
                     return DeleteMarkContent(attendanceModel.AttendanceId, msg);
                 case MarkIUD.Insert:
-                    attendanceModel.UserId = this.Account.UserId;
+                    if (this.Account.UserName.Equals(attendanceModel))
+                        attendanceModel.UserId = this.Account.UserId;
                     return AddMarkContent(attendanceModel, msg);
                 case MarkIUD.Update:
                     if (request.UserId <= 0 || request.UserId != this.Account.UserId)

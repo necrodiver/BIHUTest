@@ -45,7 +45,8 @@ var vm = new Vue({
             ClockTime: '', //记录日期
             TimeSlot: -1,//时间段:全天,上午,下午
             UDayStateId: 0,//打卡状态
-            ClockContent: ''//备注说明
+            ClockContent: '',//备注说明
+            UserName: ''
         },
         addMarkInit: {
             AttendanceId: -1,//打卡备注Id
@@ -54,7 +55,8 @@ var vm = new Vue({
             ClockTime: '', //记录日期
             TimeSlot: -1,//时间段:全天,上午,下午
             UDayStateId: 0,//打卡状态
-            ClockContent: ''//备注说明
+            ClockContent: '',//备注说明
+            UserName: ''
         },
         selectMarkData: {
             year: 2017,
@@ -64,7 +66,16 @@ var vm = new Vue({
         showSingleDayRemark: [],//展示单天的打卡记录
         markStateList: ["请选择备注类别", "迟到", "早退", "早回家", "正常", "加班", "请假", "忘打卡"],
         cssMarkList: ['day-ismark', 'day-late', 'day-early', 'day-noclock'],
-        markDatas: []
+        markDatas: [],
+        dk: {
+            chidao: 0,
+            zaotui: 0,
+            zaoxiaban: 0,
+            weidaka: 0,
+            zhengtianweidaka: 0,
+            jiaban: 0,
+            oneMonthCount: 0
+        }
     },
     components: {//组件
 
@@ -126,6 +137,7 @@ var vm = new Vue({
                 this.userMounths = temporary;
                 this.selectMarkData.userName = this.userName;
                 this.getUserMarkData();//获取打卡备注
+                this.getCZWJ();//获取迟到早退未打卡加班内容集合
             }
         },
         selectMonthData: function () {
@@ -169,6 +181,11 @@ var vm = new Vue({
         saveMark: function () {
             var _self = this;
             var dt = $.extend({}, this.addMarkData);
+            dt.UserName = this.userName;
+            var temporary = this.userPunchCards[this.userName];
+            if (temporary == undefined || temporary == null || temporary['day_1'].day != 1) {
+                return alert("错误用户名！");
+            }
             dt.__RequestVerificationToken = __RequestVerificationToken;
             if (dt.AttendanceId == -1 || dt.markIUD == -1 || dt.TimeSlot == -1 || dt.UDayStateId == -1) {
                 dt.AttendanceId = null;
@@ -252,6 +269,7 @@ var vm = new Vue({
         },
         getUserMarkData: function () {
             var _self = this;
+            this.markDatas = [];
             var req = $.ajax({
                 type: 'POST',
                 url: bhConfig.GetUserMarkData,
@@ -261,12 +279,10 @@ var vm = new Vue({
             });
             req.done(function (res) {
                 if (res == null || res == "") {
-                    return alert("获取用户列表失败");
+                    return;
                 }
                 if (res.MsgStatus)
                     _self.markDatas = res.MsgContent;
-                else
-                    alert(res.MsgContent);
             });
             req.always(function () {
                 $('.body-Day .titlec')
@@ -339,6 +355,51 @@ var vm = new Vue({
             } else if (item == 0) {
                 return this.cssMarkList[3];
             }
+        },
+        getCZWJ: function (item) {
+            var list = $.extend({}, this.userMounths);
+            var chidao = 0, zaotui = 0, zaoxiaban = 0, weidaka = 0, jiaban = 0, zhengtianweidaka = 0, oneMonthCount = 0;
+            for (val in list) {
+                var child = list[val];
+                if (child.status == 1) {
+                    oneMonthCount++;
+                    if (child.UserLeft == undefined || child.UserLeft == null)
+                        weidaka++;
+                    else if (child.UserLeft.status == -3)
+                        chidao++;
+                    else if (child.UserLeft.status == -2)
+                        zaotui++;
+                    else if (child.UserLeft.status == -1)
+                        zaoxiaban++;
+                    else if (child.UserLeft.status == 0)
+                        weidaka++;
+                    else if (child.UserLeft.status == 2)
+                        jiaban++;
+
+                    if (child.UserRight == undefined || child.UserRight == null)
+                        weidaka++;
+                    else if (child.UserRight.status == -3)
+                        chidao++;
+                    else if (child.UserRight.status == -2)
+                        zaotui++;
+                    else if (child.UserRight.status == -1)
+                        zaoxiaban++;
+                    else if (child.UserRight.status == 0)
+                        weidaka++;
+                    else if (child.UserRight.status == 2)
+                        jiaban++;
+                } else if (child.status == 0) {
+                    zhengtianweidaka++;
+                    oneMonthCount++;
+                }
+            }
+            this.dk.chidao = chidao;
+            this.dk.zaotui = zaotui;
+            this.dk.zaoxiaban = zaoxiaban;
+            this.dk.weidaka = weidaka;
+            this.dk.zhengtianweidaka = zhengtianweidaka;
+            this.dk.jiaban = jiaban;
+            this.dk.oneMonthCount = oneMonthCount * 2;
         }
     }
 });

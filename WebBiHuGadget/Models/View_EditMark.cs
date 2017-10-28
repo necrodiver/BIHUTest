@@ -50,6 +50,10 @@ namespace WebBiHuGadget.Models
         [DisplayName("备注说明")]
         [MaxLength(100, ErrorMessage = "{0}请务必简要描述")]
         public string ClockContent { get; set; }
+        [DisplayName("姓名")]
+        [Required(ErrorMessage = "{0}是必须的")]
+        [StringLength(5, MinimumLength = 2, ErrorMessage = "{0}长度错误")]
+        public string UserName { get; set; }
 
     }
     /// <summary>
@@ -61,5 +65,5 @@ namespace WebBiHuGadget.Models
         Insert = 1,
         Update = 2
     }
-    
+
 }
