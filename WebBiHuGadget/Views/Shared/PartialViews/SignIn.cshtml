@@ -24,6 +24,17 @@
 </div>
 <script>
     var _token = $('input[name="__RequestVerificationToken"]').val();
+    function bindLogin() {
+        $('#loginIn')
+            .dropdown({
+                onChange: function (value) {
+                    if (value == 1)
+                        location.href = "@Url.Action("Index","MyCenter")";
+                    if (value == 2)
+                        location.href='@Url.Action("SingleOut","Home")'
+                }
+            });
+    }
     var vmLogin = new Vue({
         el: '#menu',
         data: function () {
@@ -111,6 +122,10 @@
                 _self.User.Pwd = $(this).val();
             });
             $('#showLogin').text(_self.loginName);
+            bindLogin();
         }
+    });
+    $(function () {
+        bindLogin();
     });
 </script>

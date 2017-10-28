@@ -9,4 +9,8 @@
                 .siblings()
                 .removeClass('active');
         });
+    $('.combo.dropdown')
+        .dropdown({
+            action: 'combo'
+        });
 });
