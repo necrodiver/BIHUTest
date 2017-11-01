@@ -18,7 +18,7 @@ namespace WebBiHuGadget.Controllers
         }
 
         [HttpPost]
-        public JsonResult GetUserList()
+        public JsonResult GetAnalysisUserList()
         {
             MessageModel msgModel = new MessageModel();
             msgModel.MsgTitle = "统计数据";

@@ -31,6 +31,9 @@ namespace WebBiHuGadget
 
             bundles.Add(new ScriptBundle("~/bundles/analysis").Include(
                         "~/Scripts/ctrl/analysisExcel.js"));
+            //组件
+            bundles.Add(new ScriptBundle("~/bundles/component").Include(
+                        "~/Scripts/component/vue-pagination.js"));
         }
     }
 }

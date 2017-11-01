@@ -387,6 +387,7 @@
     <Content Include="ApplicationInsights.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Scripts\component\vue-pagination.js" />
     <Content Include="Scripts\ctrl\analysisExcel.js" />
     <Content Include="Scripts\ctrl\bhConfig.js" />
     <Content Include="Scripts\ctrl\helper.js" />

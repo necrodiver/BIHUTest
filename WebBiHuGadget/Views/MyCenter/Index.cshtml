@@ -1,8 +1,258 @@
-﻿
-@{
+﻿@{
     ViewBag.Title = "个人中心";
 }
-<div>
+@Scripts.Render("~/bundles/component")
+@Html.AntiForgeryToken()
+<style type="text/css">
 
+</style>
+<div id="vue2" v-cloak>
+    <div class="ui secondary pointing menu">
+        <a class="item active" v-on:click="isShow=1">员工管理 </a>
+        <a class="item" v-on:click="isShow=2">考勤备注列表 </a>
+    </div>
+    <div v-if="isShow==1">
+        <div class="height15"></div>
+        <div class="left22">
+            <table class="ui selectable celled table">
+                <thead>
+                    <tr>
+                        <th colspan="6">
+                            <div class="ui left floated small red labeled icon button" v-on:click="deleteList"><i class="remove icon"></i> 删除用户 </div>
+                            <div class="ui icon input small left">
+                                <input type="text" v-model="req.userName" placeholder="请输入查询的用户名" maxlength="6">
+                                <i class="search icon"></i>
+                            </div>
+                            <div class="ui right floated small primary labeled icon button"><i class="add icon"></i> 添加用户 </div>
+                        </th>
+                    </tr>
+                    <tr>
+                        <th class="one"><input type="checkbox" class="select-parent" v-on:click="checkSelectAll($event)" /></th>
+                        <th class="two">姓名</th>
+                        <th class="three">邮箱地址(登录名)</th>
+                        <th class="three">创建时间</th>
+                        <th class="five">操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="(item,index) in req.selectUserList">
+                        <td class="collapsing"><input class="select-item" type="checkbox" v-on:click="checkSelect(item,$event)" /></td>
+                        <td>{{item.UserName}}</td>
+                        <td>{{item.Email}}</td>
+                        <td>{{item.CreateTime}}</td>
+                        <td>操作按钮</td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <th colspan="6">
+                            <pagination class="right" v-bind:pages="req.pageNum" v-bind:current.sync="req.pageIndex" v-on:navpage="paging"></pagination>
+                        </th>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+    <div v-if="isShow==2">
+        <div class="height15"></div>
+        <div class="left22">
+            <table class="ui celled table">
+                <thead>
+                    <tr>
+                        <th>姓名</th>
+                        <th>日期</th>
+                        <th>具体时间范围</th>
+                        <th>备注类别</th>
+                        <th>备注内容</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Cell</td>
+                        <td>Cell</td>
+                        <td>Cell</td>
+                        <td>Cell</td>
+                        <td>Cell</td>
+                    </tr>
+                    <tr>
+                        <td>Cell</td>
+                        <td>Cell</td>
+                        <td>Cell</td>
+                        <td>Cell</td>
+                        <td>Cell</td>
+                    </tr>
+                    <tr>
+                        <td>Cell</td>
+                        <td>Cell</td>
+                        <td>Cell</td>
+                        <td>Cell</td>
+                        <td>Cell</td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <th colspan="5">
+                            <div class="ui right floated pagination menu">
+                                <a class="icon item">
+                                    <i class="left chevron icon"></i>
+                                </a>
+                                <a class="item">1</a>
+                                <a class="item">2</a>
+                                <a class="item">3</a>
+                                <a class="item">4</a>
+                                <a class="icon item">
+                                    <i class="right chevron icon"></i>
+                                </a>
+                            </div>
+                        </th>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
 </div>
+@Html.AntiForgeryToken()
+<script type="text/javascript">
+    var __RequestVerificationToken = $('input[name="__RequestVerificationToken"]').val();
+    var vm = new Vue({
+        el: '#vue2',
+        data: {
+            isShow: 1,
+            req: {
+                pageIndex: 1,
+                pageNum: 1,
+                pageSize: 5,
+                visiblePage: 3,
+                pageList: {},
+                userName: '',
+                selectUserList: [],
+                totalCount: 0,
+                leftNum: 0,
+                rightNum: 5
+            },
+            userList: [],
+            selectedList: []
+        },
+        mounted: function () {
+            this.getUserList();
+        },
+        methods: {
+            getUserList: function () {
+                var _self = this;
+                var req = $.ajax({
+                    type: 'POST',
+                    url: bhConfig.GetUserList,
+                    data: { __RequestVerificationToken: __RequestVerificationToken },
+                    dataType: "JSON",
+                    cache: false
+                });
+                req.done(function (res) {
+                    if (res == null || res == "")
+                        return helper.toolTipBox("操作失败");
+                    if (res.MsgStatus) {
+                        _self.userList = res.MsgContent;
+                        _self.req.totalCount = res.MsgContent.length;
+                        _self.paging();
+                    }
+                    else
+                        return helper.toolTipBox(res.MsgContent);
+                });
+                req.always(function () {
 
+                });
+            },
+            checkSelect: function (item, event) {
+                var index = this.selectedList.indexOf(item);
+                if ($(event.target).is(":checked")) {
+                    if (index < 0)
+                        this.selectedList.push(item);
+                } else {
+                    $('.select-parent').prop('checked', false);
+                    this.selectedList.splice(index, 1);
+                }
+                if (this.selectedList.length == this.req.cutLength) {
+                    $('.select-parent').prop('checked', true);
+                    this.selectedList = $.extend([], this.req.selectUserList);
+                }
+
+                console.log(this.selectedList);
+            },
+            checkSelectAll: function (event) {
+                if ($(event.target).is(":checked"))
+                    this.selectedList = $.extend([], this.req.selectUserList);
+                else
+                    this.selectedList = [];
+                $('.select-item').prop('checked', $(event.target).is(":checked"));
+                console.log(this.selectedList);
+            },
+            paging: function (pageIndex) {
+                if (pageIndex == undefined) {
+                    this.req.pageIndex = 1;
+                } else {
+                    this.req.pageIndex = pageIndex;
+                }
+                if (this.req.pageIndex <= 0)
+                    this.req.pageIndex = 1;
+                var maxPage = parseInt(this.req.totalCount / this.req.pageSize);
+                var mod = this.req.totalCount % this.req.pageSize;
+                mod > 0 ? ++maxPage : maxPage;
+                this.req.pageNum = maxPage;
+
+                if (this.req.pageIndex > maxPage)
+                    this.req.pageIndex = maxPage;
+
+                var leftLength = (this.req.pageIndex - 1) * this.req.pageSize;
+                var rightLength = this.req.pageIndex * this.req.pageSize;
+                if (this.req.pageIndex == maxPage) {
+                    rightLength = this.req.totalCount;
+                }
+                this.req.cutLength = rightLength - leftLength;
+                this.req.selectUserList = this.userList.slice(leftLength, rightLength);
+                $('.select-item').prop('checked', false);
+                $('.select-parent').prop('checked', false);
+            },
+            selectOneUser: function (userName) {
+                if (userName == undefined || userName == '') {
+                    return this.paging(1);
+                }
+                var thisUser = this.userList.filter(function (item) {
+                    return item.UserName == userName;
+                });
+                if (thisUser) {
+                    this.selectedList = [];
+                    this.req.selectUserList = thisUser;
+                    this.req.cutLength = 1;
+                    $('.select-item').prop('checked', false);
+                    $('.select-parent').prop('checked', false);
+                }
+            },
+            deleteList: function () {
+                if (this.selectedList.length == 0) {
+                    return helper.toolTipBox('请先选择要删除的项');
+                }
+                dialog({
+                    title: '删除提示',
+                    content: '你确定要删除选中的用户?',
+                    ok: function () {
+                        return helper.toolTipBox("这里需要执行删除操作");
+                    },
+                    cancel: function () { }
+                }).show();
+            }
+        },
+        watch: {
+            'req.userName': function (newVal, oldVal) {
+                if (newVal && newVal != oldVal && newVal.length >= 2) {
+                    var thisUser = this.userList.filter(function (item) {
+                        return item.UserName == newVal;
+                    });
+                    if (thisUser != [] && thisUser.length > 0)
+                        return this.selectOneUser(newVal);
+                }
+                if (oldVal && newVal.length < oldVal.length) {
+                    this.paging(1);
+                }
+            }
+        }
+    });
+</script>

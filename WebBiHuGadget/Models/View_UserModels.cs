@@ -9,6 +9,7 @@ namespace WebBiHuGadget.Models
     public class View_UserModels
     {
     }
+    #region 登录传输内容
     public class View_Login
     {
         [Required(AllowEmptyStrings = false, ErrorMessage = "邮箱不能为空")]
@@ -39,4 +40,6 @@ namespace WebBiHuGadget.Models
             return false;
         }
     }
+    #endregion
+
 }

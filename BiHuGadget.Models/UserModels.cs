@@ -68,4 +68,12 @@ namespace BiHuGadget.Models
         /// </summary>
         public List<AuthorityModel> AuthorityList { get; set; }
     }
+    public class UserViewModel
+    {
+        public int UserId { get; set; }
+        public string UserName { get; set; }
+        public string Email { get; set; }
+        public int RoleId { get; set; }
+        public string CreateTime { get; set; }
+    }
 }

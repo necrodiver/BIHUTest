@@ -123,6 +123,7 @@
         {
             <div class="ui segment">
                 <a class="ui ribbon label">上传考勤文件</a><br />
+                <div class="height15"></div>
                 <div class="left22">
                     <div>文件命名：小写月份数字加汉字"月考勤"组成的xls文件，例如:7月考勤.xls</div>
                     <input id="xlsSelect" type="file" accept="application/vnd.ms-excel" name="file" />
@@ -139,6 +140,7 @@
 
     <div class="ui segment">
         <a class="ui ribbon label">展示说明</a>
+        <div class="height15"></div>
         <div class="content-color">
             <div class="width13 left">外框：</div>
             <div class="width13 color-0 left">未到</div>
@@ -202,7 +204,8 @@
                     <div v-for="child in userMounths" class="left length titlec" v-bind:class="'color-'+child.status" v-bind:title="getMarkTitle(child,0)">
                         <div class="" v-bind:class="{'select-day':child.status!=1&&child.status!=2}" v-on:click="selectMark(child,0)">
                             <strong v-if="child.status!=2">{{child.day}}</strong>
-                            <div v-if="child.status==2" style="color:#ccc;">{{child.day}} 休</div>
+                            <div v-if="child.status==2&&child.dayOfWeek==7" style="color:#ccc;">{{child.day}} 休</div>
+                            <div v-if="child.status==2&&child.dayOfWeek!=7" style="color:#ccc;">{{child.day}} 假</div>
                             <div v-if="isMarkData(child,-1)" class="pull-right day-ismark">注</div>
                         </div>
                         <div class="padding-center child-0 titlec"

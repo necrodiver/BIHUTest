@@ -70,7 +70,7 @@ namespace BiHuGadget.Helpers
                         }
                         if (isLastDay)
                         {
-                            if (list1.Count < j + 2 && Convert.ToDateTime(list1[j + 1].PunchCardTime).Day != i && Convert.ToDateTime(list1[j + 2].PunchCardTime).Day != i)
+                            if (list1.Count > j + 2 && Convert.ToDateTime(list1[j + 1].PunchCardTime).Day != i && Convert.ToDateTime(list1[j + 2].PunchCardTime).Day != i)
                             {
                                 userList.Add(new User
                                 {

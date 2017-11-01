@@ -2,7 +2,7 @@
     ViewBag.Title = "考勤统计";
     ViewBag.AnalysisStatistic = "active";
 }
-@Scripts.Render("~/bundles/require")
+@*@Scripts.Render("~/bundles/require")*@
 <script src="@Url.Content("~/Scripts/ECharts/echarts.js")"></script>
 <div id="statistics">
     <div class="ui secondary pointing menu">
@@ -90,10 +90,6 @@
     </div>
 </div>
 <script>
-
-    @*$.get("@Url.Action("GetUserList", "AnalysisStatistic")", null, function (data) {
-        var d = data;
-    });*@
     var vm = new Vue({
         el: '#statistics',
         data: function () {
@@ -163,7 +159,7 @@
                 var _self = this;
                 this.oneUserList = [];
                 $.ajax({
-                    url: bhConfig.getUsersList,
+                    url: bhConfig.getAnalysisUserList,
                     type: "POST",
                     processData: false,
                     contentType: false,

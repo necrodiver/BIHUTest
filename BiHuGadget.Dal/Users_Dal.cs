@@ -14,13 +14,17 @@ namespace BiHuGadget.Dal
         public UserModel GetSingleUser(UserModel userModel)
         {
             string _where = string.Empty;
-            if (_where == null)
-                return null;
             var _args = DisposeUserModel(userModel, out _where);
             string _sql = string.Format(User_QueryString.Select_User, _where);
             return GetSingle<UserModel>(_sql, _args);
         }
-
+        public List<UserModel> GetListUser(UserModel userModel)
+        {
+            string _where = string.Empty;
+            var _args = DisposeUserModel(userModel, out _where);
+            string _sql = string.Format(User_QueryString.Select_User, _where);
+            return GetList<UserModel>(_sql, _args);
+        }
         /// <summary>
         /// 处理UserModel，拼接where条件
         /// </summary>
@@ -69,11 +73,6 @@ namespace BiHuGadget.Dal
             sb.Append(" 1=1");
             where = sb.ToString();
             return args;
-        }
-
-        public List<UserModel> GetListUser(UserModel userModel)
-        {
-            throw new NotImplementedException();
         }
     }
     public static class User_QueryString
