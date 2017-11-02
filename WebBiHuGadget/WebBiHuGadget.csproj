@@ -464,7 +464,6 @@
     <Content Include="Views\AnalysisExcel\Index.cshtml" />
     <Content Include="Views\AnalysisStatistic\Index.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
-    <Content Include="Views\Shared\PartialViews\AnalysisExcel.cshtml" />
     <Content Include="Views\Shared\PartialViews\SignIn.cshtml" />
     <Content Include="XLS\5月考勤.xls" />
     <Content Include="XLS\6月考勤.xls" />
