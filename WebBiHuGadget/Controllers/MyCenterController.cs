@@ -4,8 +4,8 @@ using BiHuGadget.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
+using WebBiHuGadget.Models;
 
 namespace WebBiHuGadget.Controllers
 {
@@ -57,6 +57,32 @@ namespace WebBiHuGadget.Controllers
                 Log4NetHelper.Error("获取用户列表错误：" + ex.ToString());
             }
             msg.MsgContent = "获取用户列表出错，请查看日志检查错误";
+            return Json(msg, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost, ValidateAntiForgeryToken, ModelValidationMVCFilter]
+        public JsonResult AddUserList(UserNameModel userNameModel)
+        {
+            var userNames = userNameModel.UserNames.Split(',').ToList<string>();
+            var userNameList = ChineseTransformPinYinHelper.TransFormUserEmailList(userNames);
+            MessageModel msg = new MessageModel();
+            msg.MsgTitle = "批量新增用户";
+            msg.MsgStatus = false;
+            try
+            {
+                if (userBll.AddUserList(userNameList))
+                {
+                    msg.MsgContent = "批量添加成功";
+                    msg.MsgStatus = true;
+                    return Json(msg, JsonRequestBehavior.AllowGet);
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+            msg.MsgContent = "添加失败,你可以查看日志来检查错误";
             return Json(msg, JsonRequestBehavior.AllowGet);
         }
     }

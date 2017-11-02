@@ -33,6 +33,9 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="ChnCharInfo, Version=1.0.0.0, Culture=neutral, PublicKeyToken=18f031bd02e5e291, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.International.Converters.PinYinConverter.1.0.0\lib\ChnCharInfo.dll</HintPath>
+    </Reference>
     <Reference Include="ICSharpCode.SharpZipLib, Version=0.86.0.518, Culture=neutral, PublicKeyToken=1b03e6acf1164f73, processorArchitecture=MSIL">
       <HintPath>..\packages\SharpZipLib.0.86.0\lib\20\ICSharpCode.SharpZipLib.dll</HintPath>
     </Reference>
@@ -69,6 +72,7 @@
     <Compile Include="AESHelper.cs" />
     <Compile Include="AnalysisStatistics.cs" />
     <Compile Include="CacheHelper.cs" />
+    <Compile Include="ChineseTransformPinYinHelper.cs" />
     <Compile Include="CookieHelper.cs" />
     <Compile Include="FilterHelper.cs" />
     <Compile Include="Log4NetHelper.cs" />

@@ -20,7 +20,8 @@ var bhConfig = defineConst({
     GetMonthData: "/AnalysisExcel/GetMonthData",//获取考勤数据
     EditMarkStatus: "/AnalysisExcel/EditMarkStatus",//操作打卡备注(增删改)
     GetUserMarkData: '/AnalysisExcel/GetUserMarkData',//获取用户打卡年记录
-    GetUserList:'/MyCenter/GetUserList'//获取用户列表
+    GetUserList: '/MyCenter/GetUserList',//获取用户列表
+    AddUserList:'/MyCenter/AddUserList'//添加用户集合
 });
 window.bhConfig = bhConfig;
 

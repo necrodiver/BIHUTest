@@ -38,5 +38,12 @@ namespace BiHuGadget.Bll
                 return false;
             return true;
         }
+
+        public bool AddUserList(List<KVModel> userNameList)
+        {
+            //INSERT INTO MyTable(ID, NAME) VALUES(7, '003'),(8, '004'),(9, '005');
+            //UserModel 
+            return false;
+        }
     }
 }

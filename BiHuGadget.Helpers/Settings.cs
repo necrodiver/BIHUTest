@@ -32,5 +32,9 @@ namespace BiHuGadget.Helpers
             }
         }
         public static readonly string AccountSessionKey = "Account";
+        /// <summary>
+        /// 邮箱后边域名
+        /// </summary>
+        public static readonly string EmailOrg =Convert.ToString(AppSettings["EmailOrg"]);
     }
 }

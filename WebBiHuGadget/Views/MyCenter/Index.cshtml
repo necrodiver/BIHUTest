@@ -23,15 +23,15 @@
                                 <input type="text" v-model="req.userName" placeholder="请输入查询的用户名" maxlength="6">
                                 <i class="search icon"></i>
                             </div>
-                            <div class="ui right floated small primary labeled icon button"><i class="add icon"></i> 添加用户 </div>
+                            <div class="ui right floated small green labeled icon button" v-on:click="showEditUserBox(1)"><i class="add icon"></i> 添加用户 </div>
                         </th>
                     </tr>
                     <tr>
-                        <th class="one"><input type="checkbox" class="select-parent" v-on:click="checkSelectAll($event)" /></th>
-                        <th class="two">姓名</th>
-                        <th class="three">邮箱地址(登录名)</th>
-                        <th class="three">创建时间</th>
-                        <th class="five">操作</th>
+                        <th><input type="checkbox" class="select-parent" v-on:click="checkSelectAll($event)" /></th>
+                        <th class="two wide">姓名</th>
+                        <th class="six wide">邮箱地址(登录名)</th>
+                        <th class="six wide">创建时间</th>
+                        <th class="two wide">操作</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -40,7 +40,14 @@
                         <td>{{item.UserName}}</td>
                         <td>{{item.Email}}</td>
                         <td>{{item.CreateTime}}</td>
-                        <td>操作按钮</td>
+                        <td>
+                            <button class="ui icon button mini basic blue" v-on:click="showEditUserBox(0,item)">
+                                <i class="edit icon"></i>
+                            </button>
+                            <button class="ui icon button mini basic red" v-on:click="deleteUser(item)">
+                                <i class="trash outline icon"></i>
+                            </button>
+                        </td>
                     </tr>
                 </tbody>
                 <tfoot>
@@ -110,6 +117,34 @@
             </table>
         </div>
     </div>
+
+    <div class="ui small modal" id="editUser">
+        <div class="header" id="editUser-header">
+        </div>
+        <div class="content ui form" v-if="editUser">
+            <div id="add-user" class="field">
+                <textarea rows="2" maxlength="1000" placeholder="这里填写新增的用户姓名，单个用户请直接输入用户姓名，多个用户请使用英文逗号分隔(例如：张三,李四,王五)，最多可输入1000个字符" id="markReason" v-model="editUser.addUsers"></textarea>
+            </div>
+            <div id="edit-user">
+                <div class="field"> <strong>用户姓名：{{editUser.editUser.UserName}}</strong></div>
+                <div class="field">
+                    <div class="ui input focus">
+                        <input type="text" maxlength="50" placeholder="输入新的登录邮箱地址,不填写默认不更新" v-model="editUser.editUser.Email">
+                    </div>
+                </div>
+                <div class="field">
+                    <div class="ui input focus">
+                        <input type="password" maxlength="20" placeholder="输入新的密码,不填写默认不更新" v-model="editUser.pwd">
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="actions">
+            <div class="ui cancel button" id="btnCancle">取消 </div>
+            <div class="ui positive right labeled icon button">确定 <i class="checkmark icon"></i> </div>
+        </div>
+    </div>
 </div>
 @Html.AntiForgeryToken()
 <script type="text/javascript">
@@ -131,9 +166,15 @@
                 rightNum: 5
             },
             userList: [],
-            selectedList: []
+            selectedList: [],
+            editUser: {
+                editUser: {},
+                addUsers: '',
+                isAdd: 1
+            }
         },
         mounted: function () {
+            init(this);
             this.getUserList();
         },
         methods: {
@@ -238,6 +279,51 @@
                     },
                     cancel: function () { }
                 }).show();
+            },
+            showEditUserBox: function (isAdd, item) {
+                $('#editUser').modal('show');
+                this.editUser.boxTitle = isAdd ? "新增用户" : "修改用户";
+                this.editUser.isAdd = isAdd;
+                if (isAdd) {
+                    $('#add-user').css('display', 'block');
+                    $('#edit-user').css('display', 'none');
+                    this.editUser.editUser = {};
+                } else {
+                    $('#add-user').css('display', 'none');
+                    $('#edit-user').css('display', 'block');
+                    this.editUser.editUser = item;
+                }
+                $('#editUser-header').text(this.editUser.boxTitle);
+            },
+            deleteOneUser(item) {
+                //这里删除操作
+            },
+            editUserOperate: function () {
+                //这里需要进行数据操作，新增或者修改
+                if (this.editUser.isAdd) {
+                    this.addUserList();
+                }
+            },
+            addUserList: function () {
+                var _self = this;
+                var req = $.ajax({
+                    type: 'POST',
+                    url: bhConfig.AddUserList,
+                    data: {
+                        __RequestVerificationToken: __RequestVerificationToken,
+                        UserNames: this.editUser.addUsers
+                    },
+                    dataType: "JSON",
+                    cache: false
+                });
+                req.done(function (res) {
+                    if (res == null || res == "")
+                        return helper.toolTipBox("操作失败");
+                    return helper.toolTipBox(res.MsgContent);
+                });
+                req.always(function () {
+
+                });
             }
         },
         watch: {
@@ -255,4 +341,17 @@
             }
         }
     });
+    function init(_self) {
+        $('#editUser')
+            .modal({
+                blurring: true,
+                onDeny: function () {
+                    //这里调用取消
+                },
+                onApprove: function () {
+                    _self.editUserOperate();
+                }
+            })
+            .modal('hide');
+    }
 </script>
