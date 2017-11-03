@@ -14,7 +14,7 @@ namespace BiHuGadget.Helpers
         public static List<KVModel> TransFormUserEmailList(List<string> strList)
         {
             var list = TransfromPinYin(strList);
-            list = list.ConvertAll(l => new KVModel { Key = l.Key, Value = l.Value + Settings.EmailOrg });
+            list = list.ConvertAll(l => new KVModel { Key = l.Key, Value = l.Value, Value2 = l.Value + Settings.EmailOrg });
             return list;
         }
         /// <summary>
@@ -26,6 +26,7 @@ namespace BiHuGadget.Helpers
         {
             if (strList == null)
                 return null;
+            strList = strList.Where((a, b) => strList.FindIndex(c => a == c) == b).ToList<string>();
             List<KVModel> pinyinList = new List<KVModel>();
             foreach (var item in strList)
             {
@@ -48,8 +49,8 @@ namespace BiHuGadget.Helpers
                 });
             }
             if (pinyinList != null)
-                pinyinList = pinyinList.ConvertAll<KVModel>(p => new KVModel { Key = p.Key, Value = Regex.Replace(p.Value, @"\d", "").ToLower() });
-            //pinyinList.ConvertAll(p => Regex.Replace(p.Value, @"\d", "").ToLower());
+                pinyinList = pinyinList.ConvertAll(p => new KVModel { Key = p.Key, Value = Regex.Replace(p.Value, @"\d", "").ToLower() });
+
             return pinyinList;
         }
         /// <summary>

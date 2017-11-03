@@ -8,116 +8,129 @@
 </style>
 <div id="vue2" v-cloak>
     <div class="ui secondary pointing menu">
-        <a class="item active" v-on:click="isShow=1">员工管理 </a>
-        <a class="item" v-on:click="isShow=2">考勤备注列表 </a>
-    </div>
-    <div v-if="isShow==1">
-        <div class="height15"></div>
-        <div class="left22">
-            <table class="ui selectable celled table">
-                <thead>
-                    <tr>
-                        <th colspan="6">
-                            <div class="ui left floated small red labeled icon button" v-on:click="deleteList"><i class="remove icon"></i> 删除用户 </div>
-                            <div class="ui icon input small left">
-                                <input type="text" v-model="req.userName" placeholder="请输入查询的用户名" maxlength="6">
-                                <i class="search icon"></i>
-                            </div>
-                            <div class="ui right floated small green labeled icon button" v-on:click="showEditUserBox(1)"><i class="add icon"></i> 添加用户 </div>
-                        </th>
-                    </tr>
-                    <tr>
-                        <th><input type="checkbox" class="select-parent" v-on:click="checkSelectAll($event)" /></th>
-                        <th class="two wide">姓名</th>
-                        <th class="six wide">邮箱地址(登录名)</th>
-                        <th class="six wide">创建时间</th>
-                        <th class="two wide">操作</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr v-for="(item,index) in req.selectUserList">
-                        <td class="collapsing"><input class="select-item" type="checkbox" v-on:click="checkSelect(item,$event)" /></td>
-                        <td>{{item.UserName}}</td>
-                        <td>{{item.Email}}</td>
-                        <td>{{item.CreateTime}}</td>
-                        <td>
-                            <button class="ui icon button mini basic blue" v-on:click="showEditUserBox(0,item)">
-                                <i class="edit icon"></i>
-                            </button>
-                            <button class="ui icon button mini basic red" v-on:click="deleteUser(item)">
-                                <i class="trash outline icon"></i>
-                            </button>
-                        </td>
-                    </tr>
-                </tbody>
-                <tfoot>
-                    <tr>
-                        <th colspan="6">
-                            <pagination class="right" v-bind:pages="req.pageNum" v-bind:current.sync="req.pageIndex" v-on:navpage="paging"></pagination>
-                        </th>
-                    </tr>
-                </tfoot>
-            </table>
-        </div>
-    </div>
-    <div v-if="isShow==2">
-        <div class="height15"></div>
-        <div class="left22">
-            <table class="ui celled table">
-                <thead>
-                    <tr>
-                        <th>姓名</th>
-                        <th>日期</th>
-                        <th>具体时间范围</th>
-                        <th>备注类别</th>
-                        <th>备注内容</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>Cell</td>
-                        <td>Cell</td>
-                        <td>Cell</td>
-                        <td>Cell</td>
-                        <td>Cell</td>
-                    </tr>
-                    <tr>
-                        <td>Cell</td>
-                        <td>Cell</td>
-                        <td>Cell</td>
-                        <td>Cell</td>
-                        <td>Cell</td>
-                    </tr>
-                    <tr>
-                        <td>Cell</td>
-                        <td>Cell</td>
-                        <td>Cell</td>
-                        <td>Cell</td>
-                        <td>Cell</td>
-                    </tr>
-                </tbody>
-                <tfoot>
-                    <tr>
-                        <th colspan="5">
-                            <div class="ui right floated pagination menu">
-                                <a class="icon item">
-                                    <i class="left chevron icon"></i>
-                                </a>
-                                <a class="item">1</a>
-                                <a class="item">2</a>
-                                <a class="item">3</a>
-                                <a class="item">4</a>
-                                <a class="icon item">
-                                    <i class="right chevron icon"></i>
-                                </a>
-                            </div>
-                        </th>
-                    </tr>
-                </tfoot>
-            </table>
-        </div>
+        <a class="item" v-on:click="isShow=0">个人信息 </a>
+        @if (ViewBag.RoleId == 1)
+        {
+            <a class="item active" v-on:click="isShow=1">员工管理 </a>
+            <a class="item" v-on:click="isShow=2">考勤备注列表 </a>
+        }
     </div>
 
+    <div v-if="isShow==0">
+
+
+    </div>
+    @if (ViewBag.RoleId == 1)
+    {
+        <div v-if="isShow==1">
+            <div class="height15"></div>
+            <div class="left22">
+                <table class="ui selectable celled table">
+                    <thead>
+                        <tr>
+                            <th colspan="6">
+                                <div class="ui left floated small red labeled icon button" v-on:click="deleteUserList"><i class="remove icon"></i> 删除用户 </div>
+                                <div class="ui icon input small left">
+                                    <input type="text" v-model="req.userName" placeholder="请输入查询的用户名" maxlength="6">
+                                    <i class="search icon"></i>
+                                </div>
+                                <div class="ui right floated small green labeled icon button" v-on:click="showEditUserBox(1)"><i class="add icon"></i> 添加用户 </div>
+                            </th>
+                        </tr>
+                        <tr>
+                            <th><input type="checkbox" class="select-parent" v-on:click="checkSelectAll($event)" /></th>
+                            <th class="two wide">姓名</th>
+                            <th class="five wide">邮箱地址(登录名)</th>
+                            <th class="four wide">创建时间</th>
+                            <th class="three wide">角色</th>
+                            <th class="two wide">操作</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-for="(item,index) in req.selectUserList">
+                            <td class="collapsing"><input class="select-item" type="checkbox" v-on:click="checkSelect(item,$event)" /></td>
+                            <td>{{item.UserName}}</td>
+                            <td>{{item.Email}}</td>
+                            <td>{{item.CreateTime}}</td>
+                            <td>{{item.RoleId|RoleTransName}}</td>
+                            <td>
+                                <button class="ui icon button mini basic blue" v-on:click="showEditUserBox(0,item)">
+                                    <i class="edit icon"></i>
+                                </button>
+                                <button class="ui icon button mini basic red" v-on:click="deleteOneUser(item)">
+                                    <i class="trash outline icon"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <th colspan="6">
+                                <pagination class="right" v-bind:pages="req.pageNum" v-bind:current.sync="req.pageIndex" v-on:navpage="paging"></pagination>
+                            </th>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+        <div v-if="isShow==2">
+            <div class="height15"></div>
+            <div class="left22">
+                <table class="ui celled table">
+                    <thead>
+                        <tr>
+                            <th>姓名</th>
+                            <th>日期</th>
+                            <th>具体时间范围</th>
+                            <th>备注类别</th>
+                            <th>备注内容</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Cell</td>
+                            <td>Cell</td>
+                            <td>Cell</td>
+                            <td>Cell</td>
+                            <td>Cell</td>
+                        </tr>
+                        <tr>
+                            <td>Cell</td>
+                            <td>Cell</td>
+                            <td>Cell</td>
+                            <td>Cell</td>
+                            <td>Cell</td>
+                        </tr>
+                        <tr>
+                            <td>Cell</td>
+                            <td>Cell</td>
+                            <td>Cell</td>
+                            <td>Cell</td>
+                            <td>Cell</td>
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <th colspan="5">
+                                <div class="ui right floated pagination menu">
+                                    <a class="icon item">
+                                        <i class="left chevron icon"></i>
+                                    </a>
+                                    <a class="item">1</a>
+                                    <a class="item">2</a>
+                                    <a class="item">3</a>
+                                    <a class="item">4</a>
+                                    <a class="icon item">
+                                        <i class="right chevron icon"></i>
+                                    </a>
+                                </div>
+                            </th>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+    }
     <div class="ui small modal" id="editUser">
         <div class="header" id="editUser-header">
         </div>
@@ -129,12 +142,25 @@
                 <div class="field"> <strong>用户姓名：{{editUser.editUser.UserName}}</strong></div>
                 <div class="field">
                     <div class="ui input focus">
-                        <input type="text" maxlength="50" placeholder="输入新的登录邮箱地址,不填写默认不更新" v-model="editUser.editUser.Email">
+                        <input type="email" maxlength="50" placeholder="输入新的登录邮箱地址,不填写默认不更新" v-model="editUser.editUser.Email">
                     </div>
                 </div>
                 <div class="field">
                     <div class="ui input focus">
-                        <input type="password" maxlength="20" placeholder="输入新的密码,不填写默认不更新" v-model="editUser.pwd">
+                        <input type="password" maxlength="20" placeholder="输入新的密码,不填写默认不更新" v-model="editUser.editUser.Pwd">
+                    </div>
+                </div>
+                <div class="field">
+                    <div class="inline fields">
+                        <label>权限角色(不填为默认)： </label>
+                        <template v-for="i in 3">
+                            <div class="field">
+                                <div class="ui radio checkbox">
+                                    <input type="radio" name="frequency" checked="checked" :value="i" v-model="editUser.editUser.RoleId">
+                                    <label>{{i|RoleTransName}}</label>
+                                </div>
+                            </div>
+                        </template>
                     </div>
                 </div>
             </div>
@@ -153,10 +179,11 @@
         el: '#vue2',
         data: {
             isShow: 1,
+            roleId :@ViewBag.RoleId,
             req: {
                 pageIndex: 1,
                 pageNum: 1,
-                pageSize: 5,
+                pageSize: 10,
                 visiblePage: 3,
                 pageList: {},
                 userName: '',
@@ -191,7 +218,7 @@
                     if (res == null || res == "")
                         return helper.toolTipBox("操作失败");
                     if (res.MsgStatus) {
-                        _self.userList = res.MsgContent;
+                        _self.userList = $.extend([],res.MsgContent);
                         _self.req.totalCount = res.MsgContent.length;
                         _self.paging();
                     }
@@ -199,7 +226,6 @@
                         return helper.toolTipBox(res.MsgContent);
                 });
                 req.always(function () {
-
                 });
             },
             checkSelect: function (item, event) {
@@ -267,18 +293,32 @@
                     $('.select-parent').prop('checked', false);
                 }
             },
-            deleteList: function () {
-                if (this.selectedList.length == 0) {
-                    return helper.toolTipBox('请先选择要删除的项');
-                }
-                dialog({
-                    title: '删除提示',
-                    content: '你确定要删除选中的用户?',
-                    ok: function () {
-                        return helper.toolTipBox("这里需要执行删除操作");
+            deleteListLast: function () {
+                var _self = this;
+                var userIds = new Array();
+
+                this.selectedList.forEach(function (item) {
+                    userIds.push(item.UserId);
+                });
+                var req = $.ajax({
+                    type: 'POST',
+                    url: bhConfig.DeleteUserList,
+                    data: {
+                        __RequestVerificationToken: __RequestVerificationToken,
+                        UserIds: userIds.toString()
                     },
-                    cancel: function () { }
-                }).show();
+                    dataType: "JSON",
+                    cache: false
+                });
+                req.done(function (res) {
+                    if (res == null || res == "")
+                        return helper.toolTipBox("操作失败");
+                    if (res.MsgStatus) {
+                        _self.getUserList();
+                        _self.selectedList = [];
+                    }
+                    return helper.toolTipBox(res.MsgContent);
+                });
             },
             showEditUserBox: function (isAdd, item) {
                 $('#editUser').modal('show');
@@ -291,17 +331,46 @@
                 } else {
                     $('#add-user').css('display', 'none');
                     $('#edit-user').css('display', 'block');
-                    this.editUser.editUser = item;
+                    this.editUser.editUser = $.extend({}, item);
+                    this.editUser.editUser.RoleId = -1;
+                    this.editUser.editUser.Email = '';
+                    this.editUser.editUser.Pwd = '';
                 }
                 $('#editUser-header').text(this.editUser.boxTitle);
             },
+            deleteUserList: function () {
+                var _self = this;
+                if (this.selectedList.length == 0) {
+                    return helper.toolTipBox('请先选择要删除的项');
+                }
+                dialog({
+                    title: '删除提示',
+                    content: '你确定要删除选中的用户?',
+                    ok: function () {
+                        _self.deleteListLast();
+                    },
+                    cancel: function () { }
+                }).show();
+            },
             deleteOneUser(item) {
-                //这里删除操作
+                var _self = this;
+                if (item)
+                    dialog({
+                        title: '删除提示',
+                        content: '你确定要删除用户[' + item.UserName + ']?',
+                        ok: function () {
+                            _self.selectedList = [item];
+                            _self.deleteListLast();
+                        },
+                        cancel: function () { }
+                    }).show();
             },
             editUserOperate: function () {
                 //这里需要进行数据操作，新增或者修改
                 if (this.editUser.isAdd) {
                     this.addUserList();
+                } else {
+                    this.editOneUser();
                 }
             },
             addUserList: function () {
@@ -319,11 +388,53 @@
                 req.done(function (res) {
                     if (res == null || res == "")
                         return helper.toolTipBox("操作失败");
+                    if (res.MsgStatus) {
+                        _self.getUserList();
+                        _self.editUser.addUsers = "";
+                    }
                     return helper.toolTipBox(res.MsgContent);
                 });
-                req.always(function () {
-
+            },
+            editOneUser: function () {
+                var _self = this;
+                var reqJson = $.extend({}, this.editUser.editUser);
+                if (reqJson == undefined || reqJson == null || reqJson == '')
+                    return helper.toolTipBox('数据错误，请重新填写');
+                if (reqJson.UserId == undefined || reqJson.UserId == null || reqJson.UserId == '' || reqJson.UserId <= 0)
+                    return helper.toolTipBox('数据错误，请重新填写');
+                if (reqJson.RoleId == -1)
+                    reqJson.RoleId = '';
+                reqJson.__RequestVerificationToken= __RequestVerificationToken;
+                var req = $.ajax({
+                    type: 'POST',
+                    url: bhConfig.EditUser,
+                    data: reqJson,
+                    dataType: "JSON",
+                    cache: false
                 });
+                req.done(function (res) {
+                    if (res == null || res == "")
+                        return helper.toolTipBox("操作失败");
+                    if (res.MsgStatus) {
+                        _self.getUserList();
+                    }
+                    return helper.toolTipBox(res.MsgContent);
+                });
+            }
+        },
+        filters: {
+            RoleTransName: function (value) {
+                if (value) {
+                    if (value == 1)
+                        return "管理员";
+                    else if (value == 2)
+                        return "普通员工";
+                    else if (value == 3)
+                        return "观察者";
+                    else
+                        return '--';
+                }
+                return '--'
             }
         },
         watch: {

@@ -43,13 +43,13 @@ namespace WebBiHuGadget.Models
     }
     #endregion
 
+    #region 添加用户集合Model
     public class UserNameModel
     {
-        [DisplayName("用户姓名集合")]
-        [Required(ErrorMessage = "{0}必须填写")]
+        [DisplayName("用户姓名集合"), Required]
         [RegularExpression(@"^[\u4E00-\u9FA5\,]+$", ErrorMessage = "{0}格式错误！")]
         [StringLength(1000, MinimumLength = 2, ErrorMessage = "{0}长度不符合规范的长度")]
-        [UserList(ErrorMessage ="{0}不符合规范")]
+        [UserList(ErrorMessage = "{0}不符合规范")]
         public string UserNames { get; set; }
     }
     public class UserListAttribute : ValidationAttribute
@@ -67,10 +67,20 @@ namespace WebBiHuGadget.Models
                 else if (u.Length < 2)
                     return false;
                 return true;
-            }).ToList<string>();
+            }).ToList();
             if (userNameListLast != null && userNameListLast.Count == userNameList.Count)
                 return true;
             return false;
         }
     }
+    #endregion
+    #region 删除用户集合
+    public class UserListModel
+    {
+        [DisplayName("用户Id集合"), Required]
+        [RegularExpression(@"^[0-9\,]+$", ErrorMessage = "{0} 不符合规范")]
+        [StringLength(1000, MinimumLength = 1, ErrorMessage = "{0} 长度不符合规范")]
+        public string UserIds { get; set; }
+    }
+    #endregion
 }

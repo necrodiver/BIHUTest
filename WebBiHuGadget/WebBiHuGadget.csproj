@@ -171,6 +171,7 @@
     <Compile Include="Models\View_EditMark.cs" />
     <Compile Include="Models\View_MonthInUserMark.cs" />
     <Compile Include="Models\View_UserModels.cs" />
+    <Compile Include="Models\View_UserUpdateModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

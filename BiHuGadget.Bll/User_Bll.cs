@@ -20,11 +20,9 @@ namespace BiHuGadget.Bll
                 userModel.Pwd = AESHelper.AESEncrypt(userModel.Pwd);
             return userDal.GetSingleUser(userModel);
         }
-        public List<UserModel> GetListUser(UserModel userModel)
+        public List<UserModel> GetListUser(UserModel userModel=null)
         {
-            if (userModel == null)
-                return null;
-            if (!string.IsNullOrWhiteSpace(userModel.Pwd))
+            if (userModel!=null&&!string.IsNullOrWhiteSpace(userModel.Pwd))
                 userModel.Pwd = AESHelper.AESEncrypt(userModel.Pwd);
             return userDal.GetListUser(userModel);
         }
@@ -39,11 +37,33 @@ namespace BiHuGadget.Bll
             return true;
         }
 
-        public bool AddUserList(List<KVModel> userNameList)
+        public bool AddUserList(List<UserModel> userList)
         {
-            //INSERT INTO MyTable(ID, NAME) VALUES(7, '003'),(8, '004'),(9, '005');
-            //UserModel 
+            if (userList == null)
+                return false;
+            try
+            {
+                return userDal.AddUserList(userList);
+            }
+            catch (Exception ex)
+            {
+                Log4NetHelper.Error("批量添加用户账号时出错:" + ex.ToString());
+            }
             return false;
+        }
+
+        public bool DeleteUserList(List<string> userIdList)
+        {
+            return userDal.DeleteUserList(userIdList);
+        }
+
+        public bool EditUser(UserModel userModel)
+        {
+            if (userModel == null)
+                return false;
+            if (!string.IsNullOrWhiteSpace(userModel.Pwd))
+                userModel.Pwd = AESHelper.AESEncrypt(userModel.Pwd);
+            return userDal.EditUser(userModel);
         }
     }
 }

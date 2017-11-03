@@ -36,5 +36,9 @@ namespace BiHuGadget.Helpers
         /// 邮箱后边域名
         /// </summary>
         public static readonly string EmailOrg =Convert.ToString(AppSettings["EmailOrg"]);
+        /// <summary>
+        /// 默认添加的用户权限等级
+        /// </summary>
+        public static readonly int AddDefaultRole = Convert.ToInt32(AppSettings["AddDefaultRole"]);
     }
 }

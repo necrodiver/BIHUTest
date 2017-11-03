@@ -85,6 +85,26 @@ namespace BiHuGadget.Dal
             return false;
 
         }
+        /// <summary>
+        /// 增删改,只适用于sql
+        /// </summary>
+        /// <param name="sql">查询语句</param>
+        /// <returns></returns>
+        protected bool Operate(string sql)
+        {
+            try
+            {
+                using (IDbConnection conn = GetOpenConnection())
+                {
+                    return conn.Execute(sql) >= 0;
+                }
+            }
+            catch (Exception ex)
+            {
+                Log4NetHelper.Error("查询Operate：" + ex.ToString());
+            }
+            return false;
+        }
 
         /// <summary>
         /// 查找数据的第一行第一列的内容
