@@ -3,38 +3,43 @@
 }
 @Scripts.Render("~/bundles/component")
 @Html.AntiForgeryToken()
-<style type="text/css">
-
-</style>
 <div id="vue2" v-cloak>
     <div class="ui secondary pointing menu">
-        <a class="item" v-on:click="isShow=0">个人信息 </a>
+        <a class="item active" v-on:click="isShow=1">个人信息 </a>
         @if (ViewBag.RoleId == 1)
         {
-            <a class="item active" v-on:click="isShow=1">员工管理 </a>
-            <a class="item" v-on:click="isShow=2">考勤备注列表 </a>
+            <a class="item" v-on:click="isShow=2">员工管理 </a>
+            <a class="item" v-on:click="isShow=3">考勤备注列表 </a>
         }
     </div>
 
-    <div v-if="isShow==0">
-
+    <div v-if="isShow==1">
+        <div class="left22">
+            <h2 class="ui center aligned icon header"><i class="circular user icon" style="cursor:pointer;" title="点此修改基本信息"></i>用户信息 </h2>
+            <div class="ui text container center aligned">
+                <div class="column"><label>用户名：张三</label></div>
+                <div class="column"><label>扮演角色：管理员</label></div>
+                <div class="column"><label>登录邮箱：zhangsan@91bihu.com</label></div>
+                <div class="column"><label>创建日期：2017-11-03 17:26:23</label></div>
+            </div>
+        </div>
 
     </div>
     @if (ViewBag.RoleId == 1)
     {
-        <div v-if="isShow==1">
+        <div v-if="isShow==2">
             <div class="height15"></div>
             <div class="left22">
                 <table class="ui selectable celled table">
                     <thead>
                         <tr>
                             <th colspan="6">
-                                <div class="ui left floated small red labeled icon button" v-on:click="deleteUserList"><i class="remove icon"></i> 删除用户 </div>
+                                <div class="ui left floated small red labeled icon button" v-on:click="deleteUserList"><i class="remove user icon"></i> 删除用户 </div>
                                 <div class="ui icon input small left">
                                     <input type="text" v-model="req.userName" placeholder="请输入查询的用户名" maxlength="6">
                                     <i class="search icon"></i>
                                 </div>
-                                <div class="ui right floated small green labeled icon button" v-on:click="showEditUserBox(1)"><i class="add icon"></i> 添加用户 </div>
+                                <div class="ui right floated small green labeled icon button" v-on:click="showEditUserBox(1)"><i class="add user icon"></i> 添加用户 </div>
                             </th>
                         </tr>
                         <tr>
@@ -73,7 +78,7 @@
                 </table>
             </div>
         </div>
-        <div v-if="isShow==2">
+        <div v-if="isShow==3">
             <div class="height15"></div>
             <div class="left22">
                 <table class="ui celled table">
@@ -178,7 +183,7 @@
     var vm = new Vue({
         el: '#vue2',
         data: {
-            isShow: 1,
+            isShow:1,
             roleId :@ViewBag.RoleId,
             req: {
                 pageIndex: 1,
