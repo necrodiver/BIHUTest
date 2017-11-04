@@ -40,6 +40,16 @@ namespace BiHuGadget.Models
         /// 备注说明
         /// </summary>
         public string ClockContent { get; set; }
+        /// <summary>
+        /// 添加备注日期
+        /// </summary>
+        public string CreateTime { get; set; }
+        /// <summary>
+        /// 0:未审核
+        /// 1:通过  
+        /// 2:未通过
+        /// </summary>
+        public int? IsPass { get; set; }
     }
     /// <summary>
     /// 查询考勤打卡备注
@@ -49,5 +59,13 @@ namespace BiHuGadget.Models
         public int? UserId { get; set; }
         public string  UserName { get; set; }
         public int ClockYear { get; set; }
+    }
+    public class AttendanceSearchAllModel
+    {
+        public int? UserId { get; set; }
+        public string UserName { get; set; }
+        public int ClockYear { get; set; }
+        public int LeftNum { get; set; }
+        public int PageCount { get; set; }
     }
 }

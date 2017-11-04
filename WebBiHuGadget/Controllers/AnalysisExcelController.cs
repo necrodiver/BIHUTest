@@ -167,8 +167,7 @@ namespace WebBiHuGadget.Controllers
             return Json(msgModel, JsonRequestBehavior.AllowGet);
         }
         #region 增删改打卡记录
-        [HttpPost]
-        [ModelValidationMVCFilter]
+        [HttpPost, ModelValidationMVCFilter]
         public JsonResult EditMarkStatus(View_EditMark request)
         {
             MessageModel msg = new MessageModel
@@ -184,7 +183,9 @@ namespace WebBiHuGadget.Controllers
                 UDayStateId = request.UDayStateId,
                 TimeSlot = request.TimeSlot,
                 ClockContent = request.ClockContent,
-                UserId = request.UserId
+                UserId = request.UserId,
+                CreateTime = DateTime.Now.ToString("yyyy-MM-dd"),
+                IsPass = 0
             };
 
             #region 查询当前用户信息
@@ -318,8 +319,7 @@ namespace WebBiHuGadget.Controllers
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
-        [HttpPost]
-        [ModelValidationMVCFilter]
+        [HttpPost, ModelValidationMVCFilter]
         public JsonResult GetUserMarkData(View_MonthInUserMark request)
         {
             MessageModel msg = new MessageModel
@@ -337,6 +337,44 @@ namespace WebBiHuGadget.Controllers
                     ClockYear = request.Year
                 };
                 List<AttendanceModel> adList = attendanceBll.GetUserMarks(asModel);
+                if (adList == null || adList.Count == 0)
+                {
+                    msg.MsgStatus = false;
+                    msg.MsgContent = "查询无记录";
+                }
+                else
+                {
+                    msg.MsgStatus = true;
+                    msg.MsgContent = adList;
+                }
+            }
+            catch (Exception ex)
+            {
+                Log4NetHelper.Error("获取用户打卡备注：" + ex.ToString());
+                msg.MsgStatus = false;
+                msg.MsgContent = "获取用户打卡备注集合失败，请重新尝试或者查看日志记录";
+            }
+            return Json(msg, JsonRequestBehavior.AllowGet);
+        }
+        public JsonResult GetAttendanceList(View_AttendanceUserWhere whereModel)
+        {
+            MessageModel msg = new MessageModel
+            {
+                MsgTitle = "获取打卡备注",
+                MsgStatus = false
+            };
+            try
+            {
+                int leftNum = (whereModel.PageIndex - 1) * whereModel.PageCount;
+                AttendanceSearchAllModel asModel = new AttendanceSearchAllModel
+                {
+                    UserId = whereModel.UserId,
+                    UserName = whereModel.UserName,
+                    ClockYear = whereModel.Year,
+                    LeftNum = leftNum,
+                    PageCount = whereModel.PageCount
+                };
+                List<AttendanceModel> adList = attendanceBll.GetAttendanceList(asModel);
                 if (adList == null || adList.Count == 0)
                 {
                     msg.MsgStatus = false;

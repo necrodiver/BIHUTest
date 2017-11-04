@@ -65,6 +65,44 @@ namespace BiHuGadget.Dal
             }
             return null;
         }
+        /// <summary>
+        /// 获取分页打卡备注数据
+        /// </summary>
+        /// <param name="asModel"></param>
+        /// <returns></returns>
+        public List<AttendanceModel> GetAttendanceList(AttendanceSearchAllModel asModel)
+        {
+            try
+            {
+                var args = new DynamicParameters();
+                StringBuilder sb = new StringBuilder();
+                if (asModel.UserId != null)
+                {
+                    sb.Append(" u.UserId=@UserId AND");
+                    args.Add("@UserId", asModel.UserId);
+                }
+                if (!string.IsNullOrWhiteSpace(asModel.UserName))
+                {
+                    sb.Append(" u.UserName=@UserName AND");
+                    args.Add("@UserName", asModel.UserName);
+                }
+                sb.Append(" a.ClockYear=@ClockYear AND");
+                args.Add("@ClockYear", asModel.ClockYear);
+
+                sb.Append(" 1=1");
+                string _where = sb.ToString();
+                string _sql = $@"SELECT a.* FROM attendance AS a
+                            JOIN users AS u ON a.UserId=u.UserId
+                            WHERE {_where} Limit {asModel.LeftNum},{asModel.PageCount}";
+
+                return GetList<AttendanceModel>(_sql, args);
+            }
+            catch (Exception ex)
+            {
+                Log4NetHelper.Error("读取用户打卡备注集合：" + ex.ToString());
+            }
+            return null;
+        }
 
         public bool UpdateAttendance(AttendanceModel adModel)
         {
@@ -115,6 +153,13 @@ namespace BiHuGadget.Dal
                 sbUpdate.Append(" ClockTime=@ClockTime,");
                 args.Add("@ClockTime", adModel.ClockTime);
             }
+            if (adModel.IsPass.HasValue)
+            {
+                sbSelect.Append(" IsPass=@IsPass AND");
+                sbUpdate.Append(" IsPass=@IsPass,");
+                args.Add("@IsPass", adModel.IsPass);
+            }
+
             sbSelect.Append(" ClockYear=@ClockYear AND");
             sbUpdate.Append(" ClockYear=@ClockYear,");
             args.Add("@ClockYear", adModel.ClockYear);
@@ -157,7 +202,7 @@ namespace BiHuGadget.Dal
             /// <summary>
             /// 添加Attendance单条数据
             /// </summary>
-            public static string insert_Attendance = "INSERT INTO Attendance (ClockContent,ClockTime,ClockYear,TimeSlot,UDayStateId,UserId) VALUES (@ClockContent,@ClockTime,@ClockYear,@TimeSlot,@UDayStateId,@UserId)";
+            public static string insert_Attendance = "INSERT INTO Attendance (ClockContent,ClockTime,ClockYear,TimeSlot,UDayStateId,UserId,CreateTime,IsPass) VALUES (@ClockContent,@ClockTime,@ClockYear,@TimeSlot,@UDayStateId,@UserId,@CreateTime,@IsPass)";
             /// <summary>
             /// 更新Attendance单条数据
             /// </summary>

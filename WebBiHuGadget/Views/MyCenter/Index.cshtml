@@ -9,18 +9,18 @@
         @if (ViewBag.RoleId == 1)
         {
             <a class="item" v-on:click="isShow=2">员工管理 </a>
-            <a class="item" v-on:click="isShow=3">考勤备注列表 </a>
+            <a class="item" v-on:click="isShow=3">考勤备注审批 </a>
         }
     </div>
 
     <div v-if="isShow==1">
         <div class="left22">
-            <h2 class="ui center aligned icon header"><i class="circular user icon" style="cursor:pointer;" title="点此修改基本信息"></i>用户信息 </h2>
+            <h2 class="ui center aligned icon header"><i class="circular user icon" style="cursor:pointer;" id="usertitle" title="点此修改基本信息" v-on:click="showEditUserBox(0,nowUser)"></i>用户信息 </h2>
             <div class="ui text container center aligned">
-                <div class="column"><label>用户名：张三</label></div>
-                <div class="column"><label>扮演角色：管理员</label></div>
-                <div class="column"><label>登录邮箱：zhangsan@91bihu.com</label></div>
-                <div class="column"><label>创建日期：2017-11-03 17:26:23</label></div>
+                <div class="column"><label>用户名：{{nowUser.UserName}}</label></div>
+                <div class="column"><label>扮演角色：{{nowUser.RoleId|RoleTransName}}</label></div>
+                <div class="column"><label>登录邮箱：{{nowUser.Email}}</label></div>
+                <div class="column"><label>创建日期：{{nowUser.CreateTime}}</label></div>
             </div>
         </div>
 
@@ -84,29 +84,19 @@
                 <table class="ui celled table">
                     <thead>
                         <tr>
-                            <th>姓名</th>
-                            <th>日期</th>
-                            <th>具体时间范围</th>
-                            <th>备注类别</th>
-                            <th>备注内容</th>
+                            <th><input type="checkbox" class="select-parent"/></th>
+                            <th class="two wide">姓名</th>
+                            <th class="two wide">日期</th>
+                            <th class="two wide">具体时间范围</th>
+                            <th class="two wide">备注类别</th>
+                            <th class="six wide">备注内容</th>
+                            <th class="two wide">操作</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
+                            <td class="collapsing"><input type="checkbox"  class="select-item" /></td>
                             <td>Cell</td>
-                            <td>Cell</td>
-                            <td>Cell</td>
-                            <td>Cell</td>
-                            <td>Cell</td>
-                        </tr>
-                        <tr>
-                            <td>Cell</td>
-                            <td>Cell</td>
-                            <td>Cell</td>
-                            <td>Cell</td>
-                            <td>Cell</td>
-                        </tr>
-                        <tr>
                             <td>Cell</td>
                             <td>Cell</td>
                             <td>Cell</td>
@@ -116,19 +106,8 @@
                     </tbody>
                     <tfoot>
                         <tr>
-                            <th colspan="5">
-                                <div class="ui right floated pagination menu">
-                                    <a class="icon item">
-                                        <i class="left chevron icon"></i>
-                                    </a>
-                                    <a class="item">1</a>
-                                    <a class="item">2</a>
-                                    <a class="item">3</a>
-                                    <a class="item">4</a>
-                                    <a class="icon item">
-                                        <i class="right chevron icon"></i>
-                                    </a>
-                                </div>
+                            <th colspan="7">
+                                <pagination class="right" v-bind:pages="req.pageNum" v-bind:current.sync="req.pageIndex" v-on:navpage="paging"></pagination>
                             </th>
                         </tr>
                     </tfoot>
@@ -203,6 +182,14 @@
                 editUser: {},
                 addUsers: '',
                 isAdd: 1
+            },
+            nowUser: {
+                UserId:@ViewBag.UserId,
+                UserName:'@ViewBag.UserName',
+                Email:'@ViewBag.Email',
+                RoleId:@ViewBag.RoleId,
+                CreateTime:'@ViewBag.CreateTime',
+                Pwd:''
             }
         },
         mounted: function () {
@@ -211,6 +198,8 @@
         },
         methods: {
             getUserList: function () {
+                $('.pagination>.item').removeClass('active');
+                this.req.pageIndex = 1;
                 var _self = this;
                 var req = $.ajax({
                     type: 'POST',
@@ -469,5 +458,9 @@
                 }
             })
             .modal('hide');
+        $('#usertitle')
+            .popup({
+                inline: false
+            });
     }
 </script>

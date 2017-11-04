@@ -20,6 +20,10 @@ namespace WebBiHuGadget.Controllers
                 ViewBag.IsLogin = 1;
             }
             ViewBag.RoleId = this.Account.RoleId;
+            ViewBag.UserId = this.Account.UserId;
+            ViewBag.UserName = this.Account.UserName;
+            ViewBag.Email = this.Account.Email;
+            ViewBag.CreateTime = this.Account.CreateTime;
             return View();
         }
         [HttpPost, ValidateAntiForgeryToken]

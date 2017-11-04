@@ -34,5 +34,10 @@ namespace BiHuGadget.Bll
         {
             return attendanceDal.GetUserMarks(asModel);
         }
+
+        public List<AttendanceModel> GetAttendanceList(AttendanceSearchAllModel asModel)
+        {
+            return attendanceDal.GetAttendanceList(asModel);
+        }
     }
 }

@@ -29,55 +29,106 @@ namespace BiHuGadget.Helpers
             }
             return false;
         }
-        /// <summary>
-        /// 月份验证
-        /// </summary>
-        public class MonthVerifyAttribute : ValidationAttribute
+    }
+    /// <summary>
+    /// 正整数验证
+    /// </summary>
+    public class PositiveIntegerAttribute : ValidationAttribute
+    {
+        public override bool IsValid(object value)
         {
-            public override string FormatErrorMessage(string name)
+            if (value == null)
             {
-                return base.FormatErrorMessage(name);
+                return true;
             }
-            public override bool IsValid(object value)
+            int num = 0;
+            if (int.TryParse(Convert.ToString(value), out num))
             {
-                if (value == null)
-                    return true;
-                int _month = 0;
-                if (int.TryParse(Convert.ToString(value), out _month))
-                    if (_month > 0 && _month < 32)
-                        return true;
-                return false;
-            }
-        }
-        /// <summary>
-        /// 年份验证
-        /// </summary>
-        public class YearVerifyAttribute : ValidationAttribute
-        {
-            int _min = 0;
-            int _max = int.MaxValue;
-            public YearVerifyAttribute(int min,int max)
-            {
-                if (min <= max)
+                if (num > 0)
                 {
-                    _min = min;
-                    _max = max;
+                    return true;
                 }
             }
-            public override string FormatErrorMessage(string name)
+            return false;
+        }
+    }
+    /// <summary>
+    /// 分页单页数量
+    /// </summary>
+    public class PageCountAttribute : ValidationAttribute
+    {
+        int _minLength;
+        int _maxLength;
+        public PageCountAttribute(int minLength = 5, int maxLength = 50)
+        {
+            _minLength = minLength;
+            _maxLength = maxLength;
+        }
+        public override bool IsValid(object value)
+        {
+            if (value == null)
             {
-                return base.FormatErrorMessage(name);
-            }
-            public override bool IsValid(object value)
-            {
-                if (value == null)
-                    return true;
-                int _year = 0;
-                if (int.TryParse(Convert.ToString(value), out _year))
-                    if (_year >= _min && _year <= _max)
-                        return true;
                 return false;
             }
+            int num = 0;
+            if (int.TryParse(Convert.ToString(value), out num))
+            {
+                if (num >= _minLength&& num<= _maxLength)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+    }
+    /// <summary>
+    /// 月份验证
+    /// </summary>
+    public class MonthVerifyAttribute : ValidationAttribute
+    {
+        public override string FormatErrorMessage(string name)
+        {
+            return base.FormatErrorMessage(name);
+        }
+        public override bool IsValid(object value)
+        {
+            if (value == null)
+                return true;
+            int _month = 0;
+            if (int.TryParse(Convert.ToString(value), out _month))
+                if (_month > 0 && _month < 32)
+                    return true;
+            return false;
+        }
+    }
+    /// <summary>
+    /// 年份验证
+    /// </summary>
+    public class YearVerifyAttribute : ValidationAttribute
+    {
+        int _min = 0;
+        int _max = int.MaxValue;
+        public YearVerifyAttribute(int min, int max)
+        {
+            if (min <= max)
+            {
+                _min = min;
+                _max = max;
+            }
+        }
+        public override string FormatErrorMessage(string name)
+        {
+            return base.FormatErrorMessage(name);
+        }
+        public override bool IsValid(object value)
+        {
+            if (value == null)
+                return true;
+            int _year = 0;
+            if (int.TryParse(Convert.ToString(value), out _year))
+                if (_year >= _min && _year <= _max)
+                    return true;
+            return false;
         }
     }
 }
