@@ -89,8 +89,8 @@
 
     .day-bo {
         background-color: #ccc;
-        color:#000 !important;
-        cursor:pointer;
+        color: #000 !important;
+        cursor: pointer;
     }
 
     .day-guo {
@@ -130,6 +130,10 @@
         font-size: 22px;
         font-weight: 700;
         border-bottom: 1px dashed red;
+    }
+
+    .margin-bottom10 {
+        margin-bottom: 10px;
     }
 </style>
 
@@ -182,7 +186,13 @@
                 <div class="column">整天未到：<label v-bind:class="{'daycount':dk.zhengtianweidaka>0}">{{dk.zhengtianweidaka}}</label>/{{dk.oneMonthCount}}</div>
                 <div class="column">加班：<label v-bind:class="{'daycount':dk.jiaban>0}">{{dk.jiaban}}</label>/{{dk.oneMonthCount}}</div>
             </div>
-            <div class="ui stackable">
+            <div class="ui stackable margin-bottom10">
+                <div class="ui vertical animated button" tabindex="0" v-on:click="showAddLeave">
+                    <div class="hidden content">请假</div>
+                    <div class="visible content">
+                        <i class="angellist icon" style="font-size:15px;"></i>
+                    </div>
+                </div>
                 <div class="ui selection dropdown medium small" id="selectMonth">
                     <input type="hidden" />
                     <i class="dropdown icon"></i>
@@ -222,6 +232,9 @@
                             <strong v-if="child.status!=2">{{child.day}}</strong>
                             <div v-if="child.status==2&&child.dayOfWeek==7" style="color:#ccc;">{{child.day}} 休</div>
                             <div v-if="child.status==2&&child.dayOfWeek!=7" style="color:#ccc;">{{child.day}} 假</div>
+                            <div class="pull-right day-delete"
+                                 v-if="isMarkData(child,-1)&&child.status==0"
+                                 v-on:click.stop="deleteMarkData(child,-1)"><i class="icon ban"></i></div>
                             <div v-if="isMarkData(child,-1)" class="pull-right day-ismark">注</div>
                             <div v-if="getIsPass(child,-1)&&child.status==2&&child.dayOfWeek!=7" class="pull-right titlec" title="审核状态" v-bind:class="{'day-bo':getIsPass(child,-1)==2,'day-guo':getIsPass(child,-1)==1}">{{getIsPass(child,-1)==1?'过':'驳'}}</div>
                         </div>
@@ -273,7 +286,7 @@
             <div class="clear"></div>
         </div>
     </div>
-    <!--ui model-->
+    <!--增,改打卡备注-->
     <div class="ui small modal" id="editMark">
         <div class="header" id="editMark-header">
             备注说明
@@ -305,6 +318,27 @@
             <div class="ui positive right labeled icon button">确定 <i class="checkmark icon"></i> </div>
         </div>
     </div>
+    <!--新增请假-->
+    @*<div class="ui small modal" id="editMark">
+            <div class="header">
+                新增请假
+            </div>
+            <div class="content ui form">
+                <div class="field">日期：<strong>{{addMarkData.ClockTime}}</strong></div>
+                <div class="field">
+                    <strong>时间范围：</strong>
+
+                </div>
+                <div class="field">
+                    <label>备注说明</label>
+                    <textarea rows="2" maxlength="200" placeholder="长度不大于200个字符" id="markReason" v-model="addMarkData.ClockContent"></textarea>
+                </div>
+            </div>
+            <div class="actions">
+                <div class="ui cancel button" id="btnCancle">取消 </div>
+                <div class="ui positive right labeled icon button">确定 <i class="checkmark icon"></i> </div>
+            </div>
+        </div>*@
 </div>
 <script type="text/javascript">
     var __RequestVerificationToken = $('input[name="__RequestVerificationToken"]').val();
@@ -533,7 +567,7 @@
                     }
                     this.addMarkData.TimeSlot = index;
                     if (index == 0) {
-                        if (this.showSingleDayRemark == undefined || this.showSingleDayRemark == [] || this.showSingleDayRemark == null) {
+                        if (this.showSingleDayRemark == undefined || this.showSingleDayRemark == [] || this.showSingleDayRemark == null || this.showSingleDayRemark[0] == undefined) {
                             return this.editMark(true);
                         }
                         var mList = this.showSingleDayRemark.filter(function (item) {
@@ -720,6 +754,9 @@
                 this.dk.zhengtianweidaka = zhengtianweidaka;
                 this.dk.jiaban = jiaban;
                 this.dk.oneMonthCount = oneMonthCount * 2;
+            },
+            showAddLeave: function () {
+                helper.toolTipBox("请假功能暂未开发");
             }
         }
     });
