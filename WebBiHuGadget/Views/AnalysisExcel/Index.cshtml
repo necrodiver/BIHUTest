@@ -310,7 +310,7 @@
             </div>
             <div class="field">
                 <label>备注说明</label>
-                <textarea rows="2" maxlength="200" placeholder="长度不大于200个字符" id="markReason" v-model="addMarkData.ClockContent"></textarea>
+                <textarea rows="2" maxlength="100" placeholder="长度不大于100个字符" id="markReason" v-model="addMarkData.ClockContent"></textarea>
             </div>
         </div>
         <div class="actions">
@@ -357,6 +357,12 @@
                 }
             })
             .modal('hide');
+        $('#selectMonth').dropdown('set value', _self.selectMonth);
+        $('#selectMonth').dropdown('setting', 'onChange', function (val) {
+            if (_self.selectMonth != parseInt(val)) {
+                _self.selectMonth = parseInt(val);
+            }
+        });
         initBind(_self);
     }
     function initBind(_self) {
@@ -376,7 +382,7 @@
             userName: "@ViewBag.UserName",
             userMounthNullCount: 0,
             userMounths: [],
-            selectMonth: "-1",
+            selectMonth: parseInt(moment().subtract(1, 'month').format('MM')),
             addMarkData: {
                 AttendanceId: -1,//打卡备注Id
                 markIUD: -1,//操作类型:增,改,删
