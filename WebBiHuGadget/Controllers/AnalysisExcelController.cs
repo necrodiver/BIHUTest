@@ -179,6 +179,7 @@ namespace WebBiHuGadget.Controllers
             {
                 AttendanceId = request.AttendanceId,
                 ClockYear = request.ClockTime.Year,
+                ClockMonth = request.ClockTime.Month,
                 ClockTime = request.ClockTime.ToString("yyyy-MM-dd"),
                 UDayStateId = request.UDayStateId,
                 TimeSlot = request.TimeSlot,
@@ -356,6 +357,8 @@ namespace WebBiHuGadget.Controllers
             }
             return Json(msg, JsonRequestBehavior.AllowGet);
         }
+
+        [HttpPost, ModelValidationMVCFilter, ValidateAntiForgeryToken]
         public JsonResult GetAttendanceList(View_AttendanceUserWhere whereModel)
         {
             MessageModel msg = new MessageModel
@@ -365,16 +368,17 @@ namespace WebBiHuGadget.Controllers
             };
             try
             {
-                int leftNum = (whereModel.PageIndex - 1) * whereModel.PageCount;
+                int leftNum = (whereModel.PageIndex - 1) * whereModel.PageSize;
                 AttendanceSearchAllModel asModel = new AttendanceSearchAllModel
                 {
                     UserId = whereModel.UserId,
                     UserName = whereModel.UserName,
                     ClockYear = whereModel.Year,
                     LeftNum = leftNum,
-                    PageCount = whereModel.PageCount
+                    PageCount = whereModel.PageSize,
+                    ClockMonth = whereModel.Month
                 };
-                List<AttendanceModel> adList = attendanceBll.GetAttendanceList(asModel);
+                List<AttendanceMoreModel> adList = attendanceBll.GetAttendanceList(asModel);
                 if (adList == null || adList.Count == 0)
                 {
                     msg.MsgStatus = false;
@@ -392,6 +396,31 @@ namespace WebBiHuGadget.Controllers
                 msg.MsgStatus = false;
                 msg.MsgContent = "获取用户打卡备注集合失败，请重新尝试或者查看日志记录";
             }
+            return Json(msg, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost, ModelValidationMVCFilter, ValidateAntiForgeryToken]
+        public JsonResult EditAttendanceIsPass(EditAttendanceIsPass request)
+        {
+            MessageModel msg = new MessageModel
+            {
+                MsgTitle = "修改打卡备注状态",
+                MsgStatus = false
+            };
+            try
+            {
+                if (attendanceBll.EditAttendanceIsPass(request.AttendanceId, request.IsPass))
+                {
+                    msg.MsgStatus = true;
+                    msg.MsgContent = "修改成功";
+                    return Json(msg, JsonRequestBehavior.AllowGet);
+                }
+            }
+            catch (Exception ex)
+            {
+                Log4NetHelper.Error("修改打卡备注失败：" + ex.ToString());
+            }
+            msg.MsgContent = "修改打卡备注失败，请查看日志";
             return Json(msg, JsonRequestBehavior.AllowGet);
         }
     }

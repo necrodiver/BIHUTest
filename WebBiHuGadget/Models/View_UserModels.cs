@@ -13,8 +13,8 @@ namespace WebBiHuGadget.Models
     #region 登录传输内容
     public class View_Login
     {
-        [Required(AllowEmptyStrings = false, ErrorMessage = "邮箱不能为空")]
-        [RegularExpression(@"^[A-Za-z]{2,20}\@91bihu\.com", ErrorMessage = "邮箱格式为注册的壁虎账号")]
+        [Required(AllowEmptyStrings = false, ErrorMessage = "邮箱不能为空")]//^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{8,16}$
+        [RegularExpression(@"^[0-9a-zA-Z]{2,20}\@91bihu\.com", ErrorMessage = "邮箱格式为注册的壁虎账号")]
         public string Email { get; set; }
         [Required(AllowEmptyStrings = false, ErrorMessage = "密码不能为空")]
         [RegularExpression(@"^[A-Za-z\.0-9]{6,20}", ErrorMessage = "密码只能是数字或字母和.组成的长度范围为6~20")]

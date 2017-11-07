@@ -3,7 +3,7 @@
                     <a class="icon item" :class="{\'disabled\':curPage==1}" @click="goPage(curPage==1?curPage:curPage-1)">
                         <i class="left chevron icon"></i>
                     </a>
-                    <a class="item" v-for="page in selectPage" :class="{\'active\':page==curPage}" @click="goPage(page)">
+                    <a class="item" v-for="(page,index) in selectPage" :class="{'active':page==curPage}" @click="goPage(page)">
                         <template v-if="page">{{page}}</template>
                         <template v-else="page" >···</template>
                     </a>

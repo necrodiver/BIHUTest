@@ -65,18 +65,19 @@ namespace BiHuGadget.Dal
             }
             return null;
         }
+
         /// <summary>
         /// 获取分页打卡备注数据
         /// </summary>
         /// <param name="asModel"></param>
         /// <returns></returns>
-        public List<AttendanceModel> GetAttendanceList(AttendanceSearchAllModel asModel)
+        public List<AttendanceMoreModel> GetAttendanceList(AttendanceSearchAllModel asModel)
         {
             try
             {
                 var args = new DynamicParameters();
                 StringBuilder sb = new StringBuilder();
-                if (asModel.UserId != null)
+                if (asModel.UserId.HasValue)
                 {
                     sb.Append(" u.UserId=@UserId AND");
                     args.Add("@UserId", asModel.UserId);
@@ -86,16 +87,22 @@ namespace BiHuGadget.Dal
                     sb.Append(" u.UserName=@UserName AND");
                     args.Add("@UserName", asModel.UserName);
                 }
+                if (asModel.ClockMonth.HasValue)
+                {
+                    sb.Append(" a.ClockMonth=@ClockMonth AND");
+                    args.Add("@ClockMonth", asModel.ClockMonth);
+                }
+
                 sb.Append(" a.ClockYear=@ClockYear AND");
                 args.Add("@ClockYear", asModel.ClockYear);
 
                 sb.Append(" 1=1");
                 string _where = sb.ToString();
-                string _sql = $@"SELECT a.* FROM attendance AS a
+                string _sql = $@"SELECT u.UserName,a.* FROM attendance AS a
                             JOIN users AS u ON a.UserId=u.UserId
                             WHERE {_where} Limit {asModel.LeftNum},{asModel.PageCount}";
 
-                return GetList<AttendanceModel>(_sql, args);
+                return GetList<AttendanceMoreModel>(_sql, args);
             }
             catch (Exception ex)
             {
@@ -116,6 +123,15 @@ namespace BiHuGadget.Dal
             string _where = " AttendanceId=@AttendanceId";
             string _sql = string.Format(AD_QueryString.update_Attendance, _content, _where);
             return Operate(_sql, _args);
+        }
+        public bool EditAttendanceIsPass(int attendanceId, int isPass)
+        {
+            if (attendanceId < 0 || isPass <= 0)
+                return false;
+            string _value = " IsPass=" + isPass;
+            string _where = " AttendanceId=" + attendanceId;
+            string _sql = string.Format(AD_QueryString.update_Attendance, _value, _where);
+            return Operate(_sql);
         }
 
         /// <summary>

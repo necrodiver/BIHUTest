@@ -14,7 +14,7 @@ namespace WebBiHuGadget.Models
         public int UserId { get; set; }
         [StringLength(20, MinimumLength = 4)]
         public string Pwd { get; set; }
-        [RegularExpression(@"^[A-Za-z]{2,20}\@91bihu\.com", ErrorMessage = "邮箱格式为注册的壁虎账号(只能使用字母)")]
+        [RegularExpression(@"^[0-9a-zA-Z]{2,20}\@91bihu\.com", ErrorMessage = "邮箱格式为注册的壁虎账号(只能使用字母)")]
         public string Email { get; set; }
         [DisplayName("权限角色")]
         [RoleId(ErrorMessage = "{0}不符合规范")]

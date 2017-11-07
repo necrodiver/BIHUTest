@@ -102,13 +102,13 @@ namespace BiHuGadget.Helpers
         }
     }
     /// <summary>
-    /// 年份验证
+    /// 数字范围
     /// </summary>
-    public class YearVerifyAttribute : ValidationAttribute
+    public class IntLengthAttribute : ValidationAttribute
     {
         int _min = 0;
         int _max = int.MaxValue;
-        public YearVerifyAttribute(int min, int max)
+        public IntLengthAttribute(int min, int max)
         {
             if (min <= max)
             {
@@ -124,9 +124,9 @@ namespace BiHuGadget.Helpers
         {
             if (value == null)
                 return true;
-            int _year = 0;
-            if (int.TryParse(Convert.ToString(value), out _year))
-                if (_year >= _min && _year <= _max)
+            int _num = 0;
+            if (int.TryParse(Convert.ToString(value), out _num))
+                if (_num >= _min && _num <= _max)
                     return true;
             return false;
         }

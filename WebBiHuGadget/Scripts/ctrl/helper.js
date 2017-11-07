@@ -5,7 +5,7 @@ helper.pwd = function (val) {
     return true;
 };
 helper.bihuEmail = function (val) {
-    if (!/^[A-Za-z]{2,20}\@91bihu\.com/.test(val))
+    if (!/^[0-9a-zA-Z]{2,20}\@91bihu\.com/.test(val))
         return false;
     return true;
 };
