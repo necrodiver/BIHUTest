@@ -231,6 +231,11 @@
                             <strong v-if="child.status!=2">{{child.day}}</strong>
                             <div v-if="child.status==2&&child.dayOfWeek==7" style="color:#ccc;">{{child.day}} 休</div>
                             <div v-if="child.status==2&&child.dayOfWeek!=7" style="color:#ccc;">{{child.day}} 假</div>
+
+                            <div class="pull-right day-delete"
+                                 v-if="isMarkData(child,-1)&&child.status!=2&&child.dayOfWeek!=7"
+                                 v-on:click.stop="deleteMarkData(child,-1)"><i class="icon ban"></i></div>
+
                             <div v-if="isMarkData(child,-1)" class="pull-right day-ismark">注</div>
                             <div v-if="getIsPass(child,-1)&&child.status==2&&child.dayOfWeek!=7" class="pull-right titlec" title="审核状态" v-bind:class="{'day-bo':getIsPass(child,-1)==2,'day-guo':getIsPass(child,-1)==1}">{{getIsPass(child,-1)==1?'过':'驳'}}</div>
                         </div>
@@ -563,7 +568,7 @@
                     }
                     this.addMarkData.TimeSlot = index;
                     if (index == 0) {
-                        if (this.showSingleDayRemark == undefined || this.showSingleDayRemark == [] || this.showSingleDayRemark == null) {
+                        if (this.showSingleDayRemark == undefined || this.showSingleDayRemark == [] || this.showSingleDayRemark == null || this.showSingleDayRemark[0] == undefined) {
                             return this.editMark(true);
                         }
                         var mList = this.showSingleDayRemark.filter(function (item) {
