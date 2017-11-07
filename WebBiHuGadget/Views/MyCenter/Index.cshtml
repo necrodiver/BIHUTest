@@ -36,10 +36,6 @@
                             <th colspan="6">
                                 <div class="ui left floated small red labeled icon button" v-on:click="deleteUserList"><i class="remove user icon"></i> 删除用户 </div>
                                 <select class="ui small medium search dropdown left" id="selectUserName1"></select>
-                                @*<div class="ui icon input small left">
-                                    <input type="text" v-model="req.userName" placeholder="请输入查询的用户名" maxlength="6">
-                                    <i class="search icon"></i>
-                                </div>*@
                                 <div class="ui right floated small green labeled icon button" v-on:click="showEditUserBox(1)"><i class="add user icon"></i> 添加用户 </div>
                             </th>
                         </tr>
@@ -199,7 +195,7 @@
             req: {
                 pageIndex: 1,
                 pageNum: 1,
-                pageSize: 10,
+                pageSize: 2,
                 visiblePage: 3,
                 pageList: {},
                 userName: '',
@@ -266,7 +262,7 @@
                         _self.userList.forEach(function (item) {
                             $('#selectUserName1').append('<option value="' + item.UserId + '">' + item.UserName + '</option>');
                         });
-                        $('#selectUserName1').dropdown('set value', _self.attendance.where.UserId);
+                        $('#selectUserName1').dropdown('set value', _self.req.UserId);
                         $('#selectUserName1').dropdown('setting', 'onChange', function (val) {
                             if (_self.req.UserId != parseInt(val)) {
                                 _self.req.UserId = val;
@@ -526,7 +522,6 @@
                     mod > 0 ? ++maxPage : maxPage;
                     _where.pageNum = maxPage;
                     _self.attendance.where = _where;
-                    //$('.pagination>.item').removeClass('active');
                 });
             },
             checkIsPass: function (item, event) {
@@ -593,18 +588,6 @@
             }
         },
         watch: {
-            //'req.userName': function (newVal, oldVal) {
-            //    if (newVal && newVal != oldVal && newVal.length >= 2) {
-            //        var thisUser = this.userList.filter(function (item) {
-            //            return item.UserName == newVal;
-            //        });
-            //        if (thisUser != [] && thisUser.length > 0)
-            //            return this.selectOneUser(newVal);
-            //    }
-            //    if (oldVal && newVal.length < oldVal.length) {
-            //        this.paging(1);
-            //    }
-            //},
             'isShow': function (newVal) {
                 if (newVal == 2)
                     this.getUserList();

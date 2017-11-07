@@ -40,6 +40,7 @@ namespace WebBiHuGadget.Controllers
             {
                 ViewBag.Show = true;
             }
+            ViewBag.UserName = this.Account.UserName;
             return View();
         }
 

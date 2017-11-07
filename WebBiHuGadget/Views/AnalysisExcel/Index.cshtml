@@ -87,6 +87,17 @@
         background-color: #0d9b25;
     }
 
+    .day-bo {
+        background-color: #ccc;
+        color:#000 !important;
+        cursor:pointer;
+    }
+
+    .day-guo {
+        background-color: #1457bf;
+        cursor: pointer;
+    }
+
     .day-late { /*迟到*/
         background-color: #ff6811;
     }
@@ -99,7 +110,7 @@
         background-color: red;
     }
 
-    .day-ismark, .day-late, .day-early, .day-noclock {
+    .day-bo, .day-guo, .day-ismark, .day-late, .day-early, .day-noclock {
         width: 20px;
         height: 100%;
         border-radius: 50%;
@@ -212,12 +223,14 @@
                             <div v-if="child.status==2&&child.dayOfWeek==7" style="color:#ccc;">{{child.day}} 休</div>
                             <div v-if="child.status==2&&child.dayOfWeek!=7" style="color:#ccc;">{{child.day}} 假</div>
                             <div v-if="isMarkData(child,-1)" class="pull-right day-ismark">注</div>
+                            <div v-if="getIsPass(child,-1)&&child.status==2&&child.dayOfWeek!=7" class="pull-right titlec" title="审核状态" v-bind:class="{'day-bo':getIsPass(child,-1)==2,'day-guo':getIsPass(child,-1)==1}">{{getIsPass(child,-1)==1?'过':'驳'}}</div>
                         </div>
                         <div class="padding-center child-0 titlec"
                              v-if="!child.UserLeft&&child.status!=2&&child.status!=0"
                              v-on:click="selectMark(child,1)" v-bind:title="getMarkTitle(child,1)">
                             早:未打卡
                             <div v-if="isMarkData(child,1)" class="pull-right day-delete" v-on:click.stop="deleteMarkData(child,1)"><i class="icon ban"></i></div>
+                            <div v-if="getIsPass(child,1)" class="pull-right titlec" title="审核状态" v-bind:class="{'day-bo':getIsPass(child,1)==2,'day-guo':getIsPass(child,1)==1}">{{getIsPass(child,1)==1?'过':'驳'}}</div>
                         </div>
                         <div v-if="child.UserLeft" class="padding-center">
                             <div class="titlec" v-if="child.UserLeft.putCaredTime"
@@ -228,6 +241,7 @@
                                 <div class="pull-right day-delete"
                                      v-if="isMarkData(child,1)"
                                      v-on:click.stop="deleteMarkData(child,1)"><i class="icon ban"></i></div>
+                                <div v-if="getIsPass(child,1)" class="pull-right titlec" title="审核状态" v-bind:class="{'day-bo':getIsPass(child,1)==2,'day-guo':getIsPass(child,1)==1}">{{getIsPass(child,1)==1?'过':'驳'}}</div>
                             </div>
                         </div>
                         <div class="padding-center child-0 titlec"
@@ -238,6 +252,7 @@
                             <div v-if="isMarkData(child,2)"
                                  class="pull-right day-delete"
                                  v-on:click.stop="deleteMarkData(child,2)"><i class="icon ban"></i></div>
+                            <div v-if="getIsPass(child,2)" class="pull-right titlec" title="审核状态" v-bind:class="{'day-bo':getIsPass(child,2)==2,'day-guo':getIsPass(child,2)==1}">{{getIsPass(child,2)==1?'过':'驳'}}</div>
                         </div>
                         <div v-if="child.UserRight" class="padding-center">
                             <div class="titlec" v-if="child.UserRight.putCaredTime"
@@ -248,6 +263,7 @@
                                 <div class="pull-right day-delete"
                                      v-if="isMarkData(child,2)"
                                      v-on:click.stop="deleteMarkData(child,2)"><i class="icon ban"></i></div>
+                                <div v-if="getIsPass(child,2)" class="pull-right titlec" title="审核状态" v-bind:class="{'day-bo':getIsPass(child,2)==2,'day-guo':getIsPass(child,2)==1}">{{getIsPass(child,2)==1?'过':'驳'}}</div>
                                 @*<div class="pull-right" v-if="isMarkData(child,2)" v-bind:class="dayMark(child.UserRight.status)">记</div>*@
                             </div>
                         </div>
@@ -355,6 +371,7 @@
             showSingleDayRemark: [],//展示单天的打卡记录
             markStateList: ["请选择备注类别", "迟到", "早退", "早回家", "正常", "加班", "请假", "忘打卡"],
             cssMarkList: ['day-ismark', 'day-late', 'day-early', 'day-noclock'],
+            isPassList: ['未审核', '审核通过','审核驳回'],
             markDatas: [],
             dk: {
                 chidao: 0,
@@ -635,10 +652,18 @@
             },
             getMarkTitle: function (val, solt) {
                 var item = this.isMarkData2(val, solt);
-                if (item)
+                if (item) {
+                    var con = item[0].ClockContent == null ? '无备注内容' : item[0].ClockContent;
                     return this.markStateList[item[0].UDayStateId] +
-                        '：' + item[0].ClockContent;
+                        ' | ' + con + ' | ' + this.isPassList[item[0].IsPass];
+                }
                 return '';
+            },
+            getIsPass: function (val,solt) {
+                var item = this.isMarkData2(val, solt);
+                if (item)
+                    return item[0].IsPass;
+                return 0;
             },
             dayMark: function (item) {
                 if (item == -3) {
