@@ -195,7 +195,7 @@
             req: {
                 pageIndex: 1,
                 pageNum: 1,
-                pageSize: 2,
+                pageSize: 10,
                 visiblePage: 3,
                 pageList: {},
                 userName: '',
@@ -326,8 +326,6 @@
                 this.req.cutLength = rightLength - leftLength;
                 this.req.selectUserList = this.userList.slice(leftLength, rightLength);
 
-                //$('.pagination>.item').removeClass('active');
-
                 $('.select-item').prop('checked', false);
                 $('.select-parent').prop('checked', false);
             },
@@ -335,9 +333,14 @@
                 if (userId == undefined || userId == '') {
                     return this.paging(1);
                 }
-                var thisUser = this.userList.filter(function (item) {
-                    return item.UserId == userId;
-                });
+                var thisUser = [];
+                if (userId == -1) {
+                    thisUser = $.extend([],this.userList);
+                } else {
+                     thisUser = this.userList.filter(function (item) {
+                        return item.UserId == userId;
+                    });
+                }
                 if (thisUser) {
                     this.selectedList = [];
                     this.req.selectUserList = thisUser;

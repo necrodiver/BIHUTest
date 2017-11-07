@@ -1,13 +1,13 @@
 ﻿var pageComponent = Vue.extend({
     template: `<div class="ui floated pagination menu">
-                    <a class="icon item" :class="{\'disabled\':curPage==1}" v-on:click.stop="goPage(curPage==1?curPage:curPage-1)">
+                    <a class="icon item" :class="{\'disabled\':curPage==1}" v-on:click="goPage(curPage==1?curPage:--curPage)">
                         <i class="left chevron icon"></i>
                     </a>
-                    <a class="item" v-for="(page,index) in selectPage" :class="{'p-active':page==curPage}" v-on:click.stop="goPage(page)">
-                        <template v-if="page">{{page}}</template>
+                    <a class="item" style="background-color:#fff;" v-for="(page,index) in selectPage" :class="{'p-active':page==curPage}" v-on:click="goPage(page)">
+                        <template v-if="page">{{page}}</template> 
                         <template v-else="page" >···</template>
                     </a>
-                    <a class="icon item" :class="{\'disabled\':curPage==pages}" v-on:click.stop="goPage(curPage==pages?curPage:curPage+1)">
+                    <a class="icon item" :class="{\'disabled\':curPage==pages}" v-on:click="goPage(curPage==pages?curPage:++curPage)">
                         <i class="right chevron icon"></i>
                     </a>
                 </div>`,
@@ -31,7 +31,6 @@
             let pageNum = this.pages;
             let index = this.curPage;
             let arr = [];
-            $('.pagination>.item').removeClass('active');
             if (pageNum <= 5) {
                 for (var i = 1; i <= pageNum; i++) {
                     arr.push(i);
@@ -47,13 +46,12 @@
     },
     methods: {
         goPage: function (page) {
+            $('.pagination>.item').removeClass('active');
             if (page == 0)
                 return;
             if (page != this.curPage) {
-                $('.pagination>.item').removeClass('active');
                 this.curPage = page;
                 this.$emit('navpage', this.curPage);
-                $('.pagination>.item').removeClass('active');
             } else {
                 console.log('Already in the current page');
             }

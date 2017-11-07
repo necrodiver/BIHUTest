@@ -28,3 +28,6 @@
     color: rgba(0, 0, 0, 0.95) !important;
     box-shadow: none !important;
 }
+.pagination>.active{
+    background-color:#fff;
+}
