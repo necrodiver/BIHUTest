@@ -1,13 +1,13 @@
 ﻿var pageComponent = Vue.extend({
     template: `<div class="ui floated pagination menu">
-                    <a class="icon item" :class="{\'disabled\':curPage==1}" v-on:click="goPage(curPage==1?curPage:--curPage)">
+                    <a class="icon item" :class="{\'disabled\':curPage==1}" v-on:click="goPage(curPage==1?curPage:curPage-1)">
                         <i class="left chevron icon"></i>
                     </a>
                     <a class="item" style="background-color:#fff;" v-for="(page,index) in selectPage" :class="{'p-active':page==curPage}" v-on:click="goPage(page)">
                         <template v-if="page">{{page}}</template> 
                         <template v-else="page" >···</template>
                     </a>
-                    <a class="icon item" :class="{\'disabled\':curPage==pages}" v-on:click="goPage(curPage==pages?curPage:++curPage)">
+                    <a class="icon item" :class="{\'disabled\':curPage==pages}" v-on:click="goPage(curPage==pages?curPage:curPage+1)">
                         <i class="right chevron icon"></i>
                     </a>
                 </div>`,
