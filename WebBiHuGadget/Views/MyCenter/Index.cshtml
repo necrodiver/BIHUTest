@@ -125,7 +125,10 @@
                             <td>{{item.CreateTime}}</td>
                             <td>{{item.IsPass|IsPassForName}}</td>
                             <td class="center">
-                                <input type="checkbox" v-on:click="checkIsPass(item,$event)" v-bind:checked="IsChecked(item)" title="勾选为通过,未勾选则不通过" /> <strong>过</strong>
+                                <div class="ui checkbox head-title" title="勾选为通过,未勾选则不通过" v-on:click="checkIsPass(item,$event)">
+                                    <input type="checkbox">
+                                    <label></label>
+                                </div>
                             </td>
                         </tr>
                     </tbody>
@@ -547,15 +550,6 @@
                         return console.log(res.MsgContent);
                     }
                 });
-            },
-            IsChecked: function (item) {
-                if (item) {
-                    if (item.IsPass == 1)
-                        return 1;
-                    else
-                        return 0;
-                }
-                return 0;
             }
         },
         filters: {
