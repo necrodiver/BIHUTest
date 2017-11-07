@@ -218,7 +218,7 @@ namespace BiHuGadget.Dal
             /// <summary>
             /// 添加Attendance单条数据
             /// </summary>
-            public static string insert_Attendance = "INSERT INTO Attendance (ClockContent,ClockTime,ClockYear,TimeSlot,UDayStateId,UserId,CreateTime,IsPass) VALUES (@ClockContent,@ClockTime,@ClockYear,@TimeSlot,@UDayStateId,@UserId,@CreateTime,@IsPass)";
+            public static string insert_Attendance = "INSERT INTO Attendance (ClockContent,ClockTime,ClockYear,ClockMonth,TimeSlot,UDayStateId,UserId,CreateTime,IsPass) VALUES (@ClockContent,@ClockTime,@ClockYear,@ClockMonth,@TimeSlot,@UDayStateId,@UserId,@CreateTime,@IsPass)";
             /// <summary>
             /// 更新Attendance单条数据
             /// </summary>
