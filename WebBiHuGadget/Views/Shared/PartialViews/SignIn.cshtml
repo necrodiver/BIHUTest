@@ -69,9 +69,9 @@
             loginIn: function () {
                 var _self = this;
                 if (!helper.bihuEmail(this.User.Email))
-                    return false;
+                    return helper.toolTipBox("邮箱地址格式不正确");
                 if (!helper.pwd(this.User.Pwd))
-                    return false;
+                    return helper.toolTipBox("密码格式不正确");
                 var req = $.ajax({
                     type: 'POST',
                     url: '@Url.Action("LoginIn","Home")',

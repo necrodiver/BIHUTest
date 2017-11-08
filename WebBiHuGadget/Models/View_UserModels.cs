@@ -17,7 +17,7 @@ namespace WebBiHuGadget.Models
         [RegularExpression(@"^[0-9a-zA-Z]{2,20}\@91bihu\.com", ErrorMessage = "邮箱格式为注册的壁虎账号")]
         public string Email { get; set; }
         [Required(AllowEmptyStrings = false, ErrorMessage = "密码不能为空")]
-        [RegularExpression(@"^[A-Za-z\.0-9]{6,20}", ErrorMessage = "密码只能是数字或字母和.组成的长度范围为6~20")]
+        [RegularExpression(@"^[A-Za-z\.0-9]{4,20}", ErrorMessage = "密码只能是数字或字母和.组成的长度范围为6~20")]
         public string Pwd { get; set; }
         [Required(AllowEmptyStrings = false, ErrorMessage = "‘记住我’不能为空")]
         [ReadMe(ErrorMessage = "请不要手动修改'记住我'")]
