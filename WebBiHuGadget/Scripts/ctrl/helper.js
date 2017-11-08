@@ -1,6 +1,6 @@
 ﻿var helper = {};
 helper.pwd = function (val) {
-    if (!/^[A-Za-z\.0-9]{6,20}/.test(val))
+    if (!/^[A-Za-z\.0-9]{4,20}/.test(val))
         return false;
     return true;
 };
