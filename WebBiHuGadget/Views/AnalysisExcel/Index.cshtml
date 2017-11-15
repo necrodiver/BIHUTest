@@ -179,20 +179,14 @@
         <a class="ui ribbon label">查询</a>
         <div class="left22">
             <div class="six column ui grid stackable group1" v-if="dk">
-                <div class="column">迟到：<label v-bind:class="{'daycount':dk.chidao>0}">{{dk.chidao}}</label>/{{dk.oneMonthCount}}</div>
-                <div class="column">早退：<label v-bind:class="{'daycount':dk.zaotui>0}">{{ dk.zaotui}}</label>/{{dk.oneMonthCount}}</div>
-                <div class="column">早回家：<label v-bind:class="{'daycount':dk.zaoxiaban>0}">{{ dk.zaoxiaban}}</label>/{{dk.oneMonthCount}}</div>
+                <div class="column">迟到：<label v-bind:class="{'daycount':dk.chidao>0}">{{dk.chidao}}</label>/{{dk.oneMonthCount/2}}</div>
+                <div class="column">早退：<label v-bind:class="{'daycount':dk.zaotui>0}">{{ dk.zaotui}}</label>/{{dk.oneMonthCount/2}}</div>
+                <div class="column">早回家：<label v-bind:class="{'daycount':dk.zaoxiaban>0}">{{ dk.zaoxiaban}}</label>/{{dk.oneMonthCount/2}}</div>
                 <div class="column">未打卡：<label v-bind:class="{'daycount':dk.weidaka>0}">{{dk.weidaka}}</label>/{{dk.oneMonthCount}}</div>
-                <div class="column">整天未到：<label v-bind:class="{'daycount':dk.zhengtianweidaka>0}">{{dk.zhengtianweidaka}}</label>/{{dk.oneMonthCount}}</div>
-                <div class="column">加班：<label v-bind:class="{'daycount':dk.jiaban>0}">{{dk.jiaban}}</label>/{{dk.oneMonthCount}}</div>
+                <div class="column">整天未到：<label v-bind:class="{'daycount':dk.zhengtianweidaka>0}">{{dk.zhengtianweidaka}}</label>/{{dk.oneMonthCount/2}}</div>
+                <div class="column">加班：<label v-bind:class="{'daycount':dk.jiaban>0}">{{dk.jiaban}}</label>/{{dk.oneMonthCount/2}}</div>
             </div>
             <div class="ui stackable margin-bottom10">
-                <div class="ui vertical animated button" tabindex="0" v-on:click="showAddLeave">
-                    <div class="hidden content">请假</div>
-                    <div class="visible content">
-                        <i class="angellist icon" style="font-size:15px;"></i>
-                    </div>
-                </div>
                 <div class="ui selection dropdown medium small" id="selectMonth">
                     <input type="hidden" />
                     <i class="dropdown icon"></i>
@@ -225,10 +219,39 @@
                 <div class="left length-top">周五</div>
                 <div class="left length-top">周六</div>
                 <div class="left length-top">周日</div>
-                <div class="body-Day">
+                <!--打卡Excel表没有出来用这个-->
+                <div class="body-Day" v-if="!userMounthNullCount&&userMounthNulls&&userMounthNulls.dayNum > 27">
+                    <div v-for="i in userMounthNulls.nullDays" class="left length">无</div>
+                    <div v-for="day in userMounthNulls.dayNum" class="left length titlec">
+                        <div class="select-day titlec" v-on:click="selectMarkNull(day,0)" v-bind:title="getMarkTitle(day,0,1)">
+                            <strong>{{day}}</strong>
+                            <div class="pull-right day-delete"
+                                 v-if="isMarkDataNull(day,0)"
+                                 v-on:click.stop="deleteMarkData(day,-1,1)"><i class="icon ban"></i></div>
+                            <div v-if="isMarkDataNull(day,0,1)" class="pull-right day-ismark">注</div>
+                            <div v-if="getIsPassNull(day,0)" class="pull-right titlec" title="审核状态" v-bind:class="{'day-bo':getIsPassNull(day,0)==2,'day-guo':getIsPassNull(day,0)==1}">{{getIsPassNull(day,0)==1?'过':'驳'}}</div>
+                        </div>
+                        <div class="padding-center child-10 titlec" v-on:click="selectMarkNull(day,1)" v-bind:title="getMarkTitle(day,1,1)">
+                            早:----
+                            <div class="pull-right day-delete"
+                                 v-if="isMarkDataNull(day,1)"
+                                 v-on:click.stop="deleteMarkData(day,1,1)"><i class="icon ban"></i></div>
+                            <div v-if="getIsPassNull(day,1)" class="pull-right titlec" title="审核状态" v-bind:class="{'day-bo':getIsPassNull(day,1)==2,'day-guo':getIsPassNull(day,1)==1}">{{getIsPassNull(day,1)==1?'过':'驳'}}</div>
+                        </div>
+                        <div class="padding-center child-10 titlec" v-on:click="selectMarkNull(day,2)" v-bind:title="getMarkTitle(day,2,1)">
+                            晚:----
+                            <div class="pull-right day-delete"
+                                 v-if="isMarkDataNull(day,2)"
+                                 v-on:click.stop="deleteMarkData(day,2,1)"><i class="icon ban"></i></div>
+                            <div v-if="getIsPassNull(day,2)" class="pull-right titlec" title="审核状态" v-bind:class="{'day-bo':getIsPassNull(day,2)==2,'day-guo':getIsPassNull(day,2)==1}">{{getIsPassNull(day,2)==1?'过':'驳'}}</div>
+                        </div>
+                    </div>
+                </div>
+                <!--打卡Excel表已经出来了-->
+                <div class="body-Day" v-if="userMounthNullCount">
                     <div v-for="i in userMounthNullCount" class="left length">无</div>
                     <div v-for="child in userMounths" class="left length titlec" v-bind:class="'color-'+child.status" v-bind:title="getMarkTitle(child,0)">
-                        <div class="" v-bind:class="{'select-day':child.status!=1&&child.status!=2}" v-on:click="selectMark(child,0)">
+                        <div class="" v-bind:class="{'select-day':child.status!=1&&child.status!=2}" v-on:click="selectMark(child,0,1)">
                             <strong v-if="child.status!=2">{{child.day}}</strong>
                             <div v-if="child.status==2&&child.dayOfWeek==7" style="color:#ccc;">{{child.day}} 休</div>
                             <div v-if="child.status==2&&child.dayOfWeek!=7" style="color:#ccc;">{{child.day}} 假</div>
@@ -236,7 +259,7 @@
                                  v-if="isMarkData(child,-1)&&child.status==0"
                                  v-on:click.stop="deleteMarkData(child,-1)"><i class="icon ban"></i></div>
                             <div v-if="isMarkData(child,-1)" class="pull-right day-ismark">注</div>
-                            <div v-if="getIsPass(child,-1)&&child.status==2&&child.dayOfWeek!=7" class="pull-right titlec" title="审核状态" v-bind:class="{'day-bo':getIsPass(child,-1)==2,'day-guo':getIsPass(child,-1)==1}">{{getIsPass(child,-1)==1?'过':'驳'}}</div>
+                            <div v-if="getIsPass(child,-1)&&child.status==0&&child.dayOfWeek!=7" class="pull-right titlec" title="审核状态" v-bind:class="{'day-bo':getIsPass(child,-1)==2,'day-guo':getIsPass(child,-1)==1}">{{getIsPass(child,-1)==1?'过':'驳'}}</div>
                         </div>
                         <div class="padding-center child-0 titlec"
                              v-if="!child.UserLeft&&child.status!=2&&child.status!=0"
@@ -277,7 +300,6 @@
                                      v-if="isMarkData(child,2)"
                                      v-on:click.stop="deleteMarkData(child,2)"><i class="icon ban"></i></div>
                                 <div v-if="getIsPass(child,2)" class="pull-right titlec" title="审核状态" v-bind:class="{'day-bo':getIsPass(child,2)==2,'day-guo':getIsPass(child,2)==1}">{{getIsPass(child,2)==1?'过':'驳'}}</div>
-                                @*<div class="pull-right" v-if="isMarkData(child,2)" v-bind:class="dayMark(child.UserRight.status)">记</div>*@
                             </div>
                         </div>
                     </div>
@@ -318,27 +340,6 @@
             <div class="ui positive right labeled icon button">确定 <i class="checkmark icon"></i> </div>
         </div>
     </div>
-    <!--新增请假-->
-    @*<div class="ui small modal" id="editMark">
-            <div class="header">
-                新增请假
-            </div>
-            <div class="content ui form">
-                <div class="field">日期：<strong>{{addMarkData.ClockTime}}</strong></div>
-                <div class="field">
-                    <strong>时间范围：</strong>
-
-                </div>
-                <div class="field">
-                    <label>备注说明</label>
-                    <textarea rows="2" maxlength="200" placeholder="长度不大于200个字符" id="markReason" v-model="addMarkData.ClockContent"></textarea>
-                </div>
-            </div>
-            <div class="actions">
-                <div class="ui cancel button" id="btnCancle">取消 </div>
-                <div class="ui positive right labeled icon button">确定 <i class="checkmark icon"></i> </div>
-            </div>
-        </div>*@
 </div>
 <script type="text/javascript">
     var __RequestVerificationToken = $('input[name="__RequestVerificationToken"]').val();
@@ -382,6 +383,7 @@
             userName: "@ViewBag.UserName",
             userMounthNullCount: 0,
             userMounths: [],
+            userMounthNulls: {},//当月无数据时的结构
             selectMonth: parseInt(moment().subtract(1, 'month').format('MM')),
             addMarkData: {
                 AttendanceId: -1,//打卡备注Id
@@ -406,7 +408,7 @@
             selectMarkData: {
                 year: 2017,
                 //userId: -1,
-                userName: ''
+                userName: "@ViewBag.UserName"
             },
             showSingleDayRemark: [],//展示单天的打卡记录
             markStateList: ["请选择备注类别", "迟到", "早退", "早回家", "正常", "加班", "请假", "忘打卡"],
@@ -431,9 +433,12 @@
         },
         watch: {
             userName: function () {
+                this.markDatas = [];
                 this.selectUserName();
             },
             selectMonth: function () {
+                this.userMounthNulls = {};
+                this.markDatas = [];
                 this.selectMonthData();
             }
         },
@@ -473,6 +478,14 @@
                 var jsonData = $.extend({}, this.userPunchCards);
             },
             selectUserName: function () {
+
+                var thisMonth = localStorage.getItem(this.selectMonth);
+                this.userPunchCards = [];
+                if (thisMonth) {
+                    thisMonth = JSON.parse(thisMonth);
+                    this.userPunchCards = thisMonth;
+                }
+
                 if (this.userName == null || this.userName == '' || this.userName.length < 2) {
                     return;
                 }
@@ -483,6 +496,12 @@
                     this.userMounthNullCount = temporary['day_1'].dayOfWeek - 1;
                     this.userMounths = temporary;
                     this.selectMarkData.userName = this.userName;
+                    this.getUserMarkData();//获取打卡备注
+                    this.getCZWJ();//获取迟到早退未打卡加班内容集合
+                }
+                else if (!this.userPunchCards || (this.userPunchCards && this.userPunchCards[0] == undefined)) {
+                    this.selectMarkData.userName = this.userName;
+                    this.getUserMounthNulls();
                     this.getUserMarkData();//获取打卡备注
                     this.getCZWJ();//获取迟到早退未打卡加班内容集合
                 }
@@ -497,7 +516,7 @@
                 this.userMounthNullCount = 0;
                 var thisMonth = localStorage.getItem(this.selectMonth);
                 var _self = this;
-                if (thisMonth != null) {
+                if (thisMonth) {
                     thisMonth = JSON.parse(thisMonth);
                     this.userPunchCards = thisMonth;
                     this.selectUserName();
@@ -508,16 +527,16 @@
                     url: bhConfig.GetMonthData,
                     data: { monthNum: thisMonthNum },
                     dataType: "JSON",
-                    cache: false,
-                    beforeSend: function () {
-
-                    }
+                    cache: false
                 });
                 req.done(function (res) {
                     if (res == null || res == "") {
                         return helper.toolTipBox("操作失败");
                     }
                     if (!res.MsgStatus) {
+                        _self.getUserMounthNulls();
+                        _self.getUserMarkData();//获取打卡备注
+                        _self.getCZWJ();//获取迟到早退未打卡加班内容集合
                         return helper.toolTipBox(res.MsgContent);
                     }
                     localStorage.setItem(_self.selectMonth, JSON.stringify(res.MsgContent));
@@ -525,14 +544,28 @@
                     _self.selectUserName();
                 });
             },
+            getUserMounthNulls: function () {
+                this.userMounthNulls = {};
+                if (this.userPunchCards && this.selectMonth > 0 && this.selectMonth <= 12) {
+                    var selectMonth = this.selectMonth;
+                    var selectYear = this.selectMarkData.year;
+                    var days = moment(selectYear + "-" + selectMonth, "YYYY-MM").daysInMonth();
+                    var userMounthNulls = {};
+                    var firstDayOfWeek = moment(selectYear + "-" + selectMonth + "-01", "YYYY-MM-DD").format('d');
+                    firstDayOfWeek = firstDayOfWeek == 0 ? 7 : firstDayOfWeek;
+                    userMounthNulls.nullDays = firstDayOfWeek-1;
+                    userMounthNulls.dayNum = days;
+                    this.userMounthNulls = $.extend({},userMounthNulls);
+                }
+            },
             saveMark: function () {
                 var _self = this;
                 var dt = $.extend({}, this.addMarkData);
                 dt.UserName = this.userName;
-                var temporary = this.userPunchCards[this.userName];
-                if (temporary == undefined || temporary == null || temporary['day_1'].day != 1) {
-                    return helper.toolTipBox("错误用户名！");
-                }
+                //var temporary = this.userPunchCards[this.userName];
+                //if (temporary == undefined || temporary == null || temporary['day_1'].day != 1) {
+                //    return helper.toolTipBox("错误用户名！");
+                //}
                 dt.__RequestVerificationToken = __RequestVerificationToken;
                 if (dt.AttendanceId == -1 || dt.markIUD == -1 || dt.TimeSlot == -1 || dt.UDayStateId == -1) {
                     dt.AttendanceId = null;
@@ -557,9 +590,12 @@
                     _self.getUserMarkData();
                 });
             },
-            selectMark: function (val, index) {
+            selectMark: function (val, index,out) {
                 this.addMarkData = $.extend({}, this.addMarkInit);
                 if (val.day && val.day > 0 && val.day < 32) {
+                    if ((val.status == 1||val.status==2 )&& out != undefined&&out== 1) {
+                        return;
+                    }
                     var dayTimeTP = moment(this.selectMarkData.year + '-' + this.selectMonth + '-' + val.day).format('YYYY-MM-DD');
                     this.addMarkData.ClockTime = dayTimeTP;
                     this.showSingleDayRemark = [];
@@ -607,6 +643,52 @@
                     }
                 }
             },
+            selectMarkNull: function (day, index) {
+                if (!day || day < 0 || day > 31 || index<0||index>2)
+                    return;
+                var dayTimeTP = moment(this.selectMarkData.year + '-' + this.selectMonth + '-' + day).format('YYYY-MM-DD');
+                this.addMarkData.ClockTime = dayTimeTP;
+                this.showSingleDayRemark = [];
+                if (this.markDatas != [] && this.markDatas.length > 0) {
+                    this.showSingleDayRemark = this.markDatas.filter(function (item) {
+                        return item.ClockTime == dayTimeTP;
+                    });
+                }
+                this.addMarkData.TimeSlot = index;
+                if (!this.showSingleDayRemark || this.showSingleDayRemark[0] == undefined) {
+                    return this.editMark(true);
+                }
+                var oneDayMark = this.showSingleDayRemark.filter(function (item) {
+                    return item.TimeSlot == 0;
+                });
+                var leftDayMark = this.showSingleDayRemark.filter(function (item) {
+                    return item.TimeSlot == 1;
+                });
+                var rightDayMark = this.showSingleDayRemark.filter(function (item) {
+                    return item.TimeSlot == 2;
+                });
+                if (index == 0) {
+                    if ((leftDayMark && leftDayMark[0] != undefined) || (rightDayMark && rightDayMark[0] != undefined))
+                        return helper.toolTipBox("你已添加当天内的打卡备注，不能添加整天备注！");
+                    if (oneDayMark && oneDayMark[0] != undefined)
+                        return this.editMark(false, oneDayMark[0]);
+                    else return this.editMark(true);
+                } else if (index == 1) {
+                    if (oneDayMark && oneDayMark[0] != undefined)
+                        return helper.toolTipBox("当前整天已经添加备注，不能添加当天内的备注！");
+                    if (leftDayMark && leftDayMark[0] != undefined)
+                        return this.editMark(false, leftDayMark[0]);
+                    else
+                        return this.editMark(true);
+                } else if (index == 2) {
+                    if (oneDayMark&& oneDayMark[0] != undefined)
+                        return helper.toolTipBox("当前整天已经添加备注，不能添加当天内的备注！");
+                    if (rightDayMark && rightDayMark[0] != undefined)
+                        return this.editMark(false, rightDayMark[0]);
+                    else
+                        return this.editMark(true);
+                }
+            },
             editMark: function (isAdd, data) {
                 if (isAdd) {
                     $('#editMark-header').text('新增--备注说明');
@@ -650,6 +732,20 @@
                     return false;
                 return true;
             },
+            isMarkDataNull: function (val, solt,isZhu) {
+                var child = {};
+                child.day = val;
+                var item = this.isMarkData2(child, -1);
+                if (item && item[0] != undefined) {
+                    var itemChild = item.filter(function (itemed) {
+                        return itemed.TimeSlot == solt;
+                    });
+                    if (isZhu) return true;
+                    if (itemChild && itemChild[0] != undefined)
+                        return true;
+                }
+                return false;
+            },
             isMarkData2: function (val, solt) {
                 if (val.day && val.day > 0 && val.day < 32) {
                     if (this.markDatas && this.markDatas.length > 0) {
@@ -671,13 +767,18 @@
                 }
                 return 0;
             },
-            deleteMarkData: function (val, solt) {
+            deleteMarkData: function (val, solt, isNull) {
+                var child = {};
+                if (isNull)
+                    child.day = val;
+                else
+                    child = val;
                 var _self = this;
                 dialog({
                     title: '删除提示',
                     content: '你确定要删除此条备注?',
                     ok: function () {
-                        var item = _self.isMarkData2(val, solt);
+                        var item = _self.isMarkData2(child, solt);
                         if (item == 0)
                             return helper.toolTipBox("数据错误");
                         if (item && item.length > 0) {
@@ -685,14 +786,18 @@
                             _self.addMarkData.markIUD = 0;
                             _self.saveMark();
                         }
-                        return helper.toolTipBox("数据错误");
                     },
                     cancel: function () {
                     }
                 }).show();
             },
-            getMarkTitle: function (val, solt) {
-                var item = this.isMarkData2(val, solt);
+            getMarkTitle: function (val, solt, isNull) {
+                var child = {};
+                if (isNull)
+                    child.day = val;
+                else
+                    child = val;
+                var item = this.isMarkData2(child, solt);
                 if (item) {
                     var con = item[0].ClockContent == null ? '无备注内容' : item[0].ClockContent;
                     return this.markStateList[item[0].UDayStateId] +
@@ -700,10 +805,23 @@
                 }
                 return '';
             },
-            getIsPass: function (val,solt) {
+            getIsPass: function (val, solt) {
                 var item = this.isMarkData2(val, solt);
                 if (item)
                     return item[0].IsPass;
+                return 0;
+            },
+            getIsPassNull: function (val, solt) {
+                var child = {};
+                child.day = val;
+                var item = this.isMarkData2(child, -1);
+                if (item && item[0] != undefined) {
+                    var itemChild = item.filter(function (itemed) {
+                        return itemed.TimeSlot == solt;
+                    });
+                    if (itemChild && itemChild[0] != undefined)
+                        return itemChild[0].IsPass;
+                }
                 return 0;
             },
             dayMark: function (item) {

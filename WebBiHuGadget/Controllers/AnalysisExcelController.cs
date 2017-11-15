@@ -151,7 +151,7 @@ namespace WebBiHuGadget.Controllers
             var fullName = Path.Combine(BasePath, Path.GetFileName(monthFileName));
             if (!System.IO.File.Exists(fullName))
             {
-                msgModel.MsgContent = "查询数据不存在(查询条件输入失败或请上传相关文件再查询)";
+                msgModel.MsgContent = "查询数据不存在,你可以先进行操作等待考勤数据导入";
                 return Json(msgModel, JsonRequestBehavior.AllowGet);
             }
 

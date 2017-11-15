@@ -24,6 +24,15 @@ namespace WebBiHuGadget.Controllers
             }
             return View();
         }
+        public ActionResult About()
+        {
+            ViewBag.IsLogin = 0;
+            if (this.Account != null)
+            {
+                ViewBag.IsLogin = 1;
+            }
+            return View();
+        }
 
         [HttpPost]
         [ModelValidationMVCFilter]
