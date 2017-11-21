@@ -55,14 +55,4 @@ namespace WebBiHuGadget.Models
         [StringLength(5, MinimumLength = 2, ErrorMessage = "{0}长度错误")]
         public string UserName { get; set; }
     }
-    /// <summary>
-    /// 操作类型
-    /// </summary>
-    public enum MarkIUD
-    {
-        Delete = 0,
-        Insert = 1,
-        Update = 2
-    }
-
 }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BiHuGadget.Helpers;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
@@ -19,17 +20,20 @@ namespace WebBiHuGadget.Models
         [DisplayName("权限角色")]
         [RoleId(ErrorMessage = "{0}不符合规范")]
         public int? RoleId { get; set; }
+        [DisplayName("归属小组")]
+        [IntLength(0, 10)]
+        public int? GroupId { get; set; }
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
             var model = validationContext.ObjectInstance as UserUpdateModel;
-            if (!string.IsNullOrWhiteSpace(model.Email) || !string.IsNullOrWhiteSpace(model.Pwd) || model.RoleId.HasValue)
+            if (!string.IsNullOrWhiteSpace(model.Email) || !string.IsNullOrWhiteSpace(model.Pwd) || model.RoleId.HasValue|| model.GroupId.HasValue)
             {
 
             }
             else
             {
-                yield return new ValidationResult("用户密码/用户邮箱/用户权限角色最少有一个不能为空!");
+                yield return new ValidationResult("用户密码/用户邮箱/用户权限角色/归属小组 最少有一个不能为空!");
             }
         }
     }

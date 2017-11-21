@@ -32,6 +32,10 @@ namespace BiHuGadget.Models
         /// 扮演角色(权限)
         /// </summary>
         public int? RoleId { get; set; }
+        /// <summary>
+        /// 分组Id
+        /// </summary>
+        public int? GroupId { get; set; }
     }
     public class AccountUser
     {
@@ -64,6 +68,14 @@ namespace BiHuGadget.Models
         /// </summary>
         public string RoleName { get; set; }
         /// <summary>
+        /// 分组Id
+        /// </summary>
+        public int GroupId { get; set; }
+        /// <summary>
+        /// 分组名称
+        /// </summary>
+        public string GroupName { get; set; }
+        /// <summary>
         /// 权限列表
         /// </summary>
         public List<AuthorityModel> AuthorityList { get; set; }
@@ -75,5 +87,6 @@ namespace BiHuGadget.Models
         public string Email { get; set; }
         public int RoleId { get; set; }
         public string CreateTime { get; set; }
+        public int GroupId { get; set; }
     }
 }

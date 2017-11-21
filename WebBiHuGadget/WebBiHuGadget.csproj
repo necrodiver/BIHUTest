@@ -169,12 +169,15 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\View_EditMark.cs" />
+    <Compile Include="Models\View_Enum.cs" />
+    <Compile Include="Models\View_GroupModels.cs" />
     <Compile Include="Models\View_MonthInUserMark.cs" />
     <Compile Include="Models\View_UserModels.cs" />
     <Compile Include="Models\View_UserUpdateModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\analys\analysis-excel.css" />
     <Content Include="Content\analys\analysis.css" />
     <Content Include="Content\components\accordion.css" />
     <Content Include="Content\components\accordion.js" />

@@ -377,7 +377,8 @@ namespace WebBiHuGadget.Controllers
                     ClockYear = whereModel.Year,
                     LeftNum = leftNum,
                     PageCount = whereModel.PageSize,
-                    ClockMonth = whereModel.Month
+                    ClockMonth = whereModel.Month,
+                    GroupId = whereModel.GroupId
                 };
                 List<AttendanceMoreModel> adList = attendanceBll.GetAttendanceList(asModel);
                 if (adList == null || adList.Count == 0)

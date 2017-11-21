@@ -1,0 +1,131 @@
+﻿.month-content-clock {
+    position: fixed;
+    right: 100px;
+    top: 100px;
+    width: 300px;
+    height: 500px;
+    border-radius: 5px;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    float: right;
+}
+
+.kong {
+    width: 100px;
+    height: 42px;
+}
+
+.clock-title {
+    margin-top: 10px;
+    text-align: center;
+    font-size: 16px;
+    padding-bottom: 5px;
+    border-bottom: 1px solid #ccc;
+}
+
+.clock-content {
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.clock-row {
+    margin-top: 5px;
+}
+
+.clock-mark {
+    word-wrap: break-word;
+}
+
+.clock-top {
+    width: 300px;
+    height: 400px;
+}
+
+.clock-bottom {
+    width: 300px;
+    height: 500px;
+}
+
+.clockBtn:hover {
+    border: 2px solid #de8b08;
+}
+
+.select-day:hover {
+    background-color: #ccc;
+    cursor: pointer;
+}
+
+.day-delete {
+    background-color: #000;
+    color: #fff;
+    border-radius: 20%;
+    cursor: pointer;
+    width: 16px;
+    line-height: 16px;
+    margin-top: 2px;
+}
+
+    .day-delete .icon {
+        font-size: 13px;
+    }
+
+    .day-delete:hover {
+        -moz-transform: scale(1.5);
+        -webkit-transform: scale(1.5);
+        -o-transform: scale(1.5);
+        -ms-transform: scale(1.5);
+        transform: scale(1.5);
+    }
+
+.day-ismark { /*有备注*/
+    background-color: #0d9b25;
+}
+
+.day-bo {
+    background-color: #ccc;
+    color: #000 !important;
+    cursor: pointer;
+}
+
+.day-guo {
+    background-color: #1457bf;
+    cursor: pointer;
+}
+
+.day-late { /*迟到*/
+    background-color: #ff6811;
+}
+
+.day-early { /*早退*/
+    background-color: #ffe518;
+}
+
+.day-noclock { /*未打卡*/
+    background-color: red;
+}
+
+.day-bo, .day-guo, .day-ismark, .day-late, .day-early, .day-noclock {
+    width: 20px;
+    height: 100%;
+    border-radius: 50%;
+    color: #fff;
+    font-size: 10px;
+    font-weight: 700;
+    padding-left: 4px;
+    padding-right: 4px;
+}
+
+.group1 {
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+}
+
+.daycount {
+    font-size: 22px;
+    font-weight: 700;
+    border-bottom: 1px dashed red;
+}
+
+.margin-bottom10 {
+    margin-bottom: 10px;
+}

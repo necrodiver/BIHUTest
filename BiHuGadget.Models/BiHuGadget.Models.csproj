@@ -45,6 +45,7 @@
     <Compile Include="AuthorityModel.cs" />
     <Compile Include="ClockMark.cs" />
     <Compile Include="CookieModel.cs" />
+    <Compile Include="GroupModel.cs" />
     <Compile Include="Models.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RoleModels.cs" />

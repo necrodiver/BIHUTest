@@ -92,6 +92,11 @@ namespace BiHuGadget.Dal
                     sb.Append(" a.ClockMonth=@ClockMonth AND");
                     args.Add("@ClockMonth", asModel.ClockMonth);
                 }
+                if (asModel.GroupId.HasValue)
+                {
+                    sb.Append(" u.GroupId=@GroupId AND");
+                    args.Add("@GroupId", asModel.GroupId);
+                }
 
                 sb.Append(" a.ClockYear=@ClockYear AND");
                 args.Add("@ClockYear", asModel.ClockYear);

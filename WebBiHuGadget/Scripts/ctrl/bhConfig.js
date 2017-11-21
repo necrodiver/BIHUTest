@@ -24,7 +24,9 @@ var bhConfig = defineConst({
     AddUserList: '/MyCenter/AddUserList',//添加用户集合
     DeleteUserList: '/MyCenter/DeleteUserList',//删除用户集合
     EditUser: '/MyCenter/EditUser', //修改用户信息
-    EditAttendanceIsPass:'/AnalysisExcel/EditAttendanceIsPass'//修改用户打卡备注状态
+    EditAttendanceIsPass: '/AnalysisExcel/EditAttendanceIsPass',//修改用户打卡备注状态
+    GetGroupList: '/MyCenter/GetGroupList',//获取分组信息
+    EditGroup:'/MyCenter/EditGroup'//增、删、改分组信息
 });
 window.bhConfig = bhConfig;
 

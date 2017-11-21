@@ -15,6 +15,7 @@ namespace WebBiHuGadget.Controllers
     {
         User_Bll userBll = new User_Bll();
         RolesAndAuthority_Bll raBll = new RolesAndAuthority_Bll();
+        Group_Bll groupBll = new Group_Bll();
         public ActionResult Index()
         {
             ViewBag.IsLogin = 0;
@@ -67,6 +68,7 @@ namespace WebBiHuGadget.Controllers
                     msgModel.MsgContent = "登录失败";
                     return Json(msgModel, JsonRequestBehavior.AllowGet);
                 }
+                GroupModel groupModel = groupBll.GetSingleGroup(Convert.ToInt32(backUser.GroupId));
                 List<AuthorityModel> authorityList = raBll.GetAuthorityList(Convert.ToInt32(roleModel.RoleId));
                 AccountUser account = new AccountUser
                 {
@@ -77,6 +79,8 @@ namespace WebBiHuGadget.Controllers
                     CreateTime = Convert.ToDateTime(backUser.CreateTime),
                     RoleId = roleModel.RoleId,
                     RoleName = roleModel.RoleName,
+                    GroupId = Convert.ToInt32(groupModel.GroupId),
+                    GroupName = groupModel.GroupName,
                     AuthorityList = authorityList
                 };
                 SessionHelper.SaveSession(account, Settings.AccountSessionKey);
@@ -99,7 +103,7 @@ namespace WebBiHuGadget.Controllers
         public ActionResult SingleOut()
         {
             SessionHelper.RemoveAllSession();
-            return RedirectToAction("Index","Home");
+            return RedirectToAction("Index", "Home");
             //return Json(null, JsonRequestBehavior.AllowGet);
         }
     }

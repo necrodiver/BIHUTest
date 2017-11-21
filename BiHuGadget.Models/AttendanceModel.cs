@@ -124,5 +124,6 @@ namespace BiHuGadget.Models
         public int ClockYear { get; set; }
         public int LeftNum { get; set; }
         public int PageCount { get; set; }
+        public int? GroupId { get; set; }
     }
 }

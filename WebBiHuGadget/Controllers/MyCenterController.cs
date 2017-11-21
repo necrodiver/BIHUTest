@@ -12,6 +12,7 @@ namespace WebBiHuGadget.Controllers
     public class MyCenterController : BaseController
     {
         private static User_Bll userBll = new User_Bll();
+        private static Group_Bll groupBll = new Group_Bll();
         public ActionResult Index()
         {
             ViewBag.IsLogin = 0;
@@ -24,6 +25,7 @@ namespace WebBiHuGadget.Controllers
             ViewBag.UserName = this.Account.UserName;
             ViewBag.Email = this.Account.Email;
             ViewBag.CreateTime = this.Account.CreateTime;
+            ViewBag.GroupId = this.Account.GroupId;
             return View();
         }
         [HttpPost, ValidateAntiForgeryToken]
@@ -48,7 +50,8 @@ namespace WebBiHuGadget.Controllers
                             UserName = u.UserName,
                             Email = u.Email,
                             RoleId = Convert.ToInt32(u.RoleId),
-                            CreateTime = Convert.ToDateTime(u.CreateTime).ToString("yyyy-MM-dd HH:mm:ss")
+                            CreateTime = Convert.ToDateTime(u.CreateTime).ToString("yyyy-MM-dd HH:mm:ss"),
+                            GroupId = Convert.ToInt32(u.GroupId)
                         };
                         userViewList.Add(userChild);
                     });
@@ -83,11 +86,13 @@ namespace WebBiHuGadget.Controllers
                     Email = u.Value2,
                     Pwd = AESHelper.AESEncrypt(u.Value),
                     CreateTime = DateTime.Now,
-                    RoleId = Settings.AddDefaultRole
+                    RoleId = Settings.AddDefaultRole,
+                    GroupId=Account.GroupId
                 });
                 List<UserModel> seletUserList = userBll.GetListUser();
                 var selectedList = userList.Where((u, i) => seletUserList.SingleOrDefault(s => s.UserName == u.UserName) != null).ToList();
-                if (selectedList != null && selectedList.Count > 0) {
+                if (selectedList != null && selectedList.Count > 0)
+                {
                     msg.MsgContent = "添加失败,已经存在有相同的用户";
                     return Json(msg, JsonRequestBehavior.AllowGet);
                 }
@@ -174,7 +179,8 @@ namespace WebBiHuGadget.Controllers
                     UserId = userModel.UserId,
                     Pwd = userModel.Pwd,
                     Email = userModel.Email,
-                    RoleId = userModel.RoleId
+                    RoleId = userModel.RoleId,
+                    GroupId=userModel.GroupId
                 };
                 if (userBll.EditUser(user))
                 {
@@ -188,6 +194,60 @@ namespace WebBiHuGadget.Controllers
                 Log4NetHelper.Error("修改用户账号信息失败:" + ex.ToString());
             }
             msg.MsgContent = "修改失败，你可以重试或者查看日志来检查错误";
+            return Json(msg, JsonRequestBehavior.AllowGet);
+        }
+        /// <summary>
+        /// 获取分组列表
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost]
+        public JsonResult GetGroupList()
+        {
+            MessageModel msg = new MessageModel
+            {
+                MsgTitle = "获取分组列表",
+                MsgStatus = true
+            };
+            var groupList = groupBll.GetGroupList();
+            msg.MsgContent = groupList;
+
+            return Json(msg, JsonRequestBehavior.AllowGet);
+        }
+        /// <summary>
+        /// 操作分组，增、删、改
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        [HttpPost, ValidateAntiForgeryToken, ModelValidationMVCFilter]
+        public JsonResult EditGroup(View_GroupModel request)
+        {
+            MessageModel msg = new MessageModel
+            {
+                MsgTitle = "操作分组",
+                MsgStatus = false
+            };
+            GroupModel groupModel = new GroupModel
+            {
+                GroupId = request.GroupId,
+                GroupName = request.GroupName
+            };
+            switch (request.MarkIUD)
+            {
+                case MarkIUD.Delete:
+                    msg.MsgStatus = groupBll.DeleteGroup(groupModel);
+                    break;
+                case MarkIUD.Insert:
+                    msg.MsgStatus = groupBll.AddGroup(groupModel.GroupName);
+                    break;
+                case MarkIUD.Update:
+                    msg.MsgStatus = groupBll.EditGroup(groupModel);
+                    break;
+            }
+            if (msg.MsgStatus)
+                msg.MsgContent = "操作成功！";
+            else
+                msg.MsgContent = "操作分组失败，请重新尝试或者查看日志！";
+
             return Json(msg, JsonRequestBehavior.AllowGet);
         }
     }

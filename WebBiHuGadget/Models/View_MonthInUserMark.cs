@@ -53,6 +53,9 @@ namespace WebBiHuGadget.Models
         [DisplayName("选择查询月份")]
         [IntLength(1, 12)]
         public int? Month { get; set; }
+        [DisplayName("查询分组")]
+        [IntLength(1, 10)]
+        public int? GroupId { get; set; }
     }
     public class EditAttendanceIsPass
     {

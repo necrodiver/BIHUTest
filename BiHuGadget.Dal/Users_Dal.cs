@@ -40,7 +40,7 @@ namespace BiHuGadget.Dal
             StringBuilder addStr = new StringBuilder();
             foreach (var item in userList)
             {
-                addStr.Append($"('{item.Email}','{item.UserName}','{item.Pwd}','{item.CreateTime}',{item.RoleId}),");
+                addStr.Append($"('{item.Email}','{item.UserName}','{item.Pwd}','{item.CreateTime}',{item.RoleId},{item.GroupId}),");
             }
             string _values = addStr.ToString();
             _values = _values.Substring(0, _values.Length - 1);
@@ -127,6 +127,12 @@ namespace BiHuGadget.Dal
                 sbUp.Append(" RoleId=@RoleId,");
                 args.Add("@RoleId", userModel.RoleId);
             }
+            if (userModel.GroupId != null)
+            {
+                sb.Append(" GroupId=@GroupId AND ");
+                sbUp.Append(" GroupId=@GroupId,");
+                args.Add("@GroupId", userModel.GroupId);
+            }
             sb.Append(" 1=1");
             if (isSelect)
             {
@@ -145,8 +151,8 @@ namespace BiHuGadget.Dal
         /// 查询Users数据库
         /// </summary>
         public static string Select_User = "SELECT * FROM Users WHERE {0}";
-        public static string Insert_User = "INSERT INTO Users (Email,UserName,Pwd,CreateTime,RoleId) VALUES ({0})";
-        public static string Insert_UserList = "INSERT INTO Users (Email,UserName,Pwd,CreateTime,RoleId) VALUES {0}";
+        public static string Insert_User = "INSERT INTO Users (Email,UserName,Pwd,CreateTime,RoleId,GroupId) VALUES (@Email,@UserName,@Pwd,@CreateTime,@RoleId,@GroupId)";
+        public static string Insert_UserList = "INSERT INTO Users (Email,UserName,Pwd,CreateTime,RoleId,GroupId) VALUES {0}";
         public static string Delete_User = "DELETE FROM Users WHERE UserId IN ({0})";
         public static string Update_User = "UPDATE users SET {0} WHERE {1}";
     }

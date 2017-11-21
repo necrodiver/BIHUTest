@@ -29,6 +29,9 @@ namespace WebBiHuGadget
             bundles.Add(new StyleBundle("~/Content/analysis").Include(
                         "~/Content/analys/analysis.css"));
 
+            bundles.Add(new StyleBundle("~/Content/analysisexcel").Include(
+                       "~/Content/analys/analysis-excel.css"));
+
             bundles.Add(new ScriptBundle("~/bundles/analysis").Include(
                         "~/Scripts/ctrl/analysisExcel.js"));
             //组件
