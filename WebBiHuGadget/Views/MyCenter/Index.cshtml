@@ -545,7 +545,7 @@
                     if (res.MsgStatus) {
                         _self.attendance.list = res.MsgContent.list;
                         _self.attendance.where.totalCount = res.MsgContent.totalCount;
-                        callback();
+                        callback(_self);
                     } else {
                         return console.log(res.MsgContent);
                     }
@@ -555,8 +555,7 @@
                 if (pageIndex != undefined && pageIndex == 1) {
                     this.$refs.pageMark.init();
                 }
-                var _self = this;
-                this.getAList(pageIndex, function () {
+                this.getAList(pageIndex, function (_self) {
                     var _where = _self.attendance.where;
                     if (pageIndex == undefined) {
                         _where.pageIndex = 1;
