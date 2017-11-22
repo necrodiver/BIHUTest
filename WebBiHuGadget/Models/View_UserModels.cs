@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BiHuGadget.Helpers;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
@@ -81,6 +82,27 @@ namespace WebBiHuGadget.Models
         [RegularExpression(@"^[0-9\,]+$", ErrorMessage = "{0} 不符合规范")]
         [StringLength(1000, MinimumLength = 1, ErrorMessage = "{0} 长度不符合规范")]
         public string UserIds { get; set; }
+    }
+    #endregion
+
+    #region
+    public class View_SelectUserListWhere
+    {
+        [DisplayName("用户Id")]
+        [NotMinus(ErrorMessage = "{0}数据无效")]
+        public int? UserId { get; set; }
+
+        [DisplayName("查询分组")]
+        [IntLength(1, 10)]
+        public int? GroupId { get; set; }
+
+        [Required]
+        [PositiveInteger(ErrorMessage = "{0}数据无效")]
+        public int PageIndex { get; set; }
+
+        [DisplayName("单页数量")]
+        [PageCount(ErrorMessage = "{0}不符合规范")]
+        public int PageSize { get; set; }
     }
     #endregion
 }

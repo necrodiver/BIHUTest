@@ -28,6 +28,64 @@ namespace BiHuGadget.Dal
             return GetList<UserModel>(_sql, _args);
         }
 
+        public List<UserModel> GetPageUserList(UserSearchPageWhereModel whereModel)
+        {
+            try
+            {
+                var args = new DynamicParameters();
+                StringBuilder sb = new StringBuilder();
+                if (whereModel.UserId.HasValue)
+                {
+                    sb.Append(" UserId=@UserId AND");
+                    args.Add("@UserId", whereModel.UserId);
+                }
+               
+                if (whereModel.GroupId.HasValue)
+                {
+                    sb.Append(" GroupId=@GroupId AND");
+                    args.Add("@GroupId", whereModel.GroupId);
+                }
+                sb.Append(" 1=1");
+                string _where = sb.ToString();
+                string _sql = $@"SELECT * FROM users WHERE {_where} Limit {whereModel.LeftNum},{whereModel.PageCount}";
+                return GetList<UserModel>(_sql, args);
+            }
+            catch (Exception ex)
+            {
+                Log4NetHelper.Error("读取用户打卡备注集合：" + ex.ToString());
+            }
+            return null;
+        }
+
+        public int GetPageUserListCount(UserSearchPageWhereModel whereModel)
+        {
+            try
+            {
+                var args = new DynamicParameters();
+                StringBuilder sb = new StringBuilder();
+                if (whereModel.UserId.HasValue)
+                {
+                    sb.Append(" UserId=@UserId AND");
+                    args.Add("@UserId", whereModel.UserId);
+                }
+
+                if (whereModel.GroupId.HasValue)
+                {
+                    sb.Append(" GroupId=@GroupId AND");
+                    args.Add("@GroupId", whereModel.GroupId);
+                }
+                sb.Append(" 1=1");
+                string _where = sb.ToString();
+                string _sql = $@"SELECT Count(*) FROM users WHERE {_where} ";
+                return Convert.ToInt32(GetScaler(_sql,args));
+            }
+            catch (Exception ex)
+            {
+                Log4NetHelper.Error("读取分页获取总数失败：" + ex.ToString());
+            }
+            return 0;
+        }
+
         /// <summary>
         /// 批量添加用户账号
         /// </summary>

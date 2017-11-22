@@ -29,7 +29,7 @@ namespace WebBiHuGadget.Controllers
             return View();
         }
         [HttpPost, ValidateAntiForgeryToken]
-        public JsonResult GetUserList()
+        public JsonResult GetUserList(View_SelectUserListWhere request)
         {
             MessageModel msg = new MessageModel
             {
@@ -38,7 +38,16 @@ namespace WebBiHuGadget.Controllers
             };
             try
             {
-                var userList = userBll.GetListUser();
+                int leftNum = (request.PageIndex - 1) * request.PageSize;
+                UserSearchPageWhereModel whereModel = new UserSearchPageWhereModel
+                {
+                    UserId = request.UserId,
+                    GroupId = request.GroupId,
+                    LeftNum = leftNum,
+                    PageCount = request.PageSize
+                };
+                var userList = userBll.GetPageUserList(whereModel);
+                int count = userBll.GetPageUserListCount(whereModel);
                 var userViewList = new List<UserViewModel>();
                 if (userList != null)
                 {
@@ -57,7 +66,11 @@ namespace WebBiHuGadget.Controllers
                     });
                 }
                 msg.MsgStatus = true;
-                msg.MsgContent = userViewList;
+                msg.MsgContent = new
+                {
+                    totalCount = count,
+                    list = userViewList
+                }; ;
                 return Json(msg, JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
@@ -87,7 +100,7 @@ namespace WebBiHuGadget.Controllers
                     Pwd = AESHelper.AESEncrypt(u.Value),
                     CreateTime = DateTime.Now,
                     RoleId = Settings.AddDefaultRole,
-                    GroupId=Account.GroupId
+                    GroupId = Account.GroupId
                 });
                 List<UserModel> seletUserList = userBll.GetListUser();
                 var selectedList = userList.Where((u, i) => seletUserList.SingleOrDefault(s => s.UserName == u.UserName) != null).ToList();
@@ -180,7 +193,7 @@ namespace WebBiHuGadget.Controllers
                     Pwd = userModel.Pwd,
                     Email = userModel.Email,
                     RoleId = userModel.RoleId,
-                    GroupId=userModel.GroupId
+                    GroupId = userModel.GroupId
                 };
                 if (userBll.EditUser(user))
                 {

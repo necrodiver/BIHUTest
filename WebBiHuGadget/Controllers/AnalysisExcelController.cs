@@ -381,6 +381,7 @@ namespace WebBiHuGadget.Controllers
                     GroupId = whereModel.GroupId
                 };
                 List<AttendanceMoreModel> adList = attendanceBll.GetAttendanceList(asModel);
+                int count = attendanceBll.GetAttendanceListCount(asModel);
                 if (adList == null || adList.Count == 0)
                 {
                     msg.MsgStatus = false;
@@ -389,7 +390,11 @@ namespace WebBiHuGadget.Controllers
                 else
                 {
                     msg.MsgStatus = true;
-                    msg.MsgContent = adList;
+                    msg.MsgContent = new
+                    {
+                        totalCount=count,
+                        list= adList
+                    };
                 }
             }
             catch (Exception ex)

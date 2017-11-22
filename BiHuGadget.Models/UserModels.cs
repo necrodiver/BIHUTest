@@ -89,4 +89,15 @@ namespace BiHuGadget.Models
         public string CreateTime { get; set; }
         public int GroupId { get; set; }
     }
+
+    public class UserSearchPageWhereModel
+    {
+        public int? UserId { get; set; }
+
+        public int? GroupId { get; set; }
+
+        public int LeftNum { get; set; }
+
+        public int PageCount { get; set; }
+    }
 }

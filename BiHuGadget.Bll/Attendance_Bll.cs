@@ -44,5 +44,10 @@ namespace BiHuGadget.Bll
         {
             return attendanceDal.EditAttendanceIsPass(attendanceId,isPass);
         }
+
+        public int GetAttendanceListCount(AttendanceSearchAllModel asModel)
+        {
+            return attendanceDal.GetAttendanceListCount(asModel);
+        }
     }
 }

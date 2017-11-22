@@ -26,6 +26,12 @@ namespace BiHuGadget.Bll
                 userModel.Pwd = AESHelper.AESEncrypt(userModel.Pwd);
             return userDal.GetListUser(userModel);
         }
+        public List<UserModel> GetPageUserList(UserSearchPageWhereModel whereModel)
+        {
+            if(whereModel==null)
+                return null;
+            return userDal.GetPageUserList(whereModel);
+        }
 
         public bool ExistUser(UserModel userModel)
         {
@@ -50,6 +56,11 @@ namespace BiHuGadget.Bll
                 Log4NetHelper.Error("批量添加用户账号时出错:" + ex.ToString());
             }
             return false;
+        }
+
+        public int GetPageUserListCount(UserSearchPageWhereModel whereModel)
+        {
+            return userDal.GetPageUserListCount(whereModel);
         }
 
         public bool DeleteUserList(List<string> userIdList)

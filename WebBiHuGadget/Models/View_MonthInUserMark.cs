@@ -40,7 +40,7 @@ namespace WebBiHuGadget.Models
         [DisplayName("用户名")]
         [RegularExpression(@"^[\u4E00-\u9FA5]{2,5}$", ErrorMessage = "{0}格式错误！")]
         public string UserName { get; set; }
-        [DisplayName("用户Id")]
+        [DisplayName("查询年份")]
         [Required]
         [IntLength(2017, 2020, ErrorMessage = "{0}格式不正确")]
         public int Year { get; set; }

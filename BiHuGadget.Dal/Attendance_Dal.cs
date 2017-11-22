@@ -65,7 +65,6 @@ namespace BiHuGadget.Dal
             }
             return null;
         }
-
         /// <summary>
         /// 获取分页打卡备注数据
         /// </summary>
@@ -114,6 +113,54 @@ namespace BiHuGadget.Dal
                 Log4NetHelper.Error("读取用户打卡备注集合：" + ex.ToString());
             }
             return null;
+        }
+
+        /// <summary>
+        /// 获取分页数据的总数量
+        /// </summary>
+        /// <param name="asModel"></param>
+        /// <returns></returns>
+        public int GetAttendanceListCount(AttendanceSearchAllModel asModel)
+        {
+            try
+            {
+                var args = new DynamicParameters();
+                StringBuilder sb = new StringBuilder();
+                if (asModel.UserId.HasValue)
+                {
+                    sb.Append(" u.UserId=@UserId AND");
+                    args.Add("@UserId", asModel.UserId);
+                }
+                if (!string.IsNullOrWhiteSpace(asModel.UserName))
+                {
+                    sb.Append(" u.UserName=@UserName AND");
+                    args.Add("@UserName", asModel.UserName);
+                }
+                if (asModel.ClockMonth.HasValue)
+                {
+                    sb.Append(" a.ClockMonth=@ClockMonth AND");
+                    args.Add("@ClockMonth", asModel.ClockMonth);
+                }
+                if (asModel.GroupId.HasValue)
+                {
+                    sb.Append(" u.GroupId=@GroupId AND");
+                    args.Add("@GroupId", asModel.GroupId);
+                }
+
+                sb.Append(" a.ClockYear=@ClockYear AND");
+                args.Add("@ClockYear", asModel.ClockYear);
+
+                sb.Append(" 1=1");
+                string _where = sb.ToString();
+                string _sql = $@"SELECT COUNT(*) FROM attendance AS a JOIN users AS u ON a.UserId=u.UserId WHERE {_where} ";
+
+                return Convert.ToInt32(GetScaler(_sql, args));
+            }
+            catch (Exception ex)
+            {
+                Log4NetHelper.Error("读取用户打卡备注集合总数失败：" + ex.ToString());
+            }
+            return 0;
         }
 
         public bool UpdateAttendance(AttendanceModel adModel)

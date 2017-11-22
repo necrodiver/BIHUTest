@@ -45,6 +45,9 @@
         }
     },
     methods: {
+        init: function () {
+            this.curPage = 1;
+        },
         goPage: function (page) {
             $('.pagination>.item').removeClass('active');
             if (page == 0)
