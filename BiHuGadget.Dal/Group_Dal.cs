@@ -42,16 +42,16 @@ namespace BiHuGadget.Dal
             if (groupModel.GroupId != null)
             {
                 dp.Add("@GroupId", groupModel.GroupId);
-                _sbwhere.Append(" GroupId=@GroupId AND");
+                _sbwhere.Append(" GroupId=@GroupId AND ");
             }
-            else if (!string.IsNullOrWhiteSpace(groupModel.GroupName))
+            if (!string.IsNullOrWhiteSpace(groupModel.GroupName))
             {
                 dp.Add("@GroupName", groupModel.GroupName);
-                _sbwhere.Append(" GroupName=@GroupName AND");
+                _sbwhere.Append(" GroupName=@GroupName AND ");
             }
             _sbwhere.Append(" 1=1 ");
             string _sql = string.Format(Group_QueryString.Delete_Group, _sbwhere.ToString());
-            return Operate(_sql);
+            return Operate(_sql,dp);
         }
         public bool EditGroupName(GroupModel groupModel)
         {
@@ -69,6 +69,6 @@ namespace BiHuGadget.Dal
         public static string Select_Group = "SELECT * FROM companygroup WHERE {0}";
         public static string Insert_Group = "INSERT INTO companygroup (GroupName) values (@GroupName)";
         public static string Delete_Group = "DELETE FROM companygroup WHERE {0}";
-        public static string Update_Group = "UPDATE users SET GroupName=@GroupName WHERE GroupId=@GroupId";
+        public static string Update_Group = "UPDATE companygroup SET GroupName=@GroupName WHERE GroupId=@GroupId";
     }
 }

@@ -80,6 +80,45 @@ namespace WebBiHuGadget.Controllers
             msg.MsgContent = "获取用户列表出错，你可以重试或者查看日志检查错误";
             return Json(msg, JsonRequestBehavior.AllowGet);
         }
+        [HttpPost,ValidateAntiForgeryToken]
+        public JsonResult GetUserAll()
+        {
+            MessageModel msg = new MessageModel
+            {
+                MsgTitle = "获取用户列表",
+                MsgStatus = false
+            };
+            try
+            {
+                var userList = userBll.GetListUser() ;
+                var userViewList = new List<UserViewModel>();
+                if (userList != null)
+                {
+                    userList.ForEach(u =>
+                    {
+                        var userChild = new UserViewModel
+                        {
+                            UserId = Convert.ToInt32(u.UserId),
+                            UserName = u.UserName,
+                            Email = u.Email,
+                            RoleId = Convert.ToInt32(u.RoleId),
+                            CreateTime = Convert.ToDateTime(u.CreateTime).ToString("yyyy-MM-dd HH:mm:ss"),
+                            GroupId = Convert.ToInt32(u.GroupId)
+                        };
+                        userViewList.Add(userChild);
+                    });
+                }
+                msg.MsgStatus = true;
+                msg.MsgContent = userViewList;
+                return Json(msg, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                Log4NetHelper.Error("获取用户列表错误：" + ex.ToString());
+            }
+            msg.MsgContent = "获取用户列表出错，你可以重试或者查看日志检查错误";
+            return Json(msg, JsonRequestBehavior.AllowGet);
+        }
 
         [HttpPost, ValidateAntiForgeryToken, ModelValidationMVCFilter]
         public JsonResult AddUserList(UserNameModel userNameModel)

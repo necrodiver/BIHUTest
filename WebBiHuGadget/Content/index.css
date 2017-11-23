@@ -31,3 +31,6 @@
 .pagination>.active{
     background-color:#fff;
 }
+.cursor-pointer {
+    cursor: pointer;
+}

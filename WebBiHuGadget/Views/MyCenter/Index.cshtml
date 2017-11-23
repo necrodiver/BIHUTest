@@ -10,6 +10,7 @@
         {
             <a class="item" v-on:click="isShow=2">员工管理 </a>
             <a class="item" v-on:click="isShow=3">考勤备注审批 </a>
+            <a class="item" v-on:click="isShow=4">管理小组 </a>
         }
     </div>
 
@@ -144,6 +145,19 @@
                 </table>
             </div>
         </div>
+        <div v-show="isShow==4">
+            <div class="height15"></div>
+            <div class="left22">
+                <template v-for="item in groupData.groupList">
+                    <div class="ui yellow message">
+                        <i class="star icon"></i> {{item.GroupName}}
+                        <i class="edit icon cursor-pointer" v-on:click="updateGroup(item)"></i>
+                        <i class="close icon" v-on:click="deleteGroup(item)"></i>
+                    </div>
+                </template>
+                <div class="ui default message center button" v-on:click="addGroup"><i class="add icon"></i> 新增组......</div>
+            </div>
+        </div>
     }
     <div class="ui small modal" id="editUser">
         <div class="header" id="editUser-header">
@@ -272,6 +286,7 @@
         mounted: function () {
             init(this);
             this.getUserList();
+            this.getUserAll();
         },
         methods: {
             getUserList: function (pageIndex) {
@@ -302,18 +317,17 @@
                     if (res.MsgStatus) {
                         _self.userList = $.extend([], res.MsgContent.list);
                         _self.req.where.totalCount = res.MsgContent.totalCount;
-                        _self.getGroupList();
 
-                        $('#selectUserName1').children('option').remove();
-                        $('#selectUserName1').append('<option value="-1">输入姓名</option>');
-                        _self.userList.forEach(function (item) {
-                            $('#selectUserName1').append('<option value="' + item.UserId + '">' + item.UserName + '</option>');
-                        });
-                        $('#selectUserName1').dropdown('set value', _self.req.where.UserId);
-                        $('#selectUserName1').dropdown('setting', 'onChange', function (val) {
-                            if (_self.req.where.UserId != val)
-                                _self.req.where.UserId = parseInt(val);
-                        });
+                        //$('#selectUserName1').children('option').remove();
+                        //$('#selectUserName1').append('<option value="-1">输入姓名</option>');
+                        //_self.userList.forEach(function (item) {
+                        //    $('#selectUserName1').append('<option value="' + item.UserId + '">' + item.UserName + '</option>');
+                        //});
+                        //$('#selectUserName1').dropdown('set value', _self.req.where.UserId);
+                        //$('#selectUserName1').dropdown('setting', 'onChange', function (val) {
+                        //    if (_self.req.where.UserId != val)
+                        //        _self.req.where.UserId = parseInt(val);
+                        //});
 
                         _self.paging();
                     }
@@ -322,6 +336,47 @@
                 });
                 req.always(function () {
                 });
+            },
+            getUserAll: function () {
+                var _self = this;
+                var req = $.ajax({
+                    type: 'POST',
+                    url: bhConfig.GetUserAll,
+                    data: { '__RequestVerificationToken': __RequestVerificationToken},
+                    dataType: "JSON",
+                    cache: false
+                });
+                req.done(function (res) {
+                    if (res == null || res == "")
+                        return helper.toolTipBox("操作失败");
+                    if (res.MsgStatus) {
+
+                        $('#selectUserName1').children('option').remove();
+                        $('#selectUserName1').append('<option value="-1">输入姓名</option>');
+                        res.MsgContent.forEach(function (item) {
+                            $('#selectUserName1').append('<option value="' + item.UserId + '">' + item.UserName + '</option>');
+                        });
+                        $('#selectUserName1').dropdown('set value', _self.req.where.UserId);
+                        $('#selectUserName1').dropdown('setting', 'onChange', function (val) {
+                            if (_self.req.where.UserId != val)
+                                _self.req.where.UserId = parseInt(val);
+                        });
+
+                        $('#selectUserName').children('option').remove();
+                        $('#selectUserName').append('<option value="-1">输入姓名</option>');
+                        res.MsgContent.forEach(function (item) {
+                            $('#selectUserName').append('<option value="' + item.UserId + '">' + item.UserName + '</option>');
+                        });
+                        $('#selectUserName').dropdown('set value', _self.attendance.where.UserId);
+                        $('#selectUserName').dropdown('setting', 'onChange', function (val) {
+                            if (_self.attendance.where.UserId != parseInt(val)) {
+                                _self.attendance.where.UserId = val;
+                                _self.pagingA(1);
+                            }
+                        });
+                    }
+                });
+                init(this);
             },
             checkSelect: function (item, event) {
                 var index = this.selectedList.indexOf(item);
@@ -411,6 +466,7 @@
                         _self.getUserList(1);
                         _self.selectedList = [];
                         _self.req.pageIndex = 1;
+                        _self.getUserAll();
                     }
                     return helper.toolTipBox(res.MsgContent);
                 });
@@ -491,6 +547,7 @@
                         _self.getUserList(1);
                         _self.editUser.addUsers = "";
                         _self.req.pageIndex = 1;
+                        _self.getUserAll();
                     }
                     return helper.toolTipBox(res.MsgContent);
                 });
@@ -615,16 +672,70 @@
                         return helper.toolTipBox("操作失败");
                     if (res.MsgStatus) {
                         _self.groupData.groupList = res.MsgContent;
-                        _self.bindGroup();
+                        if (res.MsgContent.length>0)
+                            _self.bindGroup();
                     } else {
                         return console.log(res.MsgContent);
                     }
                 });
             },
-            EditGroup: function (editType) {
+            updateGroup: function (item) {
+                var _self = this;
+                var d = dialog({
+                    title: '修改组名',
+                    content: '<input id="property-returnValue-groupname" value="' + item.GroupName + '" />',
+                    ok: function () {
+                        var value = $('#property-returnValue-groupname').val();
+                        if (value == '' || value.length <= 2) {
+                            helper.toolTipBox("分组命名最少不得小于3个字符长度");
+                            return;
+                        }
+                        if (item.GroupName == value) {
+                            helper.toolTipBox("新的分组命名和原来一样，不予修改");
+                            return;
+                        }
+                        item.GroupName = value;
+                        _self.EditGroup(2,item);
+                        this.remove();
+                    }
+                });
+                d.show();
+            },
+            deleteGroup: function (item) {
+               var _self = this;
+                dialog({
+                    title: '删除组别提示',
+                    content: '你确定要删除小组 [' + item.GroupName + ']?(删除后此小组内所有小组成员将没有组别展示，请慎重考虑！)',
+                    ok: function () {
+                        _self.EditGroup(0,item);
+                    },
+                    cancel: function () { }
+                }).show();
+            },
+            addGroup: function () {
+                var _self = this;
+                var d = dialog({
+                    title: '新增组别',
+                    content: '<input id="property-returnValue-groupname" placeholder="请输入组名"/>',
+                    ok: function () {
+                        var value = $('#property-returnValue-groupname').val();
+                        if (value == '' || value.length <= 2) {
+                            helper.toolTipBox("分组命名最少不得小于3个字符长度");
+                            return;
+                        }
+                        var item = {};
+                        item.GroupName = value;
+                        _self.EditGroup(1, item);
+                        this.remove();
+                    }
+                });
+                d.show();
+            },
+            EditGroup: function (editType,item) {
                 if (!this.groupData.groupList)
                     return helper.toolTipBox('当前获取的分组信息失败，请先检查日志文件');
-                var reqJson = $.extend({}, this.groupData.groupList);
+                var reqJson = $.extend({}, item);
+                reqJson.MarkIUD = editType;
                 reqJson.__RequestVerificationToken = __RequestVerificationToken;
                 var _self = this;
                 var req = $.ajax({
@@ -724,9 +835,11 @@
         watch: {
             'isShow': function (newVal) {
                 if (newVal == 2) {
+                    this.getGroupList();
                     this.getUserList(1);
                 }
                 else if (newVal == 3) {
+                    this.getGroupList();
                     this.$refs.pageMark.init();
                     this.pagingA(1);
                     $('.head-title')
@@ -743,18 +856,20 @@
                             }
                         }
                     });
-                    $('#selectUserName').children('option').remove();
-                    $('#selectUserName').append('<option value="-1">输入姓名</option>');
-                    this.userList.forEach(function (item) {
-                        $('#selectUserName').append('<option value="' + item.UserId + '">' + item.UserName + '</option>');
-                    });
-                    $('#selectUserName').dropdown('set value', _self.attendance.where.UserId);
-                    $('#selectUserName').dropdown('setting', 'onChange', function (val) {
-                        if (_self.attendance.where.UserId != parseInt(val)) {
-                            _self.attendance.where.UserId = val;
-                            _self.pagingA(1);
-                        }
-                    });
+                    //$('#selectUserName').children('option').remove();
+                    //$('#selectUserName').append('<option value="-1">输入姓名</option>');
+                    //this.userList.forEach(function (item) {
+                    //    $('#selectUserName').append('<option value="' + item.UserId + '">' + item.UserName + '</option>');
+                    //});
+                    //$('#selectUserName').dropdown('set value', _self.attendance.where.UserId);
+                    //$('#selectUserName').dropdown('setting', 'onChange', function (val) {
+                    //    if (_self.attendance.where.UserId != parseInt(val)) {
+                    //        _self.attendance.where.UserId = val;
+                    //        _self.pagingA(1);
+                    //    }
+                    //});
+                } else if (newVal == 4) {
+                    this.getGroupList();
                 }
             },
             'attendance.where.UserName': function (newVal, oldVal) {
@@ -794,5 +909,12 @@
             .popup({
                 inline: false
             });
+    }
+    window.onload = function () {
+        $('#selectUserName1').dropdown('set value', vm.req.where.UserId);
+        $('#selectUserName1').dropdown('setting', 'onChange', function (val) {
+            if (vm.req.where.UserId != val)
+                vm.req.where.UserId = parseInt(val);
+        });
     }
 </script>
