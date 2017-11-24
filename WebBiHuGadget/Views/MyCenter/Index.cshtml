@@ -184,7 +184,7 @@
                         <template v-for="i in 3">
                             <div class="field">
                                 <div class="ui radio checkbox">
-                                    <input type="radio" name="frequency" checked="checked" :value="i" v-model="editUser.editUser.RoleId">
+                                    <input type="radio" name="roles" checked="checked" :value="i" v-model="editUser.editUser.RoleId">
                                     <label>{{i|RoleTransName}}</label>
                                 </div>
                             </div>
@@ -197,7 +197,7 @@
                         <template v-for="item in groupData.groupList">
                             <div class="field">
                                 <div class="ui radio checkbox">
-                                    <input type="radio" name="frequency" checked="checked" :value="item.GroupId" v-model="editUser.editUser.GroupId">
+                                    <input type="radio" name="groups" checked="checked" :value="item.GroupId" v-model="editUser.editUser.GroupId">
                                     <label>{{item.GroupName}}</label>
                                 </div>
                             </div>
