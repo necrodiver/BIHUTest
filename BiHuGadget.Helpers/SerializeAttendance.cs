@@ -206,11 +206,11 @@ namespace BiHuGadget.Helpers
             if (hour >= 6 && hour < 14)
             {
                 userModel.isLeftTime = true;
-                if ((hour == 9 && minute > 30) || hour >= 10)
+                if ((hour == 9 && minute > 35) || hour >= 10)
                 {
                     userModel.status = -3;
                 }
-                if ((hour >= 7 && hour < 9) || (hour == 9 && minute <= 30))
+                if ((hour >= 7 && hour < 9) || (hour == 9 && minute <= 35))
                 {
                     userModel.status = 1;
                 }

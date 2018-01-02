@@ -83,6 +83,7 @@
                     }
                 });
                 req.done(function (res) {
+                    localStorage.clear();
                     if (res == null || res == "") {
                         return helper.toolTipBox("登录失败");
                     }
