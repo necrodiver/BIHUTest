@@ -206,11 +206,11 @@ namespace BiHuGadget.Helpers
             if (hour >= 6 && hour < 14)
             {
                 userModel.isLeftTime = true;
-                if ((hour == 9 && minute > 35) || hour >= 10)
+                if ((hour == 9 && minute > 30) || hour >= 10)
                 {
                     userModel.status = -3;
                 }
-                if ((hour >= 7 && hour < 9) || (hour == 9 && minute <= 35))
+                if ((hour >= 7 && hour < 9) || (hour == 9 && minute <= 30))
                 {
                     userModel.status = 1;
                 }
@@ -279,23 +279,19 @@ namespace BiHuGadget.Helpers
                 {
                     return true;
                 }
-                if (month == 1 && (day == 27 || day == 28 || day == 29 || day == 30 || day == 31))
+                if (month == 2 && (day == 15 || day == 16 || day == 17 || day == 18 || day == 19 || day == 20 || day == 21))
                 {
                     return true;
                 }
-                if (month == 2 && (day == 1 || day == 2))
+                if (month == 4 && (day == 5 || day == 6 || day == 7 || day == 29 || day == 30))
                 {
                     return true;
                 }
-                if (month == 4 && (day == 2 || day == 3 || day == 4 || day == 29))
+                if (month == 5 && day == 1)
                 {
                     return true;
                 }
-                if (month == 5 && (day == 1 || day == 28 || day == 29 || day == 30))
-                {
-                    return true;
-                }
-                if (month == 10 && (day >= 1 && day <= 8))
+                if (month == 10 && (day >= 1 && day < 8))
                 {
                     return true;
                 }
