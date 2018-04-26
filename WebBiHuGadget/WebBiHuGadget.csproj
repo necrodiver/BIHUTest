@@ -478,9 +478,6 @@
     <Content Include="Views\AnalysisStatistic\Index.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Shared\PartialViews\SignIn.cshtml" />
-    <Content Include="XLS\5月考勤.xls" />
-    <Content Include="XLS\6月考勤.xls" />
-    <Content Include="XLS\7月考勤.xls" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\BiHuGadget.Bll\BiHuGadget.Bll.csproj">
