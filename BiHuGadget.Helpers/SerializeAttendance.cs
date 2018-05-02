@@ -295,6 +295,44 @@ namespace BiHuGadget.Helpers
                 {
                     return true;
                 }
+
+                //以下为单双休日期
+                if (month == 4 && (day == 14 || day == 28))
+                {
+                    return true;
+                }
+                if (month == 5 && (day == 12 || day == 26))
+                {
+                    return true;
+                }
+                if (month == 6 && (day == 16 || day == 30))
+                {
+                    return true;
+                }
+                if (month == 7 && (day == 14 || day == 28))
+                {
+                    return true;
+                }
+                if (month == 8 && (day == 11 || day == 25))
+                {
+                    return true;
+                }
+                if (month == 9 && (day == 15 || day == 29))
+                {
+                    return true;
+                }
+                if (month == 10 && (day == 13 || day == 27))
+                {
+                    return true;
+                }
+                if (month == 11 && (day == 10 || day == 24))
+                {
+                    return true;
+                }
+                if (month == 12 && (day == 15 || day == 29))
+                {
+                    return true;
+                }
             }
             return false;
         }
