@@ -98,6 +98,17 @@ namespace BiHuGadget.Helpers
                             dayOfWeek = 7
                         });
                     }
+                    else if (IsHolidayByDateSix(last.AddDays(1 - last.Day).AddDays(i - 1)))
+                    {
+                        userList.Add(new User
+                        {
+                            day = i,
+                            putCaredTime = DateTime.MinValue.ToString("yyyy-MM-dd HH:mm:ss"),
+                            status = 100,
+                            isLeftTime = null,
+                            dayOfWeek = 6
+                        });
+                    }
                     else if (IsHolidayByDate(last.AddDays(1 - last.Day).AddDays(i - 1)))
                     {
                         userList.Add(new User
@@ -295,44 +306,61 @@ namespace BiHuGadget.Helpers
                 {
                     return true;
                 }
-
-                //以下为单双休日期
-                if (month == 4 && (day == 14 || day == 28))
-                {
-                    return true;
-                }
-                if (month == 5 && (day == 12 || day == 26))
-                {
-                    return true;
-                }
-                if (month == 6 && (day == 16 || day == 30))
-                {
-                    return true;
-                }
-                if (month == 7 && (day == 14 || day == 28))
-                {
-                    return true;
-                }
-                if (month == 8 && (day == 11 || day == 25))
-                {
-                    return true;
-                }
-                if (month == 9 && (day == 15 || day == 29))
-                {
-                    return true;
-                }
-                if (month == 10 && (day == 13 || day == 27))
-                {
-                    return true;
-                }
-                if (month == 11 && (day == 10 || day == 24))
-                {
-                    return true;
-                }
-                if (month == 12 && (day == 15 || day == 29))
-                {
-                    return true;
-                }
+            }
+            return false;
+        }
+        private static bool IsHolidayByDateSix(DateTime date)
+        {
+            Dictionary<DateTime, bool> times = new Dictionary<DateTime, bool>();
+            var thisTime = date;
+            var year = thisTime.Year;
+            var month = thisTime.Month;
+            var day = thisTime.Day;
+            var thisYear = DateTime.Now.Year;
+            //以下为单双休日期
+            if (month == 3 && (day == 10 || day == 31))
+            {
+                return true;
+            }
+            if (month == 3 && (day == 10 || day == 24))
+            {
+                return true;
+            }
+            if (month == 4 && day == 14)
+            {
+                return true;
+            }
+            if (month == 5 && (day == 12 || day == 26))
+            {
+                return true;
+            }
+            if (month == 6 && (day == 16 || day == 30))
+            {
+                return true;
+            }
+            if (month == 7 && (day == 14 || day == 28))
+            {
+                return true;
+            }
+            if (month == 8 && (day == 11 || day == 25))
+            {
+                return true;
+            }
+            if (month == 9 && (day == 15 || day == 29))
+            {
+                return true;
+            }
+            if (month == 10 && (day == 13 || day == 27))
+            {
+                return true;
+            }
+            if (month == 11 && (day == 10 || day == 24))
+            {
+                return true;
+            }
+            if (month == 12 && (day == 15 || day == 29))
+            {
+                return true;
             }
             return false;
         }
