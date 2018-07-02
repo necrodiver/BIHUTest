@@ -302,6 +302,10 @@ namespace BiHuGadget.Helpers
                 {
                     return true;
                 }
+                if (month == 6 && day == 18)
+                {
+                    return true;
+                }
                 if (month == 10 && (day >= 1 && day < 8))
                 {
                     return true;
@@ -334,7 +338,7 @@ namespace BiHuGadget.Helpers
             {
                 return true;
             }
-            if (month == 6 && (day == 16 || day == 30))
+            if (month == 6 && (day == 9 || day == 16 || day == 30))
             {
                 return true;
             }
