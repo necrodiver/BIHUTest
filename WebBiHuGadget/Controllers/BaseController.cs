@@ -10,6 +10,10 @@ namespace WebBiHuGadget.Controllers
 {
     public class BaseController : Controller
     {
+        public BaseController()
+        {
+            ViewBag.IsLogin = Account != null ? 1 : 0;
+        }
         protected AccountUser Account
         {
             get

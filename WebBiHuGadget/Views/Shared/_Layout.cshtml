@@ -2,7 +2,6 @@
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AMS - @ViewBag.Title</title>
     @Styles.Render("~/Content/group")
@@ -13,6 +12,7 @@
         <div class="ui menu">
             <a class="header item @ViewBag.Home" href="@Url.Action("Index", "Home")">首页</a>
             <a class="item @ViewBag.AnalysisExcel" href="@Url.Action("Index", "AnalysisExcel")">考勤转换</a>
+            <a class="item @ViewBag.Leave" href="@Url.Action("Index","Leave")">请假</a>
             @*<a class="item @ViewBag.AnalysisStatistic" href="@Url.Action("Index", "AnalysisStatistic")">考勤统计</a>*@
             <div class="ui dropdown item">
                 其他

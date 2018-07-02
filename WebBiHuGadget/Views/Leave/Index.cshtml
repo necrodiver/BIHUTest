@@ -1,0 +1,152 @@
+﻿@{
+    ViewBag.Title = "请假";
+}
+@Html.AntiForgeryToken()
+<style type="text/css">
+    .time-input {
+        width: 220px;
+        float: left;
+    }
+
+    .clearBoth {
+        clear: both;
+    }
+</style>
+
+<div id="leave" v-cloak>
+    <h3 class="ui center aligned header">请假</h3>
+    <div class="ui text container">
+        <div class="ui segments form">
+            <div class="ui segment">
+                <div class="field"> <strong>用户姓名：{{userName}}</strong></div>
+            </div>
+            <div class="ui segment">
+                <div class="field"> <strong>备注类型：请假</strong></div>
+            </div>
+            <div class="ui segment">
+                <div class="field">
+                    <div class="ui input fluid">
+                        <input type="text" maxlength="50" v-model="{{addMarkData}}" placeholder="输入请假标题，1~20个字符">
+                    </div>
+                </div>
+            </div>
+            <div class="ui segment">
+                <div class="field">
+                    <div class="ui calendar time-input" id="leftTime">
+                        <div class="ui input left icon">
+                            <i class="calendar icon"></i>
+                            <input type="text" placeholder="请假起始时间" />
+                        </div>
+                    </div>
+                    <span style="height:38px;line-height:38px;float:left;margin-right:10px;padding-left:5px;padding-right:5px;">~</span>
+                    <div class="ui calendar time-input" id="rightTime">
+                        <div class="ui input left icon">
+                            <i class="calendar icon"></i>
+                            <input type="text" placeholder="请假结束时间" />
+                        </div>
+                    </div>
+                    <div class="clearBoth"></div>
+                </div>
+            </div>
+            <div class="ui segment">
+                <div class="field">
+                    <div class="ui input fluid">
+                        <textarea rows="2" maxlength="1000" style="min-height:200px;" placeholder="正文内容，务必在1000个字符以内" id="markReason"></textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="ui segment">
+                <div class="field">
+                    <div class="actions">
+                        <button class="ui success button left floated" id="btnCancle">预览 </button>
+                        <button class="ui positive right floated labeled icon button">确定 <i class="checkmark icon"></i> </button>
+                    </div>
+                    <div style="clear:both;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div></div>
+<script type="text/javascript">
+    let param = {
+        userName: "@ViewBag.UserName",
+        addMarkData: {
+            title: "",
+            startTime: "",
+            endTime: "",
+            content: ""
+        }
+
+    };
+    $(function () {
+        init();
+    });
+    function init() {
+        var vm = new Vue({
+            el: "#leave",
+            data: function () {
+                return param;
+            },
+            mounted: function () {
+                initPage(this);
+            },
+            methods: {
+                /**
+                * 预览展示
+                */
+                preview: function () {
+
+                }
+            },
+            filters: {
+
+            }
+        });
+        window.vm = vm;
+    }
+
+    function initPage(_self) {
+        let timeSetting = {
+            type: 'datetime',
+            formatter: { // 自定义日期的格式
+                date: function (date, settings) {
+                    if (!date) return '';
+                    var year = date.getFullYear();
+                    var month = date.getMonth() + 1;
+                    var day = date.getDate();
+
+                    month = month < 10 ? '0' + month : month;
+                    day = day < 10 ? '0' + day : day;
+
+                    return year + '-' + month + '-' + day;
+                },
+                time: function (date, settings, forCalendar) {
+                    if (!date) return '';
+                    var hour = date.getHours();
+                    var minute = date.getMinutes();
+                    hour = hour < 10 ? '0' + hour : hour;
+                    minute = minute < 10 ? '0' + minute : minute;
+                    return hour + ':' + minute;
+                },
+            },
+            ampm: false,
+            disableMinute:true,
+            text: {
+                days: ['日', '一', '二', '三', '四', '五', '六'],
+                months: ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月'],
+                monthsShort: ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月'],
+                today: '今天',
+                now: '当前',
+                am: ' am',
+                pm: ' pm'
+            },
+            minDate: new Date("@ViewBag.LeftTime"),
+            maxDate: new Date("@ViewBag.RightTime")
+        };
+        let leftTimeSetting = $.extend({ endCalendar: "#rightTime" }, timeSetting);
+        let rightTimeSetting = $.extend({ startCalendar : "#leftTime" }, timeSetting);
+        $('#leftTime').calendar(leftTimeSetting);
+        $('#rightTime').calendar(rightTimeSetting);
+    }
+</script>

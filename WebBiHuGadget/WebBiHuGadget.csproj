@@ -25,6 +25,7 @@
     <UseGlobalApplicationHostFile />
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
+    <Use64BitIISExpress />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -164,6 +165,7 @@
     <Compile Include="Controllers\AnalysisStatisticController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\LeaveController.cs" />
     <Compile Include="Controllers\MyCenterController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -325,8 +327,8 @@
     <Content Include="Content\themes\material\assets\fonts\icons.svg" />
     <Content Include="Scripts\artDialog\dialog-plus.js" />
     <Content Include="Scripts\artDialog\dialog.js" />
-    <Content Include="Scripts\calendars\calendar.js" />
     <Content Include="Content\calendars\calendar.min.css" />
+    <Content Include="Scripts\calendars\calendar.js" />
     <Content Include="Scripts\calendars\calendar.min.js" />
     <Content Include="Scripts\components\accordion.js" />
     <Content Include="Scripts\components\accordion.min.js" />
@@ -454,6 +456,7 @@
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\MyCenter\Index.cshtml" />
     <Content Include="Views\Home\About.cshtml" />
+    <Content Include="Views\Leave\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
