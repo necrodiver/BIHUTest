@@ -346,7 +346,7 @@ namespace BiHuGadget.Helpers
             {
                 return true;
             }
-            if (month == 8 && (day == 11 || day == 25))
+            if (month == 8 && (day == 11 || day == 12 || day == 19 || day == 25 || day == 26))
             {
                 return true;
             }
