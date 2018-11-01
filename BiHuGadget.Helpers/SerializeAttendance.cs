@@ -350,19 +350,19 @@ namespace BiHuGadget.Helpers
             {
                 return true;
             }
-            if (month == 9 && (day == 15 || day == 29))
+            if (month == 9 && (day == 8 || day == 9 || day == 16 || day == 22 || day == 23))
             {
                 return true;
             }
-            if (month == 10 && (day == 13 || day == 27))
+            if (month == 10 && (day == 14 || day == 20 || day == 21 || day == 28))
             {
                 return true;
             }
-            if (month == 11 && (day == 10 || day == 24))
+            if (month == 11 && (day == 3 || day == 4 || day == 11 || day == 17 || day == 18 || day == 25))
             {
                 return true;
             }
-            if (month == 12 && (day == 15 || day == 29))
+            if (month == 12 && (day == 1 || day == 2 || day == 9 || day == 15 || day == 16 || day == 23 || day == 29 || day == 30))
             {
                 return true;
             }

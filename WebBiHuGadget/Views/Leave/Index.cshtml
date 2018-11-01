@@ -26,8 +26,17 @@
             <div class="ui segment">
                 <div class="field">
                     <div class="ui input fluid">
-                        <input type="text" maxlength="50" v-model="{{addMarkData}}" placeholder="输入请假标题，1~20个字符">
+                        <input type="text" maxlength="50" v-model="addMarkData.title" placeholder="输入请假标题，1~20个字符">
                     </div>
+                </div>
+            </div>
+            <div class="ui segment">
+                <div class="field">
+                    <select class="ui small medium search dropdown left" id="selectUserName"></select>
+                </div>
+            </div>
+            <div class="ui segment">
+                <div class="field" id="uname-tag">
                 </div>
             </div>
             <div class="ui segment">
@@ -68,16 +77,20 @@
     </div>
 </div>
 <div></div>
+@Html.AntiForgeryToken()
 <script type="text/javascript">
+    let __RequestVerificationToken = $('input[name="__RequestVerificationToken"]').val();
     let param = {
+        userId:@ViewBag.UserId,
+        roleId :@ViewBag.RoleId,
         userName: "@ViewBag.UserName",
+        groupId: '@ViewBag.GroupId',
         addMarkData: {
             title: "",
             startTime: "",
             endTime: "",
             content: ""
         }
-
     };
     $(function () {
         init();
@@ -85,18 +98,62 @@
     function init() {
         var vm = new Vue({
             el: "#leave",
-            data: function () {
-                return param;
-            },
-            mounted: function () {
+            data: () =>(param),
+            mounted() {
                 initPage(this);
             },
             methods: {
                 /**
                 * 预览展示
                 */
-                preview: function () {
+                preview() {
 
+                },
+                getUserAll() {
+                    let _self = this;
+                    let req = $.ajax({
+                        type: 'POST',
+                        url: bhConfig.GetUserAll,
+                        data: { '__RequestVerificationToken': __RequestVerificationToken },
+                        dataType: "JSON",
+                        cache: false
+                    });
+                    req.done(function (res) {
+                        if (res == null || res == "")
+                            return helper.toolTipBox("操作失败");
+                        if (res.MsgStatus) {
+                            $('#selectUserName').children('option').remove();
+                            $('#selectUserName').append('<option value="-1">请输入并选择通知人员姓名</option>');
+                            res.MsgContent.forEach(function (item) {
+                                $('#selectUserName').append('<option value="' + item.UserId + '">' + item.UserName + '</option>');
+                            });
+                            $('#selectUserName').dropdown('set value', _self.userId);
+                        }
+                    });
+                    req.always(() => {
+                        $('#selectUserName').dropdown('setting', 'onChange', function (id, val) {
+                            if (id < 0) {
+                                return;
+                            }
+                            if (_self.UserId != id)
+                                _self.UserId = parseInt(id);
+                            let items = $("#uname-tag>a");
+                            if (items.length <= 0) {
+                                $('#uname-tag').append(' <a class="ui label" u-id=' + id + '>' + val + '<i class="delete icon" onclick="removeSelf(this)"></i> </a>');
+                            } else {
+                                if (items.length >= 8) {
+                                    helper.toolTipBox("最多只能选择8个通知人员");
+                                    return;
+                                }
+                                let vals = items.filter((i, e) => {
+                                    return $(e).text().trim() == val.trim();
+                                });
+                                if (!vals || vals.length <= 0) {
+                                    $('#uname-tag').append(' <a class="ui label" u-id=' + id + '>' + val + '<i class="delete icon" onclick="removeSelf(this)"></i> </a>');
+                                }
+                            }
+                        });
+                    });
                 }
             },
             filters: {
@@ -105,7 +162,9 @@
         });
         window.vm = vm;
     }
-
+    function removeSelf(self) {
+        $(self).parent('a').remove();
+    }
     function initPage(_self) {
         let timeSetting = {
             type: 'datetime',
@@ -148,5 +207,6 @@
         let rightTimeSetting = $.extend({ startCalendar : "#leftTime" }, timeSetting);
         $('#leftTime').calendar(leftTimeSetting);
         $('#rightTime').calendar(rightTimeSetting);
+        _self.getUserAll();
     }
 </script>

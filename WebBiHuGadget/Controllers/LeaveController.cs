@@ -12,7 +12,10 @@ namespace WebBiHuGadget.Controllers
         {
             ViewBag.LeftTime = DateTime.Now.AddDays(-30).ToString("yyyy-MM-dd HH:mm");
             ViewBag.RightTime = DateTime.Now.AddDays(30).ToString("yyyy-MM-dd HH:mm");
-            ViewBag.UserName = this.Account.UserName;
+            ViewBag.UserId = Account.UserId;
+            ViewBag.RoleId = Account.RoleId;
+            ViewBag.UserName = Account.UserName;
+            ViewBag.GroupId = Account.GroupId;
             return View();
         }
     }
