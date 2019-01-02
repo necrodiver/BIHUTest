@@ -220,7 +220,7 @@
                 <div class="left length-top">周六</div>
                 <div class="left length-top">周日</div>
                 <!--打卡Excel表没有出来用这个-->
-                <div class="body-Day" v-if="!userMounthNullCount&&userMounthNulls&&userMounthNulls.dayNum > 27">
+                <div class="body-Day" v-if="userMounthNulls&&userMounthNulls.dayNum > 27">
                     <div v-for="i in userMounthNulls.nullDays" class="left length">无</div>
                     <div v-for="day in userMounthNulls.dayNum" class="left length titlec">
                         <div class="select-day titlec" v-on:click="selectMarkNull(day,0)" v-bind:title="getMarkTitle(day,0,1)">
@@ -248,7 +248,7 @@
                     </div>
                 </div>
                 <!--打卡Excel表已经出来了-->
-                <div class="body-Day" v-if="userMounthNullCount">
+                <div class="body-Day" v-else>
                     <div v-for="i in userMounthNullCount" class="left length">无</div>
                     <div v-for="child in userMounths" class="left length titlec" v-bind:class="'color-'+child.status" v-bind:title="getMarkTitle(child,0)">
                         <div class="" v-bind:class="{'select-day':child.status!=1&&child.status!=2}" v-on:click="selectMark(child,0,1)">

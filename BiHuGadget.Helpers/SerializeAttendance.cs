@@ -310,6 +310,10 @@ namespace BiHuGadget.Helpers
                 {
                     return true;
                 }
+                if (month == 12 && day == 31)
+                {
+                    return true;
+                }
             }
             return false;
         }
@@ -362,7 +366,7 @@ namespace BiHuGadget.Helpers
             {
                 return true;
             }
-            if (month == 12 && (day == 1 || day == 2 || day == 9 || day == 15 || day == 16 || day == 23 || day == 29 || day == 30))
+            if (month == 12 && (day == 1 || day == 2 || day == 9 || day == 15 || day == 16 || day == 23 || day == 30))
             {
                 return true;
             }
