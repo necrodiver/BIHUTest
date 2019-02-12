@@ -290,27 +290,7 @@ namespace BiHuGadget.Helpers
                 {
                     return true;
                 }
-                if (month == 2 && (day == 15 || day == 16 || day == 17 || day == 18 || day == 19 || day == 20 || day == 21))
-                {
-                    return true;
-                }
-                if (month == 4 && (day == 5 || day == 6 || day == 7 || day == 29 || day == 30))
-                {
-                    return true;
-                }
-                if (month == 5 && day == 1)
-                {
-                    return true;
-                }
-                if (month == 6 && day == 18)
-                {
-                    return true;
-                }
-                if (month == 10 && (day >= 1 && day < 8))
-                {
-                    return true;
-                }
-                if (month == 12 && day == 31)
+                if (month == 2 && (day > 1 && day < 10))
                 {
                     return true;
                 }
@@ -326,47 +306,11 @@ namespace BiHuGadget.Helpers
             var day = thisTime.Day;
             var thisYear = DateTime.Now.Year;
             //以下为单双休日期
-            if (month == 3 && (day == 10 || day == 31))
-            {
-                return true;
-            }
-            if (month == 3 && (day == 10 || day == 24))
-            {
-                return true;
-            }
-            if (month == 4 && day == 14)
-            {
-                return true;
-            }
-            if (month == 5 && (day == 12 || day == 26))
-            {
-                return true;
-            }
-            if (month == 6 && (day == 9 || day == 16 || day == 30))
-            {
-                return true;
-            }
-            if (month == 7 && (day == 1 || day == 8 || day == 14 || day == 15 || day == 22 || day == 28 || day == 29))
-            {
-                return true;
-            }
-            if (month == 8 && (day == 11 || day == 12 || day == 19 || day == 25 || day == 26))
-            {
-                return true;
-            }
-            if (month == 9 && (day == 8 || day == 9 || day == 16 || day == 22 || day == 23))
-            {
-                return true;
-            }
-            if (month == 10 && (day == 14 || day == 20 || day == 21 || day == 28))
-            {
-                return true;
-            }
-            if (month == 11 && (day == 3 || day == 4 || day == 11 || day == 17 || day == 18 || day == 25))
-            {
-                return true;
-            }
-            if (month == 12 && (day == 1 || day == 2 || day == 9 || day == 15 || day == 16 || day == 23 || day == 30))
+            //if (month == 1 && (day == 1 || day == 31))
+            //{
+            //    return true;
+            //}
+            if (month == 2 && day == 23)
             {
                 return true;
             }
